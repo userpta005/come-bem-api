@@ -24,7 +24,7 @@
                                     <p class="card-text">
                                         <div class="col-12">
                                             <img id="preview-image"
-                                                src="{{asset((isset($item) && $item->icon!= null)?'storage/'.$item->icon:'images/noimage.png')}}"
+                                                src="{{asset((isset($item) && $item->icon!= null)?$item->icon:'images/noimage.png')}}"
                                                 class="img-fluid" width="250" height="150" />
                                             <br />
 

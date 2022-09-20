@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\{
     CityController,
     FaqController,
     LeadController,
+    MeasurementUnitController,
     ParameterController,
     PasswordController,
     PaymentMethodController,
@@ -53,6 +54,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('tenants', TenantController::class);
     Route::resource('sections', SectionController::class);
     Route::resource('payment-methods', PaymentMethodController::class);
+    Route::resource('measurement-units', MeasurementUnitController::class);
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class)->only(['index', 'show']);

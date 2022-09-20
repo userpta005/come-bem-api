@@ -67,7 +67,7 @@
                   </div>
                 </li>
               @endcanany
-              @canany(['sections_view', 'payment-methods_view'])
+              @canany(['sections_view', 'payment-methods_view', 'measurement-units_view'])
                 <li>
                   <a data-toggle="collapse"
                     href="#operational"
@@ -95,6 +95,14 @@
                           <a href="{{ route('payment-methods.index') }}">
                               <i class="fas fa-money-check-alt"></i>
                               <p>Formas de<br/> Pagamento</p>
+                          </a>
+                      </li>
+                      @endcan
+                      @can('measurement-units_view')
+                      <li>
+                          <a href="{{ route('measurement-units.index') }}">
+                              <i class="fab fa-algolia"></i>
+                              <p>Unidade de<br/> Medida</p>
                           </a>
                       </li>
                       @endcan

@@ -65,6 +65,15 @@ class Permission extends \Spatie\Permission\Models\Permission
                                     array('name' => 'payment-methods_delete', 'description' => 'Deletar'),
                                 ]
                             ],
+                            [
+                                'title' => 'Unidades de Medida',
+                                'items' => [
+                                    array('name' => 'measurement-units_view', 'description' => 'Visualizar'),
+                                    array('name' => 'measurement-units_create', 'description' => 'Criar'),
+                                    array('name' => 'measurement-units_edit', 'description' => 'Editar'),
+                                    array('name' => 'measurement-units_delete', 'description' => 'Deletar'),
+                                ]
+                            ],
                         ]
                     ],
                     [
