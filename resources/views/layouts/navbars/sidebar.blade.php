@@ -67,7 +67,7 @@
                   </div>
                 </li>
               @endcanany
-              @canany(['sections_view', 'payment-methods_view', 'measurement-units_view'])
+              @canany(['sections_view', 'ncms_view', 'payment-methods_view', 'measurement-units_view'])
                 <li>
                   <a data-toggle="collapse"
                     href="#operational"
@@ -90,19 +90,27 @@
                           </a>
                         </li>
                       @endcan
-                      @can('payment-methods_view')
-                      <li>
-                          <a href="{{ route('payment-methods.index') }}">
-                              <i class="fas fa-money-check-alt"></i>
-                              <p>Formas de<br/> Pagamento</p>
+                      @can('ncms_view')
+                        <li>
+                          <a href="{{ route('ncms.index') }}">
+                            <i class="fas fa-layer-group"></i>
+                            <p>Ncms</p>
                           </a>
-                      </li>
+                        </li>
                       @endcan
                       @can('measurement-units_view')
                       <li>
                           <a href="{{ route('measurement-units.index') }}">
                               <i class="fab fa-algolia"></i>
                               <p>Unidade de<br/> Medida</p>
+                          </a>
+                      </li>
+                      @endcan
+                      @can('payment-methods_view')
+                      <li>
+                          <a href="{{ route('payment-methods.index') }}">
+                              <i class="fas fa-money-check-alt"></i>
+                              <p>Formas de<br/> Pagamento</p>
                           </a>
                       </li>
                       @endcan

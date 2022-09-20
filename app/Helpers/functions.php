@@ -36,6 +36,16 @@ if (!function_exists('carbon')) {
     }
 }
 
+if (!function_exists('ukDate')) {
+    function ukDate($datetime = null, $timestamp = false)
+    {
+        $datetime = $datetime ? $datetime : Carbon::now();
+        $format = $timestamp ? 'd/m/Y H:i' : 'd/m/Y';
+        $timestamp = $timestamp ? 'Y-m-d H:i:s' : 'Y-m-d';
+        return Carbon::createFromFormat($format, $datetime)->format($timestamp);
+    }
+}
+
 if (!function_exists('brDate')) {
     /**
      * Converte data para formato brasileiro.

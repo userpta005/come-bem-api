@@ -18,7 +18,8 @@ class DatabaseSeeder extends Seeder
             CitiesTableSeeder::class,
             DefenderSeeder::class,         
             UsersTableSeeder::class,
-            ParametersTableSeeder::class
+            ParametersTableSeeder::class,
+            NcmTableSeeder::class
         ]);
     }
 }

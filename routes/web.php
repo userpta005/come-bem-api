@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\{
     FaqController,
     LeadController,
     MeasurementUnitController,
+    NcmController,
     ParameterController,
     PasswordController,
     PaymentMethodController,
@@ -47,6 +48,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::put('password', [PasswordController::class, 'update'])->name('password.update');
     Route::get('states', [StateController::class, 'index'])->name('states.index');
     Route::get('cities', [CityController::class, 'index'])->name('cities.index');
+    Route::get('ncms', [NcmController::class, 'index'])->name('ncms.index');
     Route::get('settings', [SettingsController::class, 'edit'])->name('settings.edit');
     Route::put('settings', [SettingsController::class, 'update'])->name('settings.update');
 

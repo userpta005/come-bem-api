@@ -74,6 +74,12 @@ class Permission extends \Spatie\Permission\Models\Permission
                                     array('name' => 'measurement-units_delete', 'description' => 'Deletar'),
                                 ]
                             ],
+                            [
+                                'title' => 'Ncms',
+                                'items' => [
+                                    array('name' => 'ncms_view', 'description' => 'Visualizar'),
+                                ]
+                            ],
                         ]
                     ],
                     [
