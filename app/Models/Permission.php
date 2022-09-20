@@ -56,6 +56,15 @@ class Permission extends \Spatie\Permission\Models\Permission
                                     array('name' => 'sections_delete', 'description' => 'Deletar'),
                                 ]
                             ],
+                            [
+                                'title' => 'Formas de Pagamento',
+                                'items' => [
+                                    array('name' => 'payment-methods_view', 'description' => 'Visualizar'),
+                                    array('name' => 'payment-methods_create', 'description' => 'Criar'),
+                                    array('name' => 'payment-methods_edit', 'description' => 'Editar'),
+                                    array('name' => 'payment-methods_delete', 'description' => 'Deletar'),
+                                ]
+                            ],
                         ]
                     ],
                     [

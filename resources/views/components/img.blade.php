@@ -16,7 +16,7 @@
         <input type="file"
           id="image"
           name="{{ $name }}"
-          {{ $attributes->merge(['class' => "d-none @if ($errors->has('logo')) is-invalid @endif"]) }}>
+          {{ $attributes->merge(['class' => "d-none @if ($errors->has($name)) is-invalid @endif"]) }}>
         <label for="image"
           class="text-primary cp">Trocar</label>
         @if ($errors->has($name))

@@ -8,6 +8,7 @@ use App\Http\Controllers\API\{
     GetPersonByNifController,
     PageController,
     ParameterController,
+    PaymentMethodController,
     SectionController,
     SettingsController
 };
@@ -35,6 +36,7 @@ Route::prefix('v1')->group(function () {
     Route::get('parameters', [ParameterController::class, 'index']);
 
     Route::get('sections', [SectionController::class, 'index']);
+    Route::get('payment-methods', [PaymentMethodController::class, 'index']);
     
     Route::get('settings', SettingsController::class);
     Route::get('faqs', [FaqController::class, 'index']);

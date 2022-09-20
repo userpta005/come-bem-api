@@ -67,7 +67,7 @@
                   </div>
                 </li>
               @endcanany
-              @canany(['sections_view'])
+              @canany(['sections_view', 'payment-methods_view'])
                 <li>
                   <a data-toggle="collapse"
                     href="#operational"
@@ -89,6 +89,14 @@
                             <p>Seções</p>
                           </a>
                         </li>
+                      @endcan
+                      @can('payment-methods_view')
+                      <li>
+                          <a href="{{ route('payment-methods.index') }}">
+                              <i class="fas fa-money-check-alt"></i>
+                              <p>Formas de<br/> Pagamento</p>
+                          </a>
+                      </li>
                       @endcan
                     </ul>
                   </div>
