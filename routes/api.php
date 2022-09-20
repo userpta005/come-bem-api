@@ -32,10 +32,8 @@ Route::prefix('v1')->group(function () {
     Route::get('get-person-by-nif', GetPersonByNifController::class);
     Route::resource('cities', CityController::class)->only(['index', 'show']);
     Route::get('parameters', [ParameterController::class, 'index']);
-
-    Route::middleware('app')->group(function () {
-        Route::get('settings', SettingsController::class);
-        Route::get('faqs', [FaqController::class, 'index']);
-        Route::get('banners', [BannerController::class, 'index']);
-    });
+    
+    Route::get('settings', SettingsController::class);
+    Route::get('faqs', [FaqController::class, 'index']);
+    Route::get('banners', [BannerController::class, 'index']);
 });
