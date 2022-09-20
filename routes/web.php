@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\{
     PermissionController,
     ProfileController,
     RoleController,
+    SectionController,
     SettingsController,
     StateController,
     TenantController,
@@ -49,6 +50,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('leads', LeadController::class);
     Route::resource('tenants', TenantController::class);
+    Route::resource('sections', SectionController::class);
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class)->only(['index', 'show']);

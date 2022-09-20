@@ -8,6 +8,7 @@ use App\Http\Controllers\API\{
     GetPersonByNifController,
     PageController,
     ParameterController,
+    SectionController,
     SettingsController
 };
 use Illuminate\Http\Request;
@@ -32,6 +33,8 @@ Route::prefix('v1')->group(function () {
     Route::get('get-person-by-nif', GetPersonByNifController::class);
     Route::resource('cities', CityController::class)->only(['index', 'show']);
     Route::get('parameters', [ParameterController::class, 'index']);
+
+    Route::get('sections', [SectionController::class, 'index']);
     
     Route::get('settings', SettingsController::class);
     Route::get('faqs', [FaqController::class, 'index']);
