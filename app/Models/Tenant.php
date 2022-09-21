@@ -10,6 +10,7 @@ use App\Traits\ScopePerson;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Tenant extends Model
 {
@@ -55,5 +56,15 @@ class Tenant extends Model
     public function people(): BelongsTo
     {
         return $this->belongsTo(Person::class, 'person_id');
+    }
+
+    /**
+     * Get all of the stores for the Tenant
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function stores(): HasMany
+    {
+        return $this->hasMany(Store::class);
     }
 }

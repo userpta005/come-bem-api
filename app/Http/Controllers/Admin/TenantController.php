@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Validator;
 use App\Rules\CpfCnpj;
 use Illuminate\Support\Facades\DB;
 use App\Mail\SendEmailCreatedTenant;
+use App\Models\Permission;
+use App\Models\Role;
 use Illuminate\Validation\Rule;
 use App\Models\User;
 
@@ -31,29 +33,29 @@ class TenantController extends Controller
             ->when(!empty($request->search), function ($query) use ($request) {
                 $query->where(function ($query) use ($request) {
                     $query->where('people.name', 'LIKE', "%$request->search%")
-                        ->orWhere('people.nif', 'LIKE', "%$request->search%");
+                        ->orWhereRaw('(replace(replace(replace(nif, ".", ""), "/", ""), "-", "") like "%' . removeMask($request->search) . '%")');
                 });
             })
             ->when(!empty($request->status), function ($query) use ($request) {
-                return $query->where('tenants.status', $request->status);
+                $query->where('tenants.status', $request->status);
             })
             ->when(!empty($request->signature), function ($query) use ($request) {
-                return $query->where('tenants.signature', $request->signature);
+                $query->where('tenants.signature', $request->signature);
             })
             ->when(!empty($request->due_day), function ($query) use ($request) {
-                return $query->where('tenants.due_day', $request->due_day);
+                $query->where('tenants.due_day', $request->due_day);
             })
             ->when(!empty($request->dt_accession_start), function ($query) use ($request) {
-                return $query->whereDate('tenants.dt_accession', '>=', $request->dt_accession_start);
+                $query->whereDate('tenants.dt_accession', '>=', $request->dt_accession_start);
             })
             ->when(!empty($request->dt_accession_end), function ($query) use ($request) {
-                return $query->whereDate('tenants.dt_accession', '<=', $request->dt_accession_end);
+                $query->whereDate('tenants.dt_accession', '<=', $request->dt_accession_end);
             })
             ->when(!empty($request->due_date_start), function ($query) use ($request) {
-                return $query->whereDate('tenants.due_date', '>=', $request->due_date_start);
+                $query->whereDate('tenants.due_date', '>=', $request->due_date_start);
             })
             ->when(!empty($request->due_date_end), function ($query) use ($request) {
-                return $query->whereDate('tenants.due_date', '<=', $request->due_date_end);
+                $query->whereDate('tenants.due_date', '<=', $request->due_date_end);
             })
             ->orderBy('people.name')
             ->paginate(10);
@@ -103,6 +105,14 @@ class TenantController extends Controller
                     'is_active' => $inputs['status'] == TenantStatus::ENABLED->value ? Active::YES : Active::NOT
                 ]
             );
+
+            $contractor = Role::updateOrCreate(
+                ['name' => 'contractor'],
+                [
+                    'description' => 'Contratante'
+                ]
+            );
+            $contractor->permissions()->sync(Permission::all());
 
             $user->assignRole('contractor');
         });

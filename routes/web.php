@@ -3,6 +3,8 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\{
     BannerController,
+    ChangeFirtsPasswordController,
+    ChangeStoreSessionController,
     CityController,
     FaqController,
     LeadController,
@@ -17,6 +19,7 @@ use App\Http\Controllers\Admin\{
     SectionController,
     SettingsController,
     StateController,
+    StoreController,
     TenantController,
     UserController
 };
@@ -51,9 +54,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('ncms', [NcmController::class, 'index'])->name('ncms.index');
     Route::get('settings', [SettingsController::class, 'edit'])->name('settings.edit');
     Route::put('settings', [SettingsController::class, 'update'])->name('settings.update');
+    Route::get('change-first-password', [ChangeFirtsPasswordController::class, 'edit'])->name('change-first-password.edit');
+    Route::put('change-first-password', [ChangeFirtsPasswordController::class, 'update'])->name('change-first-password.update');
+    Route::get('change-store/{id}', ChangeStoreSessionController::class)->name('change.store');
 
     Route::resource('leads', LeadController::class);
     Route::resource('tenants', TenantController::class);
+    Route::resource('stores', StoreController::class);
     Route::resource('sections', SectionController::class);
     Route::resource('payment-methods', PaymentMethodController::class);
     Route::resource('measurement-units', MeasurementUnitController::class);

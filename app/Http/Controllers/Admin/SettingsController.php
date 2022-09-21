@@ -16,11 +16,13 @@ class SettingsController extends Controller
         $this->middleware('permission:settings_edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:settings_view', ['only' => ['show', 'index']]);
         $this->middleware('permission:settings_delete', ['only' => ['destroy']]);
+        $this->middleware('store');
     }
 
     public function edit()
     {
         $settings = Settings::with(['city' => fn ($query) => $query->state()])
+            ->where('store_id', session('store')['id'])
             ->first();
 
         return view('settings.edit', compact('settings'));
@@ -40,6 +42,7 @@ class SettingsController extends Controller
         }
 
         $inputs = $request->all();
+        $inputs['store_id'] = session('store')['id'];
         $settings->fill($inputs);
 
         if ($request->hasFile('logo') && $request->file('logo')->isValid()) {

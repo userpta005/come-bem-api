@@ -42,6 +42,15 @@ class Permission extends \Spatie\Permission\Models\Permission
                                     array('name' => 'tenants_delete', 'description' => 'Deletar'),
                                 ]
                             ],
+                            [
+                                'title' => 'Lojas',
+                                'items' => [
+                                    array('name' => 'stores_view', 'description' => 'Visualizar'),
+                                    array('name' => 'stores_create', 'description' => 'Criar'),
+                                    array('name' => 'stores_edit', 'description' => 'Editar'),
+                                    array('name' => 'stores_delete', 'description' => 'Deletar'),
+                                ]
+                            ],
                         ]
                     ],
                     [

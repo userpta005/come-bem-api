@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Enums\Common\Active;
 use App\Http\Controllers\Controller;
+use App\Models\Tenant;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -59,5 +60,28 @@ class LoginController extends Controller
             return redirect()->route('login')
                 ->withError('Acesso com Restrição. Entre contato com o atendimento para normalizar o acesso.');
         }
+        
+        if ($user->stores()->exists()) {
+            $user->load(['stores' => function ($query) {
+                $query->person();
+            }]);
+
+            $store = $user->stores->first();
+
+            session(['stores' => $user->stores->toArray()]);
+            session(['store' => $store->toArray()]);
+        }
+
+        if ($user->people->tenant()->exists()) {
+            $tenant = Tenant::person()->where('person_id', $user->person_id)->first();
+
+            session(['tenant' => $tenant->toArray()]);
+
+            if (Hash::check(preg_replace('/[^A-Za-z0-9]/', '', $user->people->nif), $user->password)) {
+                return redirect()->route('change-first-password.edit');
+            }
+        }
+
+        return redirect()->intended($this->redirectPath());
     }
 }

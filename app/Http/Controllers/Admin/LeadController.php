@@ -18,21 +18,23 @@ class LeadController extends Controller
         $this->middleware('permission:leads_edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:leads_view', ['only' => ['show', 'index']]);
         $this->middleware('permission:leads_delete', ['only' => ['destroy']]);
+        $this->middleware('store');
     }
 
     public function index(Request $request)
     {
         $data = Lead::person()
             ->when(!empty($request->search), function ($query) use ($request) {
-                return $query->where(function ($query) use ($request) {
-                    return $query->where('people.name', 'LIKE', "%$request->search%")
+                $query->where(function ($query) use ($request) {
+                    $query->where('people.name', 'LIKE', "%$request->search%")
                         ->orWhere('people.email', 'LIKE', "%$request->search%")
                         ->orWhere('people.nif', 'LIKE', "%$request->search%");
                 });
             })
             ->when(!empty($request->start_date), function ($query) use ($request) {
-                return $query->whereDate('leads.created_at', $request->start_date);
+                $query->whereDate('leads.created_at', $request->start_date);
             })
+            ->where('store_id', session('store')['id'])
             ->orderBy('people.name')
             ->paginate(10);
 
@@ -61,9 +63,10 @@ class LeadController extends Controller
                 $inputs
             );
 
+            $inputs['store_id'] = session('store')['id'];
             $inputs['person_id'] = $person->id;
 
-            $Lead = Lead::updateOrCreate(
+            Lead::updateOrCreate(
                 ['person_id' => $inputs['person_id']],
                 $inputs
             );

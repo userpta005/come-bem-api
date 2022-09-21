@@ -18,7 +18,7 @@
           </a>
         </li>
       @endcan
-      @canany(['leads_view', 'tenants_view', 'cities_view', 'states_view'])
+      @canany(['leads_view', 'tenants_view', 'cities_view', 'states_view', 'stores_view'])
         <li>
           <a data-toggle="collapse"
             href="#register"
@@ -32,7 +32,7 @@
             id="register"
             style="">
             <ul class="nav pl-4">
-              @canany(['leads_view', 'tenants_view'])
+              @canany(['leads_view', 'tenants_view', 'stores_view'])
                 <li>
                   <a data-toggle="collapse"
                     href="#people"
@@ -47,19 +47,29 @@
                     id="people"
                     style="">
                     <ul class="nav pl-4">
-                      @can('leads_view')
-                        <li>
-                          <a href="{{ route('leads.index') }}">
-                            <i class="fas fa-user"></i>
-                            <p>Leads</p>
-                          </a>
-                        </li>
-                      @endcan
+                      @if (session()->has('store'))
+                        @can('leads_view')
+                          <li>
+                            <a href="{{ route('leads.index') }}">
+                              <i class="fas fa-user"></i>
+                              <p>Leads</p>
+                            </a>
+                          </li>
+                        @endcan
+                      @endif
                       @can('tenants_view')
                         <li>
                           <a href="{{ route('tenants.index') }}">
                             <i class="fas fa-user-tag"></i>
                             <p>Contratantes</p>
+                          </a>
+                        </li>
+                      @endcan
+                      @can('stores_view')
+                        <li>
+                          <a href="{{ route('stores.index') }}">
+                            <i class="fas fa-user-tag"></i>
+                            <p>Lojas</p>
                           </a>
                         </li>
                       @endcan
@@ -99,20 +109,20 @@
                         </li>
                       @endcan
                       @can('measurement-units_view')
-                      <li>
+                        <li>
                           <a href="{{ route('measurement-units.index') }}">
-                              <i class="fab fa-algolia"></i>
-                              <p>Unidade de<br/> Medida</p>
+                            <i class="fab fa-algolia"></i>
+                            <p>Unidade de<br /> Medida</p>
                           </a>
-                      </li>
+                        </li>
                       @endcan
                       @can('payment-methods_view')
-                      <li>
+                        <li>
                           <a href="{{ route('payment-methods.index') }}">
-                              <i class="fas fa-money-check-alt"></i>
-                              <p>Formas de<br/> Pagamento</p>
+                            <i class="fas fa-money-check-alt"></i>
+                            <p>Formas de<br /> Pagamento</p>
                           </a>
-                      </li>
+                        </li>
                       @endcan
                     </ul>
                   </div>
@@ -240,14 +250,16 @@
                   </a>
                 </li>
               @endcan
-              @can('settings_edit')
-                <li>
-                  <a href="{{ route('settings.edit') }}">
-                    <i class="fas fa-cogs"></i>
-                    <p>Configurações</p>
-                  </a>
-                </li>
-              @endcan
+              @if (session()->has('store'))
+                @can('settings_edit')
+                  <li>
+                    <a href="{{ route('settings.edit') }}">
+                      <i class="fas fa-cogs"></i>
+                      <p>Configurações</p>
+                    </a>
+                  </li>
+                @endcan
+              @endif
             </ul>
           </div>
         </li>

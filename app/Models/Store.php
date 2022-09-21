@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use App\Enums\LeadStatus;
+use App\Enums\StoreStatus;
 use App\Traits\DefaultAccessors;
 use App\Traits\ScopePerson;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Lead extends Model
+class Store extends Model
 {
     use HasFactory, ScopePerson, DefaultAccessors;
 
@@ -30,16 +30,26 @@ class Lead extends Model
      * @var array
      */
     protected $casts = [
-        'status' => LeadStatus::class,
+        'status' => StoreStatus::class,
     ];
 
     /**
-     * Get the store that owns the Settings
+     * Get the people that owns the Tenant
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function store(): BelongsTo
+    public function people(): BelongsTo
     {
-        return $this->belongsTo(Store::class);
+        return $this->belongsTo(Person::class, 'person_id');
+    }
+
+    /**
+     * Get the tenant that owns the store
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function tenant(): BelongsTo
+    {
+        return $this->belongsTo(Tenant::class);
     }
 }
