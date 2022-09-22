@@ -40,10 +40,10 @@ class Banner extends Model
      *
      * @return \Illuminate\Database\Eloquent\Casts\Attribute
      */
-    public function image(): Attribute
+    public function imageUrl(): Attribute
     {
         return new Attribute(
-            get: fn ($value) => asset('storage/' . $value)
+            get: fn () => asset('storage/' . $this->image)
         );
     }
 }

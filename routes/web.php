@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\{
     PasswordController,
     PaymentMethodController,
     PermissionController,
+    ProductController,
     ProfileController,
     RoleController,
     SectionController,
@@ -64,6 +65,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('sections', SectionController::class);
     Route::resource('payment-methods', PaymentMethodController::class);
     Route::resource('measurement-units', MeasurementUnitController::class);
+    Route::resource('products', ProductController::class);
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class)->only(['index', 'show']);

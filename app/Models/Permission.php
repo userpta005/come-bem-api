@@ -57,6 +57,15 @@ class Permission extends \Spatie\Permission\Models\Permission
                         'title' => 'Operacionais',
                         'items' => [
                             [
+                                'title' => 'Produtos',
+                                'items' => [
+                                    array('name' => 'products_view', 'description' => 'Visualizar'),
+                                    array('name' => 'products_create', 'description' => 'Criar'),
+                                    array('name' => 'products_edit', 'description' => 'Editar'),
+                                    array('name' => 'products_delete', 'description' => 'Deletar'),
+                                ]
+                            ],
+                            [
                                 'title' => 'Seções',
                                 'items' => [
                                     array('name' => 'sections_view', 'description' => 'Visualizar'),

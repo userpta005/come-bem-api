@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-3">
-        <x-img formats="jpeg,png,jpg,gif,svg" name="image" :value="$item->image ?? null"/>
+        <x-img :value="$item->image_url ?? null"/>
     </div>
     <div class="col-9">
         <div class="row">

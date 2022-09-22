@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-md-4">
     <x-img name="logo"
-      :value="$settings->logo ?? null" />
+      :value="$settings->logo_url ?? null" />
   </div>
   <div class="col-md-4">
     <label>Termos de Uso</label>

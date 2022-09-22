@@ -77,7 +77,7 @@
                   </div>
                 </li>
               @endcanany
-              @canany(['sections_view', 'ncms_view', 'payment-methods_view', 'measurement-units_view'])
+              @canany(['sections_view', 'ncms_view', 'payment-methods_view', 'measurement-units_view', 'products_view'])
                 <li>
                   <a data-toggle="collapse"
                     href="#operational"
@@ -124,6 +124,16 @@
                           </a>
                         </li>
                       @endcan
+                      @if (session()->has('store'))
+                        @can('products_view')
+                          <li>
+                            <a href="{{ route('products.index') }}">
+                              <i class="fas fa-box"></i>
+                              <p>Produtos</p>
+                            </a>
+                          </li>
+                        @endcan
+                      @endif
                     </ul>
                   </div>
                 </li>

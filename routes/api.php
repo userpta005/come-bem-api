@@ -3,11 +3,10 @@
 use App\Http\Controllers\API\{
     BannerController,
     CityController,
-    ContentController,
     FaqController,
     GetPersonByNifController,
     MeasurementUnitController,
-    PageController,
+    NcmController,
     ParameterController,
     PaymentMethodController,
     SectionController,
@@ -32,6 +31,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::prefix('v1')->group(function () {
+    Route::get('ncms', [NcmController::class, 'search']);
     Route::get('get-person-by-nif', GetPersonByNifController::class);
     Route::resource('cities', CityController::class)->only(['index', 'show']);
     Route::get('parameters', [ParameterController::class, 'index']);

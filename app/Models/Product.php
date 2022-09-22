@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
-use App\Enums\SettingsStatus;
+use App\Enums\Common\Active;
+use App\Enums\NutritionalClassification;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Settings extends Model
+class Product extends Model
 {
     use HasFactory;
 
@@ -29,33 +30,44 @@ class Settings extends Model
      * @var array
      */
     protected $casts = [
-        'status' => SettingsStatus::class
+        'nutritional_classification' => NutritionalClassification::class,
+        'is_active' => Active::class,
     ];
 
     /**
-     * Get the banners logo.
+     * Get the banners image.
      *
      * @return \Illuminate\Database\Eloquent\Casts\Attribute
      */
-    public function logoUrl(): Attribute
+    public function imageUrl(): Attribute
     {
         return new Attribute(
-            get: fn () => asset('storage/' . $this->logo)
+            get: fn () => asset('storage/' . $this->image)
         );
     }
 
     /**
-     * Get the city that owns the Settings
+     * Get the store that owns the ncm
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function city(): BelongsTo
+    public function ncm(): BelongsTo
     {
-        return $this->belongsTo(City::class);
+        return $this->belongsTo(Ncm::class);
     }
 
     /**
-     * Get the store that owns the Settings
+     * Get the section that owns the Product
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function section(): BelongsTo
+    {
+        return $this->belongsTo(Section::class);
+    }
+
+    /**
+     * Get the store that owns the store
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
