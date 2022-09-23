@@ -1,8 +1,10 @@
 @props([
-    'label' => 'NCM',
-    'name' => 'ncm_id',
+    'label' => null,
+    'name' => null,
     'value' => [],
-    'required' => true,
+    'required' => false,
+    'route' => null,
+    'prop' => null,
 ])
 
 {!! Form::select($name, $label)->options($value)->attrs(['class' => 'select2'])->required($required) !!}
@@ -15,7 +17,7 @@
       placeholder: "Buscar {{ $label }}",
       ajax: {
         cache: true,
-        url: getUrl() + '/api/v1/ncms',
+        url: getUrl() + "{{ $route }}",
         dataType: 'json',
         data: function(params) {
           var query = {
@@ -28,7 +30,7 @@
           $.each(data.data, function(i, v) {
             var o = {};
             o.id = v.id;
-            o.text = v.description;
+            o.text = v.{{ $prop }};
             o.value = v.id;
             results.push(o);
           })

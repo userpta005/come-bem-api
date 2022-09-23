@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('image');
             $table->string('url')->nullable();
-            $table->boolean('is_active')->default(1);
+            $table->boolean('status')->default(1);
             $table->tinyInteger('position');
             $table->tinyInteger('type');
             $table->tinyInteger('sequence');

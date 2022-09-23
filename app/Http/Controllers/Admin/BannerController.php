@@ -119,7 +119,7 @@ class BannerController extends Controller
     {
         $rules = [
             'name' => ['required', 'max:100'],
-            'is_active' => ['required'],
+            'status' => ['required'],
             'position' => ['required'],
             'type' => ['required'],
             'sequence' => ['required'],

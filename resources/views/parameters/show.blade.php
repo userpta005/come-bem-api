@@ -63,7 +63,7 @@
                         </div>
                         <div class="card m-2 shadow-sm">
                             <div class="card-body">
-                                <p><strong>Dt. Edição: </strong></p>
+                                <p><strong>Dt. Atualização</strong></p>
                                 <p class="card-text">
                                     {{ $item->updated_at->format('d/m/Y') }}
                                 </p>

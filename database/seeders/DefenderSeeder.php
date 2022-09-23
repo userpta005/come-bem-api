@@ -56,6 +56,15 @@ class DefenderSeeder extends Seeder
         $admin->permissions()->sync(Permission::all());
 
         $this->command->info('Admin will have full rights');
+
+        $contractor = Role::updateOrCreate([
+            'name' => 'contractor'
+        ], [
+            'name' => 'contractor',
+            'description' => 'Contratante'
+        ]);
+
+        $contractor->permissions()->sync(Permission::all());
     }
 
     private function createRules()

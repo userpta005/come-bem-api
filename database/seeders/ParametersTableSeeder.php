@@ -16,30 +16,30 @@ class ParametersTableSeeder extends Seeder
     public function run()
     {
         Parameter::updateOrCreate(
-            ['name' => 'test1'],
+            ['name' => 'PARAM1'],
             [
-                'name' => 'test1',
-                'description' => 'teste 1',
+                'name' => 'PARAM1',
+                'description' => 'Primeiro parâmetro',
                 'type' => ParameterType::ALPHANUMERIC,
-                'value' => 'teste',
+                'value' => 'alfanumérico',
             ]
         );
 
         Parameter::updateOrCreate(
-            ['name' => 'test2'],
+            ['name' => 'PARAM2'],
             [
-                'name' => 'test2',
-                'description' => 'teste 2',
+                'name' => 'PARAM2',
+                'description' => 'Segundo parâmetro',
                 'type' => ParameterType::NUMERIC,
                 'value' => 123,
             ]
         );
 
         Parameter::updateOrCreate(
-            ['name' => 'test3'],
+            ['name' => 'PARAM3'],
             [
-                'name' => 'test3',
-                'description' => 'teste 3',
+                'name' => 'PARAM4',
+                'description' => 'terceiro parâmetro',
                 'type' => ParameterType::LOGICAL,
                 'value' => true,
             ]

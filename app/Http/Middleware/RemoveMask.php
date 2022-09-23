@@ -49,6 +49,9 @@ class RemoveMask
                 case 'phone':
                 case 'zip_code':
                 case 'nif':
+                case 'cellphone':
+                case 'contact':
+                case 'contact_phone':
                     return removeMask($value);
                     break;
 

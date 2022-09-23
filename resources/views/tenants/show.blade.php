@@ -175,7 +175,7 @@
                 </div>
                 <div class="card m-2 shadow-sm">
                   <div class="card-body">
-                    <p><strong>Dt. Edição: </strong></p>
+                    <p><strong>Dt. Atualização</strong></p>
                     <p class="card-text">
                       {{ $item->updated_at->format('d/m/Y') }}
                     </p>
@@ -203,7 +203,7 @@
                 </div>
                 <div class="card m-2 shadow-sm">
                   <div class="card-body">
-                    <p><strong>Dt. Vigência Assinatura: </strong></p>
+                    <p><strong>Dt. Vigência: </strong></p>
                     <p class="card-text">
                       {{ $item->due_date->format('d/m/Y') }}
                     </p>
@@ -211,14 +211,12 @@
                 </div>
                 <div class="card m-2 shadow-sm">
                   <div class="card-body">
-                    <p><strong>Dia do vencimento: </strong></p>
+                    <p><strong>Dt. Vencimento: </strong></p>
                     <p class="card-text">
                       {{ $item->due_day->name() }}
                     </p>
                   </div>
                 </div>
-              </div>
-              <div class="card-deck">
                 <div class="card m-2 shadow-sm">
                   <div class="card-body">
                     <p><strong>Valor: </strong></p>

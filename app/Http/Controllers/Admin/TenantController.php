@@ -2,23 +2,26 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Enums\Common\Active;
+use App\Enums\Common\Status;
+use App\Enums\TenantDueDays;
+use App\Enums\TenantSignature;
 use App\Enums\TenantStatus;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Tenant;
 use App\Models\Person;
 use Illuminate\Support\Facades\Validator;
-use App\Rules\CpfCnpj;
 use Illuminate\Support\Facades\DB;
-use App\Mail\SendEmailCreatedTenant;
 use App\Models\Permission;
 use App\Models\Role;
-use Illuminate\Validation\Rule;
 use App\Models\User;
+use App\Traits\PersonRules;
+use Illuminate\Validation\Rules\Enum;
 
 class TenantController extends Controller
 {
+    use PersonRules;
+
     public function __construct()
     {
         $this->middleware('permission:tenants_create', ['only' => ['create', 'store']]);
@@ -30,11 +33,8 @@ class TenantController extends Controller
     public function index(Request $request)
     {
         $data = Tenant::person()
-            ->when(!empty($request->search), function ($query) use ($request) {
-                $query->where(function ($query) use ($request) {
-                    $query->where('people.name', 'LIKE', "%$request->search%")
-                        ->orWhereRaw('(replace(replace(replace(nif, ".", ""), "/", ""), "-", "") like "%' . removeMask($request->search) . '%")');
-                });
+            ->when(!empty($request->tenant_id), function ($query) use ($request) {
+                $query->where('tenants.id', $request->tenant_id);
             })
             ->when(!empty($request->status), function ($query) use ($request) {
                 $query->where('tenants.status', $request->status);
@@ -102,7 +102,7 @@ class TenantController extends Controller
                     'name' => $inputs['name'],
                     'email' => $inputs['email'],
                     'password' => bcrypt(preg_replace("/\D+/", "", $inputs['nif'])),
-                    'is_active' => $inputs['status'] == TenantStatus::ENABLED->value ? Active::YES : Active::NOT
+                    'status' => $inputs['status'] == TenantStatus::ENABLED->value ? Status::ACTIVE : Status::INACTIVE
                 ]
             );
 
@@ -156,7 +156,7 @@ class TenantController extends Controller
             $user = User::where('person_id', $item->person_id)->first();
 
             if ($user instanceof User) {
-                $user->is_active =  $inputs['status'] == TenantStatus::ENABLED->value ? Active::YES : Active::NOT;
+                $user->status =  $inputs['status'] == TenantStatus::ENABLED->value ? Status::ACTIVE : Status::INACTIVE;
                 $user->save();
             }
         });
@@ -184,9 +184,19 @@ class TenantController extends Controller
     private function rules(Request $request, $primaryKey = null, bool $changeMessages = false)
     {
         $rules = [
-            'nif' => ['required', 'max:18', new CpfCnpj, Rule::unique('people')->ignore($primaryKey)],
-            'email' => ['required', 'max:100', Rule::unique('people')->ignore($primaryKey)],
+            'status' => ['required', new Enum(TenantStatus::class)],
+            'cellphone' => ['nullable', 'max:11'],
+            'contact' => ['nullable', 'max:11'],
+            'contact_phone' => ['nullable', 'max:11'],
+            'signature' => ['required', new Enum(TenantSignature::class)],
+            'dt_accession' => ['required', 'date'],
+            'due_date' => ['required', 'date'],
+            'due_day' => ['required', new Enum(TenantDueDays::class)],
+            'value' => ['required']
         ];
+
+        $this->PersonRules($primaryKey);
+        $rules = array_merge($rules, $this->rules);
 
         $messages = [];
 

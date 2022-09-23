@@ -4,9 +4,8 @@ namespace App\Models;
 
 use App\Enums\ParameterType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class Parameter extends Model
+class Parameter extends CommonModel
 {
     use HasFactory;
 
@@ -15,11 +14,7 @@ class Parameter extends Model
      *
      * @var array
      */
-    protected $guarded = [
-        'id',
-        'created_at',
-        'updated_at'
-    ];
+    protected $guarded = [];
 
     /**
      * The attributes that should be cast.

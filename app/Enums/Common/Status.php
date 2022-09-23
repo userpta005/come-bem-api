@@ -4,18 +4,18 @@ namespace App\Enums\Common;
 
 use App\Traits\EnumMethods;
 
-enum Active: int
+enum Status: int
 {
     use EnumMethods;
 
-    case YES = 1;
-    case NOT = 2;
+    case ACTIVE = 1;
+    case INACTIVE = 2;
 
     public function name(): string
     {
         return match ($this) {
-            static::YES => 'Sim',
-            static::NOT => 'Não',
+            static::ACTIVE => 'Ativo',
+            static::INACTIVE => 'Inativo',
         };
     }
 }

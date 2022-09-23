@@ -1,7 +1,5 @@
 <?php
 
-use App\Enums\Common\Active;
-use App\Enums\NutritionalClassification;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -22,7 +20,7 @@ return new class extends Migration
             $table->foreignId('section_id')->constrained();
             $table->foreignId('ncm_id')->constrained();
             $table->tinyInteger('nutritional_classification')->default(1);
-            $table->tinyInteger('is_active')->default(1);
+            $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });
     }

@@ -57,7 +57,7 @@
                             </div>
                             <div class="card m-2 shadow-sm">
                                 <div class="card-body">
-                                    <p><strong>Ativo: </strong></p>
+                                    <p><strong>Status: </strong></p>
                                     <p class="card-text">
                                         {{ $item->is_enabled ? 'Sim' : 'Não' }}
                                     </p>

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Enums\Common\Active;
+use App\Enums\Common\Status;
 use App\Http\Controllers\Controller;
 use App\Models\Tenant;
 use App\Models\User;
@@ -52,7 +52,7 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, User $user)
     {
-        if ($user->is_active == Active::NOT) {
+        if ($user->status == Status::INACTIVE) {
             $this->guard()->logout();
             $request->session()->invalidate();
             $request->session()->regenerateToken();

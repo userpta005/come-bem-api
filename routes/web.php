@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\{
     ChangeFirtsPasswordController,
     ChangeStoreSessionController,
     CityController,
+    ClientController,
     FaqController,
     LeadController,
     MeasurementUnitController,
@@ -62,6 +63,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('leads', LeadController::class);
     Route::resource('tenants', TenantController::class);
     Route::resource('stores', StoreController::class);
+    Route::resource('clients', ClientController::class);
     Route::resource('sections', SectionController::class);
     Route::resource('payment-methods', PaymentMethodController::class);
     Route::resource('measurement-units', MeasurementUnitController::class);

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\Common\Active;
+use App\Enums\Common\Status;
 use App\Traits\DefaultAccessors;
 use App\Traits\ScopePerson;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -32,7 +32,7 @@ class User extends Authenticatable
     /**
      * The attributes that should be hidden for serialization.
      *
-     * @var array<int, string>
+     * @var array
      */
     protected $hidden = [
         'password',
@@ -46,7 +46,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'is_active' => Active::class,
+        'status' => Status::class,
     ];
 
     /**

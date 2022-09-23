@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\LeadStatus;
 use App\Models\Lead;
 use App\Models\Person;
 use App\Http\Controllers\Controller;
-use App\Rules\CpfCnpj;
+use App\Traits\PersonRules;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 
 class LeadController extends Controller
 {
+    use PersonRules;
+
     public function __construct()
     {
         $this->middleware('permission:leads_create', ['only' => ['create', 'store']]);
@@ -24,17 +27,19 @@ class LeadController extends Controller
     public function index(Request $request)
     {
         $data = Lead::person()
-            ->when(!empty($request->search), function ($query) use ($request) {
-                $query->where(function ($query) use ($request) {
-                    $query->where('people.name', 'LIKE', "%$request->search%")
-                        ->orWhere('people.email', 'LIKE', "%$request->search%")
-                        ->orWhere('people.nif', 'LIKE', "%$request->search%");
-                });
+            ->when(!empty($request->lead), function ($query) use ($request) {
+                $query->where('leads.id', $request->lead);
             })
-            ->when(!empty($request->start_date), function ($query) use ($request) {
-                $query->whereDate('leads.created_at', $request->start_date);
+            ->when(!empty($request->status), function ($query) use ($request) {
+                $query->where('leads.status', $request->status);
             })
-            ->where('store_id', session('store')['id'])
+            ->when(!empty($request->date_start), function ($query) use ($request) {
+                $query->whereDate('leads.created_at', '>=', $request->date_start);
+            })
+            ->when(!empty($request->date_end), function ($query) use ($request) {
+                $query->whereDate('leads.created_at', '<=', $request->date_end);
+            })
+            ->where('leads.store_id', session('store')['id'])
             ->orderBy('people.name')
             ->paginate(10);
 
@@ -128,9 +133,12 @@ class LeadController extends Controller
     private function rules(Request $request, $primaryKey = null, bool $changeMessages = false)
     {
         $rules = [
-            'nif' => ['required', 'max:18', new CpfCnpj, Rule::unique('people')->ignore($primaryKey)],
-            'email' => ['required', 'max:100', Rule::unique('people')->ignore($primaryKey)],
+            'status' => ['required', new Enum(LeadStatus::class)],
+            'observation' => ['nullable', 'max:191']
         ];
+
+        $this->personRules($primaryKey);
+        $rules = array_merge($rules, $this->rules);
 
         $messages = [];
 

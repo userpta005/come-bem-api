@@ -27,7 +27,7 @@
                             <th scope="col">Valor</th>
                             <th scope="col">Tipo</th>
                             <th scope="col">Dt. Criac.</th>
-                            <th scope="col">Dt. Edit.</th>
+                            <th scope="col">Dt. Atualiz.</th>
                             <th scope="col" class="text-right">Ação</th>
                         </thead>
                         <tbody>

@@ -11,17 +11,17 @@
   <img src="{{ $value }}"
     class="d-block"
     id="preview-{{ $name }}"
-    style="max-width: 100%; max-height: 100%; border: 1px solid black;">
+    style="max-width: 100%; max-height: 100%; border: 1px solid {{ $errors->has($name) ? 'red' : 'black' }}">
   <input type="file"
     id="inp-{{ $name }}"
     name="{{ $name }}"
     value="{{ $value }}"
-    class="d-none {{ $errors->has($name) ? 'is-invalid' : '' }}"
+    class="d-none"
     {{ $required ? 'required' : '' }}>
   <label for="inp-{{ $name }}"
     class="text-primary cp">Trocar</label>
   @if ($errors->has($name))
-    <div class="invalid-feedback">{{ $errors->first($name) }}</div>
+    <div class="invalid-feedback" style="display: block">{{ $errors->first($name) }}</div>
   @endif
 </div>
 

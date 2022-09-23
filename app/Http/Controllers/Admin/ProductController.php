@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Enums\Common\Active;
+use App\Enums\Common\Status;
 use App\Enums\NutritionalClassification;
 use Illuminate\Http\Request;
 use App\Models\Product;
@@ -124,11 +124,11 @@ class ProductController extends Controller
     {
         $rules = [
             'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
-            'name' => ['required', 'string', 'max:40', Rule::unique('products')->ignore($primaryKey)],
+            'name' => ['required', 'max:40', Rule::unique('products')->ignore($primaryKey)],
             'section_id' => ['required', Rule::exists('sections', 'id')],
             'ncm_id' => ['required', Rule::exists('ncms', 'id')],
             'nutritional_classification' => ['required', new Enum(NutritionalClassification::class)],
-            'is_active' => ['required', new Enum(Active::class)],
+            'status' => ['required', new Enum(Status::class)],
         ];
 
         $messages = [];

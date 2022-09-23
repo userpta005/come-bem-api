@@ -2,26 +2,20 @@
 
 namespace App\Models;
 
-use App\Traits\DefaultAccessors;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Person extends Model
+class Person extends PersonModel
 {
-    use HasFactory, DefaultAccessors;
+    use HasFactory;
 
     /**
      * The attributes that aren't mass assignable.
      *
      * @var array
      */
-    protected $guarded = [
-        'id',
-        'created_at',
-        'updated_at'
-    ];
+    protected $guarded = [];
 
     /**
      * Get the city that owns the Person

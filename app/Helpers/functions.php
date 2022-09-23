@@ -1,19 +1,6 @@
 <?php
 
-use App\Enums\Common\Active;
 use Carbon\Carbon;
-
-if (!function_exists('activeOptions')) {
-    /**
-     * Retornar as opções de ativo.
-     *
-     * @return \Illuminate\Support\Collection;
-     */
-    function activeOptions()
-    {
-        return Active::all();
-    }
-}
 
 if (!function_exists('carbon')) {
     /**

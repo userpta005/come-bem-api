@@ -21,7 +21,10 @@
           {!! Form::open()->fill(request()->all())->get() !!}
           <div class="row">
             <div class="col-md-6">
-              {!! Form::select('search', 'Nome Completo/Razão Social/CPF/CNPJ')->options($tenants->prepend('Selecione...'), 'info')->attrs(['class' => 'select2']) !!}
+              <x-select-ajax name="seach"
+                label="Nome Completo/Razão Social/CPF/CNPJ"
+                route="/api/v1/tenants"
+                prop="info" />
             </div>
             <div class="col-md-2">
               {!! Form::select('status', 'Status')->options(\App\Enums\TenantStatus::all()->prepend('Selecione...', ''))->attrs(['class' => 'select2']) !!}
@@ -103,89 +106,91 @@
               </p>
             </div>
           </div>
-          <table class="table table-striped"
-            id="">
-            <thead class=" text-primary">
-              <th scope="col">#</th>
-              <th scope="col">Nome C./Razão S./CPF/CNPJ</th>
-              <th scope="col">Email</th>
-              <th scope="col">Ass.</th>
-              <th scope="col">Dt.Venc.</th>
-              <th scope="col">Dt.Adesão</th>
-              <th scope="col">Dt.Vigência</th>
-              <th scope="col">Ação</th>
+          <div class="table-responsive-md">
+            <table class="table table-striped">
+              <caption>N. Registros: {{ $data->total() }}</caption>
+              <thead class=" text-primary">
+                <th scope="col">#</th>
+                <th scope="col">Nome C./Razão S./CPF/CNPJ</th>
+                <th scope="col">Email</th>
+                <th scope="col">Ass.</th>
+                <th scope="col">Dt.Venc.</th>
+                <th scope="col">Dt.Adesão</th>
+                <th scope="col">Dt.Vigência</th>
+                <th scope="col">Ação</th>
 
-            </thead>
-            <tbody>
-              @forelse ($data as $item)
-                <tr>
-                  <td class="text-center">
-                    @if ($item->status->value == 1)
-                      <span class="dot"
-                        style="background-color: #008000;"></span>
-                    @elseif ($item->status->value == 2)
-                      <span class="dot"
-                        style="background-color: #ffa500;"></span>
-                    @elseif ($item->status->value == 3)
-                      <span class="dot"
-                        style="background-color: #ff0000;"></span>
-                    @elseif ($item->status->value == 4)
-                      <span class="dot"
-                        style="background-color: #000000;"></span>
-                    @endif
-                  </td>
-                  <td>{{ $item->info }}</td>
-                  <td>{{ $item->email }}</td>
-                  <td>{{ $item->signature->name() }}</td>
-                  <td>{{ $item->due_day->name() }}</td>
-                  <td>{{ $item->dt_accession->format('d/m/Y') }}</td>
-                  <td>{{ $item->due_date->format('d/m/Y') }}</td>
-                  <td class="text-right">
-                    <div class="dropdown">
-                      <a class="btn btn-sm btn-icon-only text-light"
-                        href="#"
-                        role="button"
-                        data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false">
-                        <i class="fas fa-ellipsis-v"></i>
-                      </a>
-                      <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                        <form action="{{ route('tenants.destroy', $item->id) }}"
-                          method="post"
-                          id="form-{{ $item->id }}">
-                          @csrf
-                          @method('delete')
-                          @can('tenants_view')
-                            <a class="dropdown-item"
-                              href="{{ route('tenants.show', $item) }}">Visualizar</a>
-                          @endcan
-                          @can('tenants_edit')
-                            <a class="dropdown-item"
-                              href="{{ route('tenants.edit', $item) }}">Editar</a>
-                          @endcan
-                          @can('tenants_delete')
-                            <button type="button"
-                              class="dropdown-item btn-delete">
-                              Excluir
-                            </button>
-                          @endcan
-                        </form>
+              </thead>
+              <tbody>
+                @forelse ($data as $item)
+                  <tr>
+                    <td class="text-center">
+                      @if ($item->status->value == 1)
+                        <span class="dot"
+                          style="background-color: #008000;"></span>
+                      @elseif ($item->status->value == 2)
+                        <span class="dot"
+                          style="background-color: #ffa500;"></span>
+                      @elseif ($item->status->value == 3)
+                        <span class="dot"
+                          style="background-color: #ff0000;"></span>
+                      @elseif ($item->status->value == 4)
+                        <span class="dot"
+                          style="background-color: #000000;"></span>
+                      @endif
+                    </td>
+                    <td>{{ $item->info }}</td>
+                    <td>{{ $item->email }}</td>
+                    <td>{{ $item->signature->name() }}</td>
+                    <td>{{ $item->due_day->name() }}</td>
+                    <td>{{ $item->dt_accession->format('d/m/Y') }}</td>
+                    <td>{{ $item->due_date->format('d/m/Y') }}</td>
+                    <td class="text-right">
+                      <div class="dropdown">
+                        <a class="btn btn-sm btn-icon-only text-light"
+                          href="#"
+                          role="button"
+                          data-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false">
+                          <i class="fas fa-ellipsis-v"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                          <form action="{{ route('tenants.destroy', $item->id) }}"
+                            method="post"
+                            id="form-{{ $item->id }}">
+                            @csrf
+                            @method('delete')
+                            @can('tenants_view')
+                              <a class="dropdown-item"
+                                href="{{ route('tenants.show', $item) }}">Visualizar</a>
+                            @endcan
+                            @can('tenants_edit')
+                              <a class="dropdown-item"
+                                href="{{ route('tenants.edit', $item) }}">Editar</a>
+                            @endcan
+                            @can('tenants_delete')
+                              <button type="button"
+                                class="dropdown-item btn-delete">
+                                Excluir
+                              </button>
+                            @endcan
+                          </form>
+                        </div>
                       </div>
-                    </div>
-                  </td>
-                </tr>
-              @empty
-                <tr>
-                  <td colspan="20"
-                    style="text-align: center; font-size: 1.1em;">
-                    Nenhuma informação cadastrada.
-                  </td>
-                </tr>
-              @endforelse
+                    </td>
+                  </tr>
+                @empty
+                  <tr>
+                    <td colspan="20"
+                      style="text-align: center; font-size: 1.1em;">
+                      Nenhuma informação cadastrada.
+                    </td>
+                  </tr>
+                @endforelse
 
-            </tbody>
-          </table>
+              </tbody>
+            </table>
+          </div>
         </div>
         <div style="overflow: auto"
           class="my-4 mx-3 row">

@@ -14,7 +14,7 @@
         {!! Form::text('description', 'Descrição')->required()->attrs(['maxlength' => 30]) !!}
       </div>
       <div class="col-md-3">
-        {!! Form::select('is_enabled', 'Ativo', [1 => 'Sim', 0 => 'Não'])->value(isset($item) ? $item->is_enabled : 1)->required() !!}
+        {!! Form::select('is_enabled', 'Status', [1 => 'Sim', 0 => 'Não'])->value(isset($item) ? $item->is_enabled : 1)->required() !!}
       </div>
     </div>
   </div>

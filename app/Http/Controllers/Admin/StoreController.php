@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\StoreStatus;
 use App\Http\Controllers\Controller;
-use App\Models\PaymentMethod;
 use Illuminate\Http\Request;
-use App\Models\Tenant;
 use App\Models\Person;
 use App\Models\Store;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
-use App\Rules\CpfCnpj;
-
+use App\Traits\PersonRules;
+use Illuminate\Validation\Rules\Enum;
 
 class StoreController extends Controller
 {
+    use PersonRules;
+
     public function __construct()
     {
         $this->middleware('permission:stores_create', ['only' => ['create', 'store']]);
@@ -35,9 +35,23 @@ class StoreController extends Controller
             ->when(session()->exists('tenant'), function ($query) {
                 $query->where('tenant_id', session('tenant')['id']);
             })
+            ->when(!empty($request->store), function ($query) use ($request) {
+                $query->where('stores.id', $request->store);
+            })
+            ->when(!empty($request->status), function ($query) use ($request) {
+                $query->where('stores.status', $request->status);
+            })
+            ->when(!empty($request->date_start), function ($query) use ($request) {
+                $query->whereDate('stores.created_at', '>=', $request->date_start);
+            })
+            ->when(!empty($request->date_end), function ($query) use ($request) {
+                $query->whereDate('stores.created_at', '<=', $request->date_end);
+            })
             ->paginate(10);
 
-        return view('stores.index', compact('data'));
+        $stores = Store::person()->get();
+
+        return view('stores.index', compact('data', 'stores'));
     }
 
     public function create()
@@ -139,9 +153,11 @@ class StoreController extends Controller
     public function rules(Request $request, $primaryKey = null, bool $changeMessages = false)
     {
         $rules = [
-            'nif' => ['required', 'max:18', new CpfCnpj, Rule::unique('people')->ignore($primaryKey)],
-            'email' => ['required', 'max:100', Rule::unique('people')->ignore($primaryKey)],
+            'status' => ['required', new Enum(StoreStatus::class)],
         ];
+
+        $this->PersonRules($primaryKey);
+        $rules = array_merge($rules, $this->rules);
 
         $messages = [];
 

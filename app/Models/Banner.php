@@ -4,12 +4,10 @@ namespace App\Models;
 
 use App\Enums\BannerPosition;
 use App\Enums\BannerType;
-use App\Enums\Common\Active;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class Banner extends Model
+class Banner extends CommonModel
 {
     use HasFactory;
 
@@ -18,11 +16,7 @@ class Banner extends Model
      *
      * @var array
      */
-    protected $guarded = [
-        'id',
-        'created_at',
-        'updated_at'
-    ];
+    protected $guarded = [];
 
     /**
      * The attributes that should be cast.
@@ -30,13 +24,12 @@ class Banner extends Model
      * @var array
      */
     protected $casts = [
-        'is_active' => Active::class,
         'position' => BannerPosition::class,
         'type' => BannerType::class
     ];
 
     /**
-     * Get the banners image.
+     * Get the banners image url.
      *
      * @return \Illuminate\Database\Eloquent\Casts\Attribute
      */

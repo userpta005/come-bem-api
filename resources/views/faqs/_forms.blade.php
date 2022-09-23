@@ -16,8 +16,8 @@
         {!! Form::text('url', 'Saiba Mais')->type('url')->attrs(['maxlength' => 60]) !!}
     </div>
     <div class="col-md-2">
-        {!!Form::select('is_active', 'Ativo', activeOptions())
-        ->value(isset($item) ? $item->is_active->value : 1)
+        {!!Form::select('status', 'Status', \App\Enums\Common\Status::all())
+        ->value($item->status->value ?? \App\Enums\Common\Status::ACTIVE)
         ->attrs(['class' => 'select2'])
         ->required()
         !!}

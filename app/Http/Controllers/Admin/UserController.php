@@ -6,13 +6,16 @@ use App\Models\User;
 use App\Models\Person;
 use App\Models\Role;
 use App\Http\Controllers\Controller;
-use App\Rules\CpfCnpj;
+use App\Traits\PersonRules;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
 {
+    use PersonRules;
+
     public function __construct()
     {
         $this->middleware('permission:users_create', ['only' => ['create', 'store']]);
@@ -24,20 +27,24 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $data = User::person()
-            ->when(!empty($request->search), function ($query) use ($request) {
-                return $query->where(function ($query) use ($request) {
-                    return $query->where('users.name', 'LIKE', "%$request->search%")
-                        ->orWhere('users.email', 'LIKE', "%$request->search%")
-                        ->orWhere('people.nif', 'LIKE', "%$request->search%");
-                });
+            ->when(!empty($request->user), function ($query) use ($request) {
+                $query->where('users.id', $request->user);
             })
-            ->when(!empty($request->start_date), function ($query) use ($request) {
-                return $query->whereDate('users.created_at', $request->start_date);
+            ->when(!empty($request->status), function ($query) use ($request) {
+                $query->where('users.status', $request->status);
+            })
+            ->when(!empty($request->date_start), function ($query) use ($request) {
+                $query->whereDate('users.created_at', '>=', $request->date_start);
+            })
+            ->when(!empty($request->date_end), function ($query) use ($request) {
+                $query->whereDate('users.created_at', '<=', $request->date_end);
             })
             ->orderBy('users.name')
             ->paginate(10);
 
-        return view('users.index', compact('data'));
+        $users = User::person()->get();
+
+        return view('users.index', compact('data', 'users'));
     }
 
     public function create()
@@ -54,7 +61,7 @@ class UserController extends Controller
 
         $this->validate(
             $request,
-            $this->rules($request, $person->id ?? null)
+            $this->rules($request, $person->id ?? null, false, true)
         );
 
         DB::transaction(function () use ($request) {
@@ -73,7 +80,7 @@ class UserController extends Controller
                 $inputs
             );
 
-            $user->roles()->sync($request->role);
+            $user->roles()->sync($request->roles);
         });
 
         return redirect()->route('users.index')
@@ -111,11 +118,11 @@ class UserController extends Controller
 
         DB::transaction(function () use ($request, $item) {
             $inputs = $request->all();
-            
+
             $person = Person::findOrFail($item->person_id);
             $person->fill($inputs)->save();
             $item->fill($inputs)->save();
-            $item->roles()->sync($request->role);
+            $item->roles()->sync($request->roles);
         });
 
         return redirect()->route('users.index')
@@ -141,12 +148,19 @@ class UserController extends Controller
         }
     }
 
-    private function rules(Request $request, $primaryKey = null, bool $changeMessages = false)
+    private function rules(Request $request, $primaryKey = null, bool $changeMessages = false, $create = false)
     {
         $rules = [
-            'nif' => ['required', 'max:18', new CpfCnpj, Rule::unique('people')->ignore($primaryKey)],
-            'email' => ['required', 'max:100', Rule::unique('people')->ignore($primaryKey)],
+            'roles' => ['required'],
+            'roles.*' => [Rule::exists('roles', 'id')]
         ];
+
+        if ($create) {
+            $rules['password'] = ['required', 'confirmed', Password::min(8)];
+        }
+
+        $this->PersonRules($primaryKey);
+        $rules = array_merge($rules, $this->rules);
 
         $messages = [];
 

@@ -25,9 +25,9 @@
                         <thead class=" text-primary">
                             <th scope="col">Pergunta</th>
                             <th scope="col">Posição</th>
-                            <th scope="col">Ativo</th>
                             <th scope="col">Dt. Criac.</th>
-                            <th scope="col">Dt. Edic.</th>
+                            <th scope="col">Dt. Atualiz.</th>
+                            <th scope="col">Status</th>
                             <th scope="col" class="text-right">Ação</th>
                         </thead>
                         <tbody>
@@ -35,9 +35,9 @@
                             <tr>
                                 <td>{{ $item->question }}</td>
                                 <td>{{ $item->position->name() }}</td>
-                                <td>{{ $item->is_active->name() }}</td>
                                 <td>{{ $item->created_at->format('d/m/Y') }}</td>
                                 <td>{{ $item->updated_at->format('d/m/Y') }}</td>
+                                <td>{{ $item->status->name() }}</td>
                                 <td class="text-right">
                                     <div class="dropdown">
                                         <a class="btn btn-sm btn-icon-only text-light" href="#" role="button"

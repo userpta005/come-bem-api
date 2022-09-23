@@ -2,12 +2,10 @@
 
 namespace App\Models;
 
-use App\Enums\Common\Active;
 use App\Enums\FaqPosition;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class Faq extends Model
+class Faq extends CommonModel
 {
     use HasFactory;
 
@@ -16,11 +14,7 @@ class Faq extends Model
      *
      * @var array
      */
-    protected $guarded = [
-        'id',
-        'created_at',
-        'updated_at'
-    ];
+    protected $guarded = [];
 
     /**
      * The attributes that should be cast.
@@ -28,7 +22,6 @@ class Faq extends Model
      * @var array
      */
     protected $casts = [
-        'is_active' => Active::class,
         'position' => FaqPosition::class
     ];
 }

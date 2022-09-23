@@ -55,9 +55,9 @@
                         </div>
                         <div class="card m-2 shadow-sm">
                             <div class="card-body">
-                                <p><strong>Ativo: </strong></p>
+                                <p><strong>Status: </strong></p>
                                 <p class="card-text">
-                                    {{ $item->is_active->name() }}
+                                    {{ $item->status->name() }}
                                 </p>
                             </div>
                         </div>
@@ -73,7 +73,7 @@
                         </div>
                         <div class="card m-2 shadow-sm">
                             <div class="card-body">
-                                <p><strong>Dt. Edição: </strong></p>
+                                <p><strong>Dt. Atualização</strong></p>
                                 <p class="card-text">
                                     {{ $item->updated_at->format('d/m/Y') }}
                                 </p>

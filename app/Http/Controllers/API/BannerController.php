@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Enums\Common\Active;
-use App\Http\Controllers\Controller;
+use App\Enums\Common\Status;
 use App\Models\Banner;
 use Illuminate\Http\Request;
 
@@ -13,7 +12,7 @@ class BannerController extends BaseController
     {
 
         $query =  Banner::query()
-            ->where('banners.is_active', Active::YES)
+            ->where('banners.status', Status::ACTIVE)
             ->when($request->has('position'), function ($query) use ($request) {
                 $query->where('banners.position', $request->position);
             })

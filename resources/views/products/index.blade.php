@@ -57,7 +57,7 @@
                 <th scope="col">Nome</th>
                 <th scope="col">Categoria</th>
                 <th scope="col">NCM</th>
-                <th scope="col">Ativo</th>
+                <th scope="col">Status</th>
                 <th scope="col"
                   class="text-right">Ação</th>
               </thead>
@@ -82,7 +82,7 @@
                     <td>{{ $item->name }}</td>
                     <td>{{ $item->section->name }}</td>
                     <td>{{ $item->ncm->description }}</td>
-                    <td>{{ $item->is_active->name() }}</td>
+                    <td>{{ $item->status->name() }}</td>
                     <td class="text-right">
                       <div class="dropdown">
                         <a class="btn btn-sm btn-icon-only text-light"

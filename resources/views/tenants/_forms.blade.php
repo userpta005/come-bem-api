@@ -48,7 +48,7 @@
           {!! Form::text('cellphone', 'Celular')->attrs(['class' => 'phone'])->required(false) !!}
         </div>
         <div class="col-md-3">
-          {!! Form::text('contact', 'Contato')->required(false) !!}
+          {!! Form::text('contact', 'Contato')->attrs(['class' => 'phone'])->required(false) !!}
         </div>
         <div class="col-md-3">
           {!! Form::text('contact_phone', 'Tel. do contato')->attrs(['class' => 'phone'])->required(false) !!}
@@ -69,7 +69,7 @@
           {!! Form::date('due_date', 'Dt. Vigência Assinatura')->value(isset($item) ? $item->due_date->format('Y-m-d') : null)->required() !!}
         </div>
         <div class="col-md-2">
-          {!! Form::select('due_day', 'Dia vencimento')->options(\App\Enums\TenantDueDays::all()->prepend('Selecione...', ''))->value(isset($item) ? $item->due_day->value : '')->attrs(['class' => 'select2'])->required() !!}
+          {!! Form::select('due_day', 'Dia vencimento')->options(\App\Enums\TenantDueDays::all()->prepend('Selecione...', ''))->value($item->due_day->value ?? '')->attrs(['class' => 'select2'])->required() !!}
         </div>
         <div class="col-md-2">
           {!! Form::text('value', 'Valor')->attrs(['class' => 'money'])->value(isset($item) ? floatToMoney($item->value) : null)->required() !!}

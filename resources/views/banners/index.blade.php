@@ -29,6 +29,7 @@
                             <th scope="col">Tipo</th>
                             <th scope="col">Posicão</th>
                             <th scope="col">Sequência</th>
+                            <th scope="col">Status</th>
                             <th scope="col" class="text-right">Ação</th>
                         </thead>
                         <tbody>
@@ -38,6 +39,7 @@
                                 <td>{{ $item->type->name() }}</td>
                                 <td>{{ $item->position->name() }}</td>
                                 <td>{{ $item->sequence }}</td>
+                                <td>{{ $item->status->name() }}</td>
                                 <td class="text-right">
                                     <div class="dropdown">
                                         <a class="btn btn-sm btn-icon-only text-light" href="#" role="button"

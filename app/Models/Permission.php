@@ -51,6 +51,15 @@ class Permission extends \Spatie\Permission\Models\Permission
                                     array('name' => 'stores_delete', 'description' => 'Deletar'),
                                 ]
                             ],
+                            [
+                                'title' => 'Clientes',
+                                'items' => [
+                                    array('name' => 'clients_view', 'description' => 'Visualizar'),
+                                    array('name' => 'clients_create', 'description' => 'Criar'),
+                                    array('name' => 'clients_edit', 'description' => 'Editar'),
+                                    array('name' => 'clients_delete', 'description' => 'Deletar'),
+                                ]
+                            ],
                         ]
                     ],
                     [
@@ -92,12 +101,6 @@ class Permission extends \Spatie\Permission\Models\Permission
                                     array('name' => 'measurement-units_delete', 'description' => 'Deletar'),
                                 ]
                             ],
-                            [
-                                'title' => 'Ncms',
-                                'items' => [
-                                    array('name' => 'ncms_view', 'description' => 'Visualizar'),
-                                ]
-                            ],
                         ]
                     ],
                     [
@@ -113,6 +116,12 @@ class Permission extends \Spatie\Permission\Models\Permission
                                 'title' => 'Estados',
                                 'items' => [
                                     array('name' => 'states_view', 'description' => 'Visualizar'),
+                                ]
+                            ],
+                            [
+                                'title' => 'Ncms',
+                                'items' => [
+                                    array('name' => 'ncms_view', 'description' => 'Visualizar'),
                                 ]
                             ],
                         ]

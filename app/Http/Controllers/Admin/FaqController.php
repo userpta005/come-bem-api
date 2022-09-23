@@ -89,7 +89,7 @@ class FaqController extends Controller
             'question' => ['required', 'max:40'],
             'answer' => ['required'],
             'url' => ['nullable', 'url'],
-            'is_active' => ['required'],
+            'status' => ['required'],
             'position' => ['required']
         ];
 

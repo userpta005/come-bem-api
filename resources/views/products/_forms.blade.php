@@ -14,7 +14,7 @@
         {!! Form::select('section_id', 'Seção', $sections->prepend('Selecione...', ''))->attrs(['class' => 'select2'])->required() !!}
       </div>
       <div class="col-md-2">
-        {!! Form::select('is_active', 'Ativo', activeOptions())->attrs(['class' => 'select2'])->required() !!}
+        {!! Form::select('status', 'Status', \App\Enums\Common\Status::all())->attrs(['class' => 'select2'])->required() !!}
       </div>
       <div class="col-md-3">
         {!! Form::select(
@@ -24,7 +24,9 @@
         )->attrs(['class' => 'select2'])->required() !!}
       </div>
       <div class="col-md-9">
-        <x-select-ncm :value="!empty($item->ncm_id) ? [$item->ncm_id => $item->ncm->description] : []" />
+        <x-select-ajax name="ncm_id" label="NCM" route="/api/v1/ncms" prop="description"
+          :value="!empty($item->ncm_id) ? [$item->ncm_id => $item->ncm->description] : []"
+          :required="true" />
       </div>
     </div>
   </div>

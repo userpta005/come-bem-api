@@ -2,14 +2,12 @@
 
 namespace App\Models;
 
-use App\Enums\Common\Active;
 use App\Enums\NutritionalClassification;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Product extends Model
+class Product extends CommonModel
 {
     use HasFactory;
 
@@ -18,11 +16,7 @@ class Product extends Model
      *
      * @var array
      */
-    protected $guarded = [
-        'id',
-        'created_at',
-        'updated_at'
-    ];
+    protected $guarded = [];
 
     /**
      * The attributes that should be cast.
@@ -31,11 +25,10 @@ class Product extends Model
      */
     protected $casts = [
         'nutritional_classification' => NutritionalClassification::class,
-        'is_active' => Active::class,
     ];
 
     /**
-     * Get the banners image.
+     * Get the product image url.
      *
      * @return \Illuminate\Database\Eloquent\Casts\Attribute
      */
@@ -47,7 +40,7 @@ class Product extends Model
     }
 
     /**
-     * Get the store that owns the ncm
+     * Get the store that owns the Product
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -67,7 +60,7 @@ class Product extends Model
     }
 
     /**
-     * Get the store that owns the store
+     * Get the store that owns the Product
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

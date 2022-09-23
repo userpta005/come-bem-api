@@ -25,7 +25,7 @@
                         <thead class=" text-primary">
                             <th scope="col">Nome</th>
                             <th scope="col">Tipo</th>
-                            <th scope="col">Ativo</th>
+                            <th scope="col">Status</th>
                             <th scope="col">Dt. Criação</th>
                             <th scope="col" class="text-right">Ação</th>
                         </thead>

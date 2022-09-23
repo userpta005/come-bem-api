@@ -5,10 +5,9 @@ namespace App\Models;
 use App\Enums\SettingsStatus;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Settings extends Model
+class Settings extends CommonModel
 {
     use HasFactory;
 
@@ -17,11 +16,7 @@ class Settings extends Model
      *
      * @var array
      */
-    protected $guarded = [
-        'id',
-        'created_at',
-        'updated_at'
-    ];
+    protected $guarded = [];
 
     /**
      * The attributes that should be cast.
@@ -33,7 +28,7 @@ class Settings extends Model
     ];
 
     /**
-     * Get the banners logo.
+     * Get the setting logo url.
      *
      * @return \Illuminate\Database\Eloquent\Casts\Attribute
      */

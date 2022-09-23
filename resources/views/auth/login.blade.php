@@ -99,7 +99,6 @@
             <div class="container">
               <div class="row">
                 <div class="col-md-9 col-lg-8 mx-auto">
-                  @include('alerts.error')
                   <center>
                     <img src="{{ asset('images/logo.png') }}"
                       alt="Logo"
@@ -148,6 +147,7 @@
                         @include('alerts.feedback', ['field' => 'password'])
                       </div>
                     </div>
+                    @include('alerts.error')
                     <button class="btn btn-lg btn-block btn-login text-white text-uppercase font-weight-bold mb-2"
                       type="submit">Entrar</button>
                     <div class="text-center">

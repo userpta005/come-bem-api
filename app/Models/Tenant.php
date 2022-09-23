@@ -5,27 +5,19 @@ namespace App\Models;
 use App\Enums\TenantDueDays;
 use App\Enums\TenantSignature;
 use App\Enums\TenantStatus;
-use App\Traits\DefaultAccessors;
-use App\Traits\ScopePerson;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Tenant extends Model
+class Tenant extends PersonModel
 {
-    use HasFactory, ScopePerson, DefaultAccessors;
-
+    use HasFactory;
+    
     /**
      * The attributes that aren't mass assignable.
      *
      * @var array
      */
-    protected $guarded = [
-        'id',
-        'created_at',
-        'updated_at'
-    ];
+    protected $guarded = [];
 
     /**
      * The attributes that should be cast.
@@ -47,16 +39,6 @@ class Tenant extends Model
         'dt_accession',
         'due_date'
     ];
-
-    /**
-     * Get the people that owns the Tenant
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function people(): BelongsTo
-    {
-        return $this->belongsTo(Person::class, 'person_id');
-    }
 
     /**
      * Get all of the stores for the Tenant

@@ -83,19 +83,6 @@
             },
         };
 
-    $(".cpf_cnpj").mask(cpfMascara, cpfOptions);
-    $(".cpf").mask("000.000.000-00", { reverse: true });
-    $(".cnpj").mask("00.000.000/0000-00", { reverse: true });
-    $(".name").prop('maxlength', '100');
-    $(".full_name").prop('maxlength', '100');
-    $(".state_registration").prop('maxlength', '25');
-    $(".city_registration").prop('maxlength', '25');
-    $(".email").prop('maxlength', '100');
-    $(".address").prop('maxlength', '50');
-    $(".number").prop('maxlength', '10');
-    $(".district").prop('maxlength', '50');
-    $(".cep").mask("00000-000");
-
     var SPMaskBehavior = function (val) {
         return val.replace(/\D/g, "").length === 11
             ? "(00) 00000-0000"
@@ -106,7 +93,20 @@
                 field.mask(SPMaskBehavior.apply({}, arguments), options);
             },
         };
+
+    $(".cpf_cnpj").mask(cpfMascara, cpfOptions);
+    $(".cpf").mask("000.000.000-00", { reverse: true });
+    $(".cnpj").mask("00.000.000/0000-00", { reverse: true });
+    $(".name").prop('maxlength', '100');
+    $(".full_name").prop('maxlength', '100');
+    $(".state_registration").prop('maxlength', '25');
+    $(".city_registration").prop('maxlength', '25');
+    $(".email").prop('maxlength', '100');
     $(".phone").mask(SPMaskBehavior, spOptions);
+    $(".cep").mask("00000-000");
+    $(".address").prop('maxlength', '50');
+    $(".district").prop('maxlength', '50');
+    $(".number").prop('maxlength', '4');
 
 
     /* end - maxlength dos campos referentes a pessoa*/
