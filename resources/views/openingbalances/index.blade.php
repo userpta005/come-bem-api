@@ -10,7 +10,7 @@
               <h4 class="card-title">Saldo Inicial</h4>
             </div>
             @can('openingbalances_create')
-              <div class="ml-auto mr-3">
+              <div class="col-md-4 text-right">
                 <a href="{{ route('openingbalances.create') }}"
                   class="btn btn-sm btn-primary">
                   Adicionar Novo
@@ -79,7 +79,7 @@
               <tbody>
                 @forelse ($data as $item)
                   <tr style="font-size: 12px;">
-                    <td>{{ $item->product->name }}</td>
+                    <td>{{ $item->info }}</td>
                     <td>{{ $item->product->um->name }}</td>
                     <td class="">{{ floatToMoney($item->quantity) }}</td>
                     <td>{{ brDate($item->date) }}</td>

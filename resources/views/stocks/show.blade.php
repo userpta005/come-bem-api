@@ -10,7 +10,7 @@
               <div class="col-md-8">
                 <h4 class="card-title">Saldo Estoque</h4>
               </div>
-              <div class="ml-auto mr-3">
+              <div class="col-md-4 text-right">
                 <a href="{{ route('stocks.index') }}"
                   class="btn btn-sm btn-primary">Voltar</a>
               </div>
@@ -32,7 +32,7 @@
                 <div class="card-body">
                   <p><strong>Produto: </strong></p>
                   <p class="card-text">
-                    {{ $item->product->name }}
+                    {{ $item->info }}
                   </p>
                 </div>
               </div>

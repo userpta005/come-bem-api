@@ -1,4 +1,4 @@
-@extends('layouts.app', ['page' => 'Requisição do Estoque', 'pageSlug' => 'stocks'])
+@extends('layouts.app', ['page' => 'Requisição do Estoque', 'pageSlug' => 'requisitions'])
 
 @section('content')
   <div class="container-fluid p-0">
@@ -48,7 +48,7 @@
                 <div class="card-body">
                   <p><strong>Tipo Movimentação: </strong></p>
                   <p class="card-text">
-                    {{ $item->types($item->type) }}
+                    {{ $item->type->name() }}
                   </p>
                 </div>
               </div>

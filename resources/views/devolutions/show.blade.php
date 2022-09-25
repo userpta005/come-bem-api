@@ -48,7 +48,7 @@
                 <div class="card-body">
                   <p><strong>Tipo Movimentação: </strong></p>
                   <p class="card-text">
-                    {{ $item->types($item->type) }}
+                    {{ $item->type->name() }}
                   </p>
                 </div>
               </div>

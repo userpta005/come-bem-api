@@ -10,7 +10,7 @@
               <h4 class="card-title">Devolução do Estoque</h4>
             </div>
             @can('devolutions_create')
-              <div class="ml-auto mr-3">
+              <div class="col-md-4 text-right">
                 <a href="{{ route('devolutions.create') }}"
                   class="btn btn-sm btn-primary">Adicionar Novo</a>
               </div>

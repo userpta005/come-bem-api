@@ -22,7 +22,7 @@
                 <div class="card-body">
                   <p><strong>Produto: </strong></p>
                   <p class="card-text">
-                    {{ $item->product->name }}
+                    {{ $item->info }}
                   </p>
                 </div>
               </div>

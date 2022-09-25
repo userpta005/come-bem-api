@@ -10,7 +10,7 @@
               <h4 class="card-title">Requisição do Estoque</h4>
             </div>
             @can('requisitions_create')
-              <div class="ml-auto mr-3">
+              <div class="col-md-4 text-right">
                 <a href="{{ route('requisitions.create') }}"
                   class="btn btn-sm btn-primary">Adicionar Novo</a>
               </div>

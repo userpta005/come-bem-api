@@ -2,44 +2,46 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Enums\StockMovementType;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class StockMovement extends Model
+class StockMovement extends CommonModel
 {
-    const REQUISITION = 1;
-    const DEVOLUTION = 2;
-    const SELL = 3;
-    const TRANSFER = 4;
+    use HasFactory;
 
-    protected $fillable = [
-        'code',
-        'type',
-        'user_id',
-        'stock_id',
-        'quantity',
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = [];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'type' => StockMovementType::class
     ];
 
-    public static function types($option = null)
-    {
-        $options = [
-            self::REQUISITION => 'Requisição',
-            self::DEVOLUTION => 'Devolução',
-            self::TRANSFER => 'Transferência',
-            self::SELL => 'Venda',
-        ];
-
-        if (!$option)
-            return $options;
-
-        return $options[$option];
-    }
-
-    public function user()
+    /**
+     * Get the user that owns the StockMovement
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function stock()
+    /**
+     * Get the stock that owns the StockMovement
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function stock(): BelongsTo
     {
         return $this->belongsTo(Stock::class);
     }

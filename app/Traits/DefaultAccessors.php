@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 
 trait DefaultAccessors
 {
+    /**
+     * Get the people info.
+     *
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
     public function info(): Attribute
     {
         return new Attribute(
@@ -14,6 +19,11 @@ trait DefaultAccessors
         );
     }
 
+    /**
+     * Get the people nif.
+     *
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
     public function nif(): Attribute
     {
         return new Attribute(
@@ -21,6 +31,11 @@ trait DefaultAccessors
         );
     }
 
+    /**
+     * Get the people phone.
+     *
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
     public function phone(): Attribute
     {
         return new Attribute(
@@ -28,6 +43,11 @@ trait DefaultAccessors
         );
     }
 
+    /**
+     * Get the people zipCode.
+     *
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
     public function zipCode(): Attribute
     {
         return new Attribute(

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Enums\Common\Status;
+use App\Enums\StockMovementType;
 use App\Enums\StoreStatus;
 use App\Models\{
     Store,
@@ -16,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 
 class RequisitionController extends Controller
 {
@@ -42,7 +44,7 @@ class RequisitionController extends Controller
                 'stock.product.um',
                 'stock.store',
             ])
-            ->where('type', StockMovement::REQUISITION)
+            ->where('type', StockMovementType::REQUISITION)
             ->whereHas('stock', function ($query) use ($request) {
                 $query->where('store_id', session('store')['id'])
                     ->when(!empty($request->product_id), function ($query) use ($request) {
@@ -144,7 +146,7 @@ class RequisitionController extends Controller
             'stock_id.*' => ['required', Rule::exists('stocks', 'id')],
             'quantity.*' => ['required'],
             'store_id' => ['required', Rule::exists('stores', 'id')],
-            'type' => ['required']
+            'type' => ['required', new Enum(StockMovementType::class)]
         ];
 
         $messages = [];
