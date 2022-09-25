@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('question');
             $table->text('answer');
             $table->string('url')->nullable();
-            $table->tinyInteger('status')->default(1);
+            $table->tinyInteger('status');
             $table->tinyInteger('position');
             $table->timestamps();
         });

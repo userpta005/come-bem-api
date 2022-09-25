@@ -17,7 +17,7 @@ class CreateUnitMeasureTable extends Migration
             $table->id();
             $table->string('initials');
             $table->string('name');
-            $table->boolean('is_enabled');
+            $table->tinyInteger('status');
             $table->timestamps();
         });
     }

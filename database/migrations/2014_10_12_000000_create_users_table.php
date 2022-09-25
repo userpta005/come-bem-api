@@ -20,7 +20,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->foreignId('person_id')->constrained();
-            $table->tinyInteger('status')->default(1);
+            $table->tinyInteger('status');
             $table->rememberToken();
             $table->timestamps();
         });

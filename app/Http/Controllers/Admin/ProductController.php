@@ -36,7 +36,7 @@ class ProductController extends Controller
     public function create()
     {
         $sections = Section::where('status', Status::ACTIVE)->get();
-        $ums = MeasurementUnit::where('is_enabled', true)->get();
+        $ums = MeasurementUnit::where('status', Status::ACTIVE)->get();
 
         return view('products.create', compact('sections', 'ums'));
     }
@@ -74,7 +74,7 @@ class ProductController extends Controller
     {
         $item = Product::findOrFail($id);
         $sections = Section::where('status', Status::ACTIVE)->get();
-        $ums = MeasurementUnit::where('is_enabled', true)->get();
+        $ums = MeasurementUnit::where('status', Status::ACTIVE)->get();
 
         return view('products.edit', compact('item', 'sections', 'ums'));
     }

@@ -7,6 +7,7 @@ use App\Models\MeasurementUnit;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules\Enum;
 
 class MeasurementUnitController extends Controller
 {
@@ -90,9 +91,9 @@ class MeasurementUnitController extends Controller
     private function rules(Request $request, $primaryKey = null, bool $changeMessages = false)
     {
         $rules = [
-            'initials'=> ['required','max:4', Rule::unique('measurement_units')->ignore($primaryKey)],
-            'name'=> ['required','max:20'],
-            'is_enabled'=> ['required'],
+            'name' => ['required', 'max:20'],
+            'initials' => ['required', 'max:6', Rule::unique('measurement_units')->ignore($primaryKey)],
+            'status' => ['required', new Enum(\App\Enums\Common\Status::class)],
         ];
 
         $messages = [];

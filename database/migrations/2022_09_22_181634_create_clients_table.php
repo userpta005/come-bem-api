@@ -16,7 +16,7 @@ class CreateClientsTable extends Migration
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
             $table->foreignId('person_id')->constrained();
-            $table->tinyInteger('status')->default(1);
+            $table->tinyInteger('status');
             $table->timestamps();
         });
     }

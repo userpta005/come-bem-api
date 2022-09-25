@@ -33,7 +33,7 @@ class NcmTableSeeder extends Seeder
                     [
                         'name' => $csvLine[7],
                         'initials' => $csvLine[6],
-                        'is_enabled' => false
+                        'status' => \App\Enums\Common\Status::INACTIVE
                     ]
                 );
 

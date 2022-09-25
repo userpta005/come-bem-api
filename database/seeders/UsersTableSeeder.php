@@ -1,4 +1,5 @@
 <?php
+
 namespace Database\Seeders;
 
 use App\Models\Person;
@@ -31,7 +32,8 @@ class UsersTableSeeder extends Seeder
             'name' => 'Dix BPO',
             'person_id' => $person->id,
             'email' => 'dix@dixbpo.com',
-            'password' => bcrypt('1234567o')
+            'password' => bcrypt('1234567o'),
+            'status' => \App\Enums\Common\Status::ACTIVE
         ]);
 
         $user->assignRole('administrator');

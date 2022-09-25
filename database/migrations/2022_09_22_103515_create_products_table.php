@@ -21,7 +21,7 @@ return new class extends Migration
             $table->foreignId('ncm_id')->constrained();
             $table->foreignId('um_id')->constrained('measurement_units');
             $table->tinyInteger('nutritional_classification')->default(1);
-            $table->tinyInteger('status')->default(1);
+            $table->tinyInteger('status');
             $table->boolean('has_lot')->default(false);
             $table->timestamps();
         });

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('person_id')->constrained();
             $table->string('observation')->nullable();
-            $table->tinyInteger('status')->default(1);
+            $table->tinyInteger('status');
             $table->timestamps();
         });
     }

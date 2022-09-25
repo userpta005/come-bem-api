@@ -2,33 +2,23 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class MeasurementUnit extends Model
+class MeasurementUnit extends CommonModel
 {
-    /**
-     * The table name
-     *
-     * @var string
-     */
-    protected $table = 'measurement_units';
+    use HasFactory;
 
     /**
-     * The attributes that are mass assignable.
+     * The attributes that aren't mass assignable.
      *
      * @var array
      */
-    protected $fillable = [
-        'initials','name','is_enabled'
-    ];
-
+    protected $guarded = [];
 
     /**
-     * Scope a query to include people information.
+     * The attributes that should be cast.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @var array
      */
-
+    protected $casts = [];
 }

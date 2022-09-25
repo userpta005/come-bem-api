@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
 use App\Models\MeasurementUnit;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 
 class MeasurementUnitController extends BaseController
 {
@@ -13,7 +13,7 @@ class MeasurementUnitController extends BaseController
     {
         $this->validate(
             $request,
-            $this->rules()
+            $this->rules($request)
         );
 
         $item = MeasurementUnit::create($request->all());
@@ -21,14 +21,16 @@ class MeasurementUnitController extends BaseController
         return response($item->toJson(), 200);
     }
 
-    private function rules()
+    private function rules(Request $request, $primaryKey = null, bool $changeMessages = false)
     {
         $rules = [
-            'initials' => ['required', 'max:4', 'unique:measurement_units'],
             'name' => ['required', 'max:20'],
-            'is_enabled' => ['required'],
+            'initials' => ['required', 'max:6', Rule::unique('measurement_units')->ignore($primaryKey)],
+            'status' => ['required', new Enum(\App\Enums\Common\Status::class)],
         ];
 
-        return $rules;
+        $messages = [];
+
+        return !$changeMessages ? $rules : $messages;
     }
 }
