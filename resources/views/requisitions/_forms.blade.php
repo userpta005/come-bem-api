@@ -15,7 +15,7 @@
           {!! Form::text('created', 'Dt. Criação:')->required()->value(today()->format('d/m/Y'))->readonly() !!}
         </div>
         <div class="col-md-4">
-          {!! Form::select('type', 'Tipo Movimentação', [1 => 'Requisição'])->attrs(['class' => 'select2 '])->readonly()->required() !!}
+          {!! Form::select('type', 'Tipo Movimentação', \App\Enums\StockMovementType::only([1]))->attrs(['class' => 'select2 '])->readonly()->required() !!}
         </div>
         <div class="col-md-8">
           {!! Form::select('store_id', 'Armazém')->options($stores, 'info')->attrs(['class' => 'select2 '])->readonly()->required() !!}

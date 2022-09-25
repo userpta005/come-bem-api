@@ -2,11 +2,9 @@
 
 namespace App\Traits;
 
-use Illuminate\Support\Collection;
-
 trait EnumMethods
 {
-    public static function all(): Collection
+    public static function all(): \Illuminate\Support\Collection
     {
         $enums = collect();
         foreach (self::cases() as $enum) {
@@ -16,7 +14,7 @@ trait EnumMethods
         return $enums;
     }
 
-    public static function only(array $types): Collection
+    public static function only(array $types): \Illuminate\Support\Collection
     {
         $enums = collect();
         foreach (self::cases() as $enum) {
