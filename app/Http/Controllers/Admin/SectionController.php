@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\Common\Status;
+use App\Enums\SectionType;
 use App\Http\Controllers\Controller;
 use App\Models\Section;
 use Illuminate\Http\Request;
 use Kalnoy\Nestedset\Collection;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 
 class SectionController extends Controller
 {
-
-
     public function __construct()
     {
         $this->middleware('permission:sections_create', ['only' => ['create', 'store']]);
@@ -19,9 +21,10 @@ class SectionController extends Controller
         $this->middleware('permission:sections_view', ['only' => ['show', 'index']]);
         $this->middleware('permission:sections_delete', ['only' => ['destroy']]);
     }
+
     public function index()
     {
-        $data =  Section::withDepth()->withCount('descendants')->get()->toFlatTree();
+        $data = Section::withDepth()->withCount('descendants')->get()->toFlatTree();
 
         return view('sections.index', compact('data'));
     }
@@ -32,14 +35,14 @@ class SectionController extends Controller
 
         $sections = $this->getPlanOptions();
 
-        $types = Section::types();
+        $types = SectionType::all();
 
         $section = Section::withDepth()->find($data);
 
         if (!$section) {
-            $types = array_splice($types, 0, 1);
+            $types = SectionType::only(['S']);
         } else if ($section->depth == 1) {
-            $types = array_splice($types, 1, 1);
+            $types = SectionType::only(['A']);
         }
 
         return view('sections.create', compact(
@@ -53,7 +56,7 @@ class SectionController extends Controller
     {
         Validator::make(
             $request->all(),
-            $this->rules($request)
+            $this->rules($request, $request->parent_id ?? null)
         )->validate();
 
         $inputs = $request->all();
@@ -75,18 +78,18 @@ class SectionController extends Controller
     {
         $item = Section::findOrFail($id);
 
-        $sections = $this->getPlanOptions();
-
         $data = $item->parent_id;
 
-        $types = Section::types();
+        $sections = $this->getPlanOptions();
+
+        $types = SectionType::all();
 
         $section = Section::withDepth()->find($data);
 
         if (!$section) {
-            $types = array_splice($types, 0, 1);
+            $types = SectionType::only(['S']);
         } else if ($section->depth == 1) {
-            $types = array_splice($types, 1, 1);
+            $types = SectionType::only(['A']);
         }
 
         return view('sections.edit', compact(
@@ -130,11 +133,12 @@ class SectionController extends Controller
     private function rules(Request $request, $primaryKey = null, bool $changeMessages = false)
     {
         $rules = [
-            'name' => ['required', 'max:35'],
-            'descriptive' => ['nullable', 'max:120'],
-            'type' => ['required'],
-            'is_enabled' => ['required'],
-            'order' => ['required']
+            'name' => ['required', 'string', 'max:40'],
+            'type' => ['required', new Enum(SectionType::class)],
+            'status' => ['required', new Enum(Status::class)],
+            'description' => ['nullable', 'max:120'],
+            'order' => ['required'],
+            'parent_id' => ['nullable']
         ];
 
         $messages = [];
@@ -142,11 +146,6 @@ class SectionController extends Controller
         return !$changeMessages ? $rules : $messages;
     }
 
-    /**
-     * @param Collection $items
-     *
-     * @return static
-     */
     protected function makeOptions(Collection $items)
     {
         $options = ['' => 'Não Contém'];
@@ -155,7 +154,6 @@ class SectionController extends Controller
         }
         return $options;
     }
-
 
     protected function getPlanOptions($except = null)
     {
