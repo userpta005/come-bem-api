@@ -2,7 +2,6 @@
 
 namespace App\Traits;
 
-use App\Enums\Common\Status;
 use Error;
 use ReflectionEnum;
 
@@ -36,13 +35,13 @@ trait EnumMethods
         return self::tryFrom($all->search($label));
     }
 
-    public function __call($name, $arguments)
+    public function __call(string $name, mixed $arguments): bool
     {
         strtolower(substr($name, 0, 2)) === 'is' or throw new Error("method doesnt exist", 1);
         $enum = strtoupper(substr($name, 2));
         $class = $this::class;
 
-        $reflection = new ReflectionEnum(Status::class);
+        $reflection = new ReflectionEnum($class);
         $enum = $reflection->hasConstant($enum) ? $reflection->getConstant($enum) : throw new Error("'$enum' is not a valid backing value for enum '$class'", 1);
 
         return $this->value === $enum->value ?? false;
