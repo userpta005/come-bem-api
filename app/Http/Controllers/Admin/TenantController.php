@@ -33,8 +33,8 @@ class TenantController extends Controller
     public function index(Request $request)
     {
         $data = Tenant::person()
-            ->when(!empty($request->tenant_id), function ($query) use ($request) {
-                $query->where('tenants.id', $request->tenant_id);
+            ->when(!empty($request->search), function ($query) use ($request) {
+                $query->where('tenants.id', $request->search);
             })
             ->when(!empty($request->status), function ($query) use ($request) {
                 $query->where('tenants.status', $request->status);

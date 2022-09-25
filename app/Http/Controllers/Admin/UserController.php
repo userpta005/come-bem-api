@@ -27,8 +27,8 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $data = User::person()
-            ->when(!empty($request->user), function ($query) use ($request) {
-                $query->where('users.id', $request->user);
+            ->when(!empty($request->search), function ($query) use ($request) {
+                $query->where('users.id', $request->search);
             })
             ->when(!empty($request->status), function ($query) use ($request) {
                 $query->where('users.status', $request->status);

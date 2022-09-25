@@ -35,8 +35,8 @@ class StoreController extends Controller
             ->when(session()->exists('tenant'), function ($query) {
                 $query->where('tenant_id', session('tenant')['id']);
             })
-            ->when(!empty($request->store), function ($query) use ($request) {
-                $query->where('stores.id', $request->store);
+            ->when(!empty($request->search), function ($query) use ($request) {
+                $query->where('stores.id', $request->search);
             })
             ->when(!empty($request->status), function ($query) use ($request) {
                 $query->where('stores.status', $request->status);

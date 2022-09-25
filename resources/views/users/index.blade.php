@@ -24,7 +24,7 @@
           {!! Form::open()->fill(request()->all())->get() !!}
           <div class="row">
             <div class="col-md-4">
-              <x-select-ajax name="seach"
+              <x-select-ajax name="search"
                 label="Nome Completo/Razão Social/CPF/CNPJ"
                 route="/api/v1/users"
                 prop="info" />

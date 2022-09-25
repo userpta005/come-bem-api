@@ -25,8 +25,8 @@ class ClientController extends Controller
     public function index(Request $request)
     {
         $data = Client::person()
-            ->when(!empty($request->client), function ($query) use ($request) {
-                $query->where('clients.id', $request->client);
+            ->when(!empty($request->search), function ($query) use ($request) {
+                $query->where('clients.id', $request->search);
             })
             ->when(!empty($request->status), function ($query) use ($request) {
                 $query->where('clients.status', $request->status);

@@ -27,8 +27,8 @@ class LeadController extends Controller
     public function index(Request $request)
     {
         $data = Lead::person()
-            ->when(!empty($request->lead), function ($query) use ($request) {
-                $query->where('leads.id', $request->lead);
+            ->when(!empty($request->search), function ($query) use ($request) {
+                $query->where('leads.id', $request->search);
             })
             ->when(!empty($request->status), function ($query) use ($request) {
                 $query->where('leads.status', $request->status);
