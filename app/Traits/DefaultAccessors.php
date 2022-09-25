@@ -39,7 +39,7 @@ trait DefaultAccessors
     public function phone(): Attribute
     {
         return new Attribute(
-            get: fn ($value) => !empty($value) ? nifMask($value) : (!empty($this->people->phone) ? $this->people->phone : '')
+            get: fn ($value) => !empty($value) ? phoneMask($value) : (!empty($this->people->phone) ? $this->people->phone : '')
         );
     }
 
@@ -51,7 +51,7 @@ trait DefaultAccessors
     public function zipCode(): Attribute
     {
         return new Attribute(
-            get: fn ($value) => !empty($value) ? nifMask($value) : (!empty($this->people->zip_code) ? $this->people->zip_code : '')
+            get: fn ($value) => !empty($value) ? zipCodeMask($value) : (!empty($this->people->zip_code) ? $this->people->zip_code : '')
         );
     }
 }
