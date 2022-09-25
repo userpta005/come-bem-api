@@ -32,7 +32,7 @@
                         </thead>
                         <tbody>
                             @forelse ($data as $item)
-                            <tr>
+                            <tr style="font-size: 12px;">
                                 <td>{{ $item->name }}</td>
                                 <td>{{ $item->value }}</td>
                                 <td>{{ $item->type->name() }}</td>

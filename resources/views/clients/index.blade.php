@@ -83,7 +83,7 @@
               </thead>
               <tbody>
                 @forelse ($data as $item)
-                  <tr>
+                  <tr style="font-size: 12px;">
                     <td>{{ $item->info }}</td>
                     <td>{{ $item->email }}</td>
                     <td>{{ $item->created_at->format('d/m/Y') }}</td>

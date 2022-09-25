@@ -31,7 +31,7 @@
                         </thead>
                         <tbody>
                             @forelse ($data as $item)
-                            <tr data-id="{{ $item->id }}" data-parent="{{ $item->parent_id ?? 0 }}" data-level="{{ $item->depth }}">
+                            <tr style="font-size: 12px;" data-id="{{ $item->id }}" data-parent="{{ $item->parent_id ?? 0 }}" data-level="{{ $item->depth }}">
                                 <td data-column="name">{{ $item->name }}</td>
                                 <td>{{ $item->types($item->type) }}</td>
                                 <td>{{ $item->is_enabled ? 'Sim' : 'Não' }}</td>

@@ -122,7 +122,7 @@
               </thead>
               <tbody>
                 @forelse ($data as $item)
-                  <tr>
+                  <tr style="font-size: 12px;">
                     <td class="text-center">
                       @if ($item->status->value == 1)
                         <span class="dot"

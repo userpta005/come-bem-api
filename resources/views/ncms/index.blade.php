@@ -26,7 +26,7 @@
                             </thead>
                             <tbody>
                                 @forelse ($data as $item)
-                                    <tr>
+                                    <tr style="font-size: 12px;">
                                         <td>{{ $item->code }}</td>
                                         <td>{{ $item->um->initials }}</td>
                                         <td>{{ $item->category->description }}</td>

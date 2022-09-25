@@ -24,7 +24,7 @@
                             </thead>
                             <tbody>
                                 @forelse ($data as $item)
-                                    <tr>
+                                    <tr style="font-size: 12px;">
                                         <td>{{ $item->title }}</td>
                                         <td>{{ $item->letter }}</td>
                                     </tr>

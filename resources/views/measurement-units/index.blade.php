@@ -30,7 +30,7 @@
                         </thead>
                         <tbody>
                             @forelse ($data as $item)
-                            <tr>
+                            <tr style="font-size: 12px;">
                                 <td>{{ $item->name }}</td>
                                 <td>{{ $item->initials }}</td>
                                 <td>{{ $item->is_enabled ? 'Sim' : 'Não' }}</td>

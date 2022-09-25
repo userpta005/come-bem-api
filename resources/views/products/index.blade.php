@@ -63,7 +63,7 @@
               </thead>
               <tbody>
                 @forelse ($data as $item)
-                  <tr>
+                  <tr style="font-size: 12px;">
                     <td class="text-center">
                       @if ($item->nutritional_classification == \App\Enums\NutritionalClassification::UNDER_ANALYSIS)
                         <span class="dot"

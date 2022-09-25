@@ -34,7 +34,7 @@
                         </thead>
                         <tbody>
                             @forelse ($data as $item)
-                            <tr>
+                            <tr style="font-size: 12px;">
                                 <td>{{ $item->name }}</td>
                                 <td>{{ $item->type->name() }}</td>
                                 <td>{{ $item->position->name() }}</td>
