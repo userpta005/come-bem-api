@@ -17,7 +17,7 @@ class CreatePaymentMethodsTable extends Migration
             $table->id();
             $table->string('icon')->nullable();
             $table->string('code')->nullable();
-            $table->string('description');
+            $table->string('name');
             $table->tinyInteger('status');
             $table->decimal('discount')->default(0);
             $table->decimal('discount_promotion')->default(0);

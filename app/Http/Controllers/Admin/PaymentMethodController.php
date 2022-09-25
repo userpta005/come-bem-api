@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\Common\Status;
 use Illuminate\Http\Request;
 use App\Models\PaymentMethod;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules\Enum;
 
 class PaymentMethodController extends Controller
 {
@@ -63,7 +65,7 @@ class PaymentMethodController extends Controller
     public function edit($id)
     {
         $item = PaymentMethod::findOrFail($id);
-        
+
         return view('payment-methods.edit', compact('item'));
     }
 
@@ -115,9 +117,9 @@ class PaymentMethodController extends Controller
     {
         $rules = [
             'icon' => ['image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
-            'description' => ['required', 'max:30', Rule::unique('payment_methods')->ignore($primaryKey)],
-            'is_enabled' => ['required'],
-            'code' => ['required', 'max:30']
+            'code' => ['required', 'max:20'],
+            'name' => ['required', 'max:30', Rule::unique('payment_methods')->ignore($primaryKey)],
+            'status' => ['required', new Enum(Status::class)],
         ];
 
         $messages = [];

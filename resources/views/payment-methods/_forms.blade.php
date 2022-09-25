@@ -2,7 +2,7 @@
 
   <div class="col-md-3">
     <x-img name="icon"
-      :value="$item->icon ?? null" />
+      :value="$item->icon_url ?? null" />
   </div>
 
   <div class="col-md-9">
@@ -11,10 +11,10 @@
         {!! Form::text('code', 'Código')->required()->attrs(['maxlength' => 20]) !!}
       </div>
       <div class="col-md-6">
-        {!! Form::text('description', 'Descrição')->required()->attrs(['maxlength' => 30]) !!}
+        {!! Form::text('name', 'Nome')->required()->attrs(['maxlength' => 30]) !!}
       </div>
       <div class="col-md-3">
-        {!! Form::select('is_enabled', 'Status', [1 => 'Sim', 0 => 'Não'])->value(isset($item) ? $item->is_enabled : 1)->required() !!}
+        {!! Form::select('status', 'Status', \App\Enums\Common\Status::all())->attrs(['class' => 'select2']) ->required() !!}
       </div>
     </div>
   </div>

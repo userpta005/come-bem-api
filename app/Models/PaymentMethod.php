@@ -3,46 +3,35 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class PaymentMethod extends Model
+class PaymentMethod extends CommonModel
 {
-    const BOLETO = 1;
-    const CREDIT_CARD = 2;
-    const SPOT = 6;
-    const PIX = 4;
+    use HasFactory;
 
     /**
-     * The table name
-     *
-     * @var string
-     */
-    protected $table = 'payment_methods';
-
-    /**
-     * The attributes that are mass assignable.
+     * The attributes that aren't mass assignable.
      *
      * @var array
      */
-    protected $fillable = [
-        'icon', 'description', 'is_enabled', 'code'
-    ];
+    protected $guarded = [];
 
-    public function getInfoAttribute()
-    {
-        return $this->description;
-    }
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [];
 
     /**
      * Get the banners icon.
      *
      * @return \Illuminate\Database\Eloquent\Casts\Attribute
      */
-    public function icon(): Attribute
+    public function iconUrl(): Attribute
     {
         return new Attribute(
-            get: fn ($value) => asset('storage/' . $value)
+            get: fn () => asset('storage/' . $this->icon)
         );
     }
 }
