@@ -35,7 +35,8 @@ class Product extends CommonModel
     public function imageUrl(): Attribute
     {
         return new Attribute(
-            get: fn () => asset('storage/' . $this->image)
+            get: fn () => $this->image ? asset('storage/' . $this->image) : null
+
         );
     }
 

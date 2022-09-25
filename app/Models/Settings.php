@@ -35,7 +35,7 @@ class Settings extends CommonModel
     public function logoUrl(): Attribute
     {
         return new Attribute(
-            get: fn () => asset('storage/' . $this->logo)
+            get: fn () => $this->logo ? asset('storage/' . $this->logo) : null
         );
     }
 
