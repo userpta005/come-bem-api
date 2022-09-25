@@ -1,17 +1,17 @@
-@extends('layouts.app', ['page' => 'Leads', 'pageSlug' => 'leads'])
+@extends('layouts.app', ['page' => 'Saldo Inicial', 'pageSlug' => 'openingbalances'])
 
 @section('content')
   <div class="row">
     <div class="col-md-12">
-      <div class="card">
+      <div class="card ">
         <div class="card-header">
           <div class="row">
             <div class="col-md-8">
-              <h4 class="card-title">Leads</h4>
+              <h4 class="card-title">Saldo Inicial</h4>
             </div>
-            @can('leads_create')
-              <div class="col-md-4 text-right">
-                <a href="{{ route('leads.create') }}"
+            @can('openingbalances_create')
+              <div class="ml-auto mr-3">
+                <a href="{{ route('openingbalances.create') }}"
                   class="btn btn-sm btn-primary">
                   Adicionar Novo
                 </a>
@@ -25,21 +25,8 @@
 
           {!! Form::open()->fill(request()->all())->get() !!}
           <div class="row">
-
-            <div class="col-md-4">
-              <x-select-ajax name="seach"
-                label="Nome Completo/Razão Social/CPF/CNPJ"
-                route="/api/v1/leads"
-                prop="info" />
-            </div>
-            <div class="col-md-3">
-              {!! Form::date('date_start', 'Dt. Criac. Inicio') !!}
-            </div>
-            <div class="col-md-3">
-              {!! Form::date('date_end', 'Dt. Criac. Fim') !!}
-            </div>
-            <div class="col-md-2">
-              {!! Form::select('status', 'Status')->options(\App\Enums\LeadStatus::all()->prepend('Selecione...', ''))->attrs(['class' => 'select2']) !!}
+            <div class="col-md-5">
+              {!! Form::select('product_id', 'Produto', $products->prepend('Selecione...', ''))->attrs(['class' => 'select2']) !!}
             </div>
 
             <div class="col-md-12 d-flex justify-content-end align-items-center">
@@ -60,7 +47,7 @@
               <a id="clear-filter"
                 style="font-size: 9px;"
                 class="btn btn-sm btn-danger"
-                href="{{ route('leads.index') }}">
+                href="{{ route('openingbalances.index') }}">
                 <svg xmlns="http://www.w3.org/2000/svg"
                   width="9"
                   height="9"
@@ -78,26 +65,25 @@
           {!! Form::close() !!}
 
           <div class="table-responsive-md">
-            <table class="table table-striped">
+            <table class="table tablesorter table-striped">
               <caption>N. Registros: {{ $data->total() }}</caption>
               <thead class="text-primary">
-                <th scope="col">Nome C./Razão S./CPF/CNPJ</th>
-                <th scope="col">Email</th>
-                <th scope="col">Celular</th>
-                <th scope="col">Dt. Criac.</th>
-                <th scope="col">Dt. Atualiz.</th>
-                <th scope="col">Status</th>
-                <th scope="col">Ação</th>
+                <th scope="col">Produto</th>
+                <th scope="col">Un. Medida</th>
+                <th scope="col">Quantidade</th>
+                <th scope="col">Data</th>
+                <th scope="col">Lote Fornecedor</th>
+                <th scope="col"
+                  class="text-right">Ação</th>
               </thead>
               <tbody>
                 @forelse ($data as $item)
-                  <tr>
-                    <td>{{ $item->info }}</td>
-                    <td>{{ $item->email }}</td>
-                    <td>{{ $item->phone }}</td>
-                    <td>{{ $item->created_at->format('d/m/Y') }}</td>
-                    <td>{{ $item->updated_at->format('d/m/Y') }}</td>
-                    <td>{{ $item->status->name() }}</td>
+                  <tr style="font-size: 12px;">
+                    <td>{{ $item->product->name }}</td>
+                    <td>{{ $item->product->um->name }}</td>
+                    <td class="">{{ floatToMoney($item->quantity) }}</td>
+                    <td>{{ brDate($item->date) }}</td>
+                    <td>{{ $item->provider_lot ?? 'Não Possui' }}</td>
                     <td class="text-right">
                       <div class="dropdown">
                         <a class="btn btn-sm btn-icon-only text-light"
@@ -109,20 +95,20 @@
                           <i class="fas fa-ellipsis-v"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                          <form action="{{ route('leads.destroy', $item->id) }}"
+                          <form action="{{ route('openingbalances.destroy', $item->id) }}"
                             method="post"
                             id="form-{{ $item->id }}">
                             @csrf
                             @method('delete')
-                            @can('leads_view')
+                            @can('openingbalances_view')
                               <a class="dropdown-item"
-                                href="{{ route('leads.show', $item) }}">Visualizar</a>
+                                href="{{ route('openingbalances.show', $item) }}">Visualizar</a>
                             @endcan
-                            @can('leads_edit')
+                            @can('openingbalances_edit')
                               <a class="dropdown-item"
-                                href="{{ route('leads.edit', $item) }}">Editar</a>
+                                href="{{ route('openingbalances.edit', $item) }}">Editar</a>
                             @endcan
-                            @can('leads_delete')
+                            @can('openingbalances_delete')
                               <button type="button"
                                 class="dropdown-item btn-delete">
                                 Excluir
@@ -146,8 +132,9 @@
             </table>
           </div>
         </div>
-        <div class="card-footer py-4">
-          <nav class="d-flex justify-content-end"
+        <div style="overflow: auto"
+          class="my-4 mx-3 row">
+          <nav class="d-flex ml-auto"
             aria-label="...">
             {{ $data->appends(request()->all())->links() }}
           </nav>

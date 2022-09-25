@@ -32,7 +32,7 @@
             id="register"
             style="">
             <ul class="nav pl-4">
-              @canany(['leads_view', 'tenants_view', 'stores_view'])
+              @canany(['leads_view', 'tenants_view', 'stores_view', 'clients_view'])
                 <li>
                   <a data-toggle="collapse"
                     href="#people"
@@ -112,7 +112,7 @@
                         <li>
                           <a href="{{ route('measurement-units.index') }}">
                             <i class="fab fa-algolia"></i>
-                            <p>Unidade de<br /> Medida</p>
+                            <p>Unidades de<br /> Medida</p>
                           </a>
                         </li>
                       @endcan
@@ -185,6 +185,59 @@
           </div>
         </li>
       @endcanany
+      @if (session()->has('store'))
+        @canany(['requisitions_view', 'devolutions_view', 'openingbalances_view', 'stocks_view'])
+          <li>
+            <a data-toggle="collapse"
+              href="#collapseEstoque"
+              aria-expanded="false"
+              class="collapsed">
+              <i class="fas fa-cubes"></i>
+              <span class="nav-link-text">Estoque</span>
+              <b class="caret mt-1"></b>
+            </a>
+
+            <div class="collapse"
+              id="collapseEstoque"
+              style="">
+              <ul class="nav pl-4">
+                @can('requisitions_view')
+                  <li>
+                    <a href="{{ route('requisitions.index') }}">
+                      <i class="fas fa-sign-out-alt"></i>
+                      <p>Requisição/Saída</p>
+                    </a>
+                  </li>
+                @endcan
+                @can('devolutions_view')
+                  <li>
+                    <a href="{{ route('devolutions.index') }}">
+                      <i class="fas fa-sign-in-alt"></i>
+                      <p>Devolução/Entrada</p>
+                    </a>
+                  </li>
+                @endcan
+                @can('openingbalances_view')
+                  <li>
+                    <a href="{{ route('openingbalances.index') }}">
+                      <i class="fas fa-arrow-left"></i>
+                      <p>Saldo Inicial</p>
+                    </a>
+                  </li>
+                @endcan
+                @can('stocks_view')
+                  <li>
+                    <a href="{{ route('stocks.index') }}">
+                      <i class="fas fa-boxes"></i>
+                      <p>Saldo Estoque</p>
+                    </a>
+                  </li>
+                @endcan
+              </ul>
+            </div>
+          </li>
+        @endcanany
+      @endif
       @canany(['users_view', 'roles_view', 'permissions_view'])
         <li>
           <a data-toggle="collapse"

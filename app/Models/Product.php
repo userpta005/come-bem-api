@@ -40,7 +40,7 @@ class Product extends CommonModel
     }
 
     /**
-     * Get the store that owns the Product
+     * Get the ncm that owns the Product
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -67,5 +67,15 @@ class Product extends CommonModel
     public function store(): BelongsTo
     {
         return $this->belongsTo(Store::class);
+    }
+
+    /**
+     * Get the um that owns the Product
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function um(): BelongsTo
+    {
+        return $this->belongsTo(MeasurementUnit::class, 'um_id');
     }
 }

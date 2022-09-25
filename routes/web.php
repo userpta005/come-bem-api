@@ -7,20 +7,24 @@ use App\Http\Controllers\Admin\{
     ChangeStoreSessionController,
     CityController,
     ClientController,
+    DevolutionController,
     FaqController,
     LeadController,
     MeasurementUnitController,
     NcmController,
+    OpeningBalanceController,
     ParameterController,
     PasswordController,
     PaymentMethodController,
     PermissionController,
     ProductController,
     ProfileController,
+    RequisitionController,
     RoleController,
     SectionController,
     SettingsController,
     StateController,
+    StockController,
     StoreController,
     TenantController,
     UserController
@@ -59,6 +63,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('change-first-password', [ChangeFirtsPasswordController::class, 'edit'])->name('change-first-password.edit');
     Route::put('change-first-password', [ChangeFirtsPasswordController::class, 'update'])->name('change-first-password.update');
     Route::get('change-store/{id}', ChangeStoreSessionController::class)->name('change.store');
+    Route::get('stocks', [StockController::class, 'index'])->name('stocks.index');
+    Route::get('stock', [StockController::class, 'show'])->name('stocks.show');
 
     Route::resource('leads', LeadController::class);
     Route::resource('tenants', TenantController::class);
@@ -68,6 +74,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('payment-methods', PaymentMethodController::class);
     Route::resource('measurement-units', MeasurementUnitController::class);
     Route::resource('products', ProductController::class);
+    Route::resource('requisitions', RequisitionController::class)->except(['edit', 'update']);
+    Route::resource('devolutions', DevolutionController::class)->except(['edit', 'update']);
+    Route::resource('openingbalances', OpeningBalanceController::class);
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class)->only(['index', 'show']);

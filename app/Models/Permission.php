@@ -129,6 +129,42 @@ class Permission extends \Spatie\Permission\Models\Permission
                 ]
             ],
             [
+                'title' => 'Estoque',
+                'items' => [
+                    [
+                        'title' => 'Requisições/Saída',
+                        'items' => [
+                            array('name' => 'requisitions_view', 'description' => 'Visualizar'),
+                            array('name' => 'requisitions_create', 'description' => 'Criar'),
+                            array('name' => 'requisitions_delete', 'description' => 'Deletar'),
+                        ]
+                    ],
+                    [
+                        'title' => 'Devolução/Entrada',
+                        'items' => [
+                            array('name' => 'devolutions_view', 'description' => 'Visualizar'),
+                            array('name' => 'devolutions_create', 'description' => 'Criar'),
+                            array('name' => 'devolutions_delete', 'description' => 'Deletar'),
+                        ]
+                    ],
+                    [
+                        'title' => 'Saldo Inicial',
+                        'items' => [
+                            array('name' => 'openingbalances_view', 'description' => 'Visualizar'),
+                            array('name' => 'openingbalances_create', 'description' => 'Criar'),
+                            array('name' => 'openingbalances_edit', 'description' => 'Editar'),
+                            array('name' => 'openingbalances_delete', 'description' => 'Deletar'),
+                        ]
+                    ],
+                    [
+                        'title' => 'Saldo Estoque',
+                        'items' => [
+                            array('name' => 'stocks_view', 'description' => 'Visualizar'),
+                        ]
+                    ]
+                ]
+            ],
+            [
                 'title' => 'Gerencimento',
                 'items' => [
                     [

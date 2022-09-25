@@ -59,6 +59,14 @@
                   </div>
                   <div class="card m-2 shadow-sm">
                     <div class="card-body">
+                      <p><strong>Un.Medida: </strong></p>
+                      <p class="card-text">
+                        {{ $item->um->name }}
+                      </p>
+                    </div>
+                  </div>
+                  <div class="card m-2 shadow-sm">
+                    <div class="card-body">
                       <p><strong>NCM: </strong></p>
                       <p class="card-text">
                         {{ $item->ncm->description }}

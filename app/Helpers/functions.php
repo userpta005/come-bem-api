@@ -4,7 +4,7 @@ use Carbon\Carbon;
 
 if (!function_exists('carbon')) {
     /**
-     * Retornar instância de data.
+     * Retornar instância de \Carbon\Carbon.
      *
      * @param mixed $date
      * @return Carbon\Carbon
@@ -51,7 +51,7 @@ if (!function_exists('brDate')) {
 
 if (!function_exists('floatToMoney')) {
     /**
-     * Transforma float do banco em reais.
+     * Converte float em money.
      *
      * @param string $str
      * @return string
@@ -64,7 +64,7 @@ if (!function_exists('floatToMoney')) {
 
 if (!function_exists('moneyToFloat')) {
     /**
-     * Converte reais para float.
+     * Converte money para float.
      *
      * @param string $str
      * @return string
@@ -98,7 +98,7 @@ if (!function_exists('removeMask')) {
 
 if (!function_exists('insertMask')) {
     /**
-     * Inserir máscara.
+     * Inserir máscara personalizada.
      *
      * @param string $str
      * @param string $mask
@@ -118,7 +118,7 @@ if (!function_exists('insertMask')) {
 
 if (!function_exists('nifMask')) {
     /**
-     * Inserir máscara.
+     * Inserir máscara na identidade.
      *
      * @param string $str
      * @return string
@@ -143,7 +143,7 @@ if (!function_exists('nifMask')) {
 
 if (!function_exists('phoneMask')) {
     /**
-     * Inserir máscara.
+     * Inserir máscara no telefone.
      *
      * @param string $str
      * @return string
@@ -164,7 +164,7 @@ if (!function_exists('phoneMask')) {
 
 if (!function_exists('zipCodeMask')) {
     /**
-     * Inserir máscara.
+     * Inserir máscara no código postal.
      *
      * @param string $str
      * @return string
@@ -181,4 +181,31 @@ if (!function_exists('zipCodeMask')) {
 
         return $mask;
     }
+}
+
+if (!function_exists('settings')) {
+    /**
+     * Obtém a instância de \App\Models\Valuestore.
+     *
+     * @param string $str
+     * @param mixed $default
+     * @return string|\App\Models\Valuestore
+     */
+    function settings($key = null, $default = null)
+    {
+        $app = app(App\Models\Valuestore::class);
+
+        if ($key) {
+            return $app->get($key, $default);
+        }
+
+        return $app;
+    }
+}
+
+
+
+function code($number)
+{
+    return sprintf('%08d', $number);
 }

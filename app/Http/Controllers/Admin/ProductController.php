@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
+use App\Models\MeasurementUnit;
 use App\Models\Section;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -35,13 +36,14 @@ class ProductController extends Controller
     public function create()
     {
         $sections = Section::where('is_enabled', true)->get();
+        $ums = MeasurementUnit::where('is_enabled', true)->get();
 
-        return view('products.create', compact('sections'));
+        return view('products.create', compact('sections', 'ums'));
     }
 
     public function store(Request $request)
     {
-        $validator = Validator::make(
+        Validator::make(
             $request->all(),
             $this->rules($request)
         )->validate();
@@ -72,8 +74,9 @@ class ProductController extends Controller
     {
         $item = Product::findOrFail($id);
         $sections = Section::where('is_enabled', true)->get();
+        $ums = MeasurementUnit::where('is_enabled', true)->get();
 
-        return view('products.edit', compact('item', 'sections'));
+        return view('products.edit', compact('item', 'sections', 'ums'));
     }
 
     public function update(Request $request, $id)
@@ -127,6 +130,7 @@ class ProductController extends Controller
             'name' => ['required', 'max:40', Rule::unique('products')->ignore($primaryKey)],
             'section_id' => ['required', Rule::exists('sections', 'id')],
             'ncm_id' => ['required', Rule::exists('ncms', 'id')],
+            'um_id' => ['required', Rule::exists('measurement_units', 'id')],
             'nutritional_classification' => ['required', new Enum(NutritionalClassification::class)],
             'status' => ['required', new Enum(Status::class)],
         ];

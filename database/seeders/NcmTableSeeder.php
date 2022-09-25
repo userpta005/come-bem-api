@@ -24,11 +24,12 @@ class NcmTableSeeder extends Seeder
             if ($header) {
                 $header = false;
             } else {
-                $category = CategoryNcm::firstOrCreate(
+                $category = CategoryNcm::updateOrCreate(
                     ['description' => $csvLine[1]]
                 );
+
                 $measurement = MeasurementUnit::updateOrCreate(
-                    ['name' => $csvLine[6]],
+                    ['name' => $csvLine[7]],
                     [
                         'name' => $csvLine[7],
                         'initials' => $csvLine[6],

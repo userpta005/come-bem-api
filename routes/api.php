@@ -13,6 +13,7 @@ use App\Http\Controllers\API\{
     PaymentMethodController,
     SectionController,
     SettingsController,
+    StockController,
     StoreController,
     TenantController,
     UserController
@@ -45,6 +46,7 @@ Route::prefix('v1')->group(function () {
     Route::get('get-person-by-nif', GetPersonByNifController::class);
     Route::apiResource('cities', CityController::class)->only(['index', 'show']);
     Route::get('parameters', [ParameterController::class, 'index']);
+    Route::get('stocks', [StockController::class, 'index']);
 
     Route::get('sections', [SectionController::class, 'index']);
     Route::get('payment-methods', [PaymentMethodController::class, 'index']);

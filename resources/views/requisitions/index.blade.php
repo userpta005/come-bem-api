@@ -1,20 +1,18 @@
-@extends('layouts.app', ['page' => 'Leads', 'pageSlug' => 'leads'])
+@extends('layouts.app', ['page' => 'Requisição do Estoque', 'pageSlug' => 'requisitions'])
 
 @section('content')
   <div class="row">
     <div class="col-md-12">
-      <div class="card">
+      <div class="card ">
         <div class="card-header">
           <div class="row">
             <div class="col-md-8">
-              <h4 class="card-title">Leads</h4>
+              <h4 class="card-title">Requisição do Estoque</h4>
             </div>
-            @can('leads_create')
-              <div class="col-md-4 text-right">
-                <a href="{{ route('leads.create') }}"
-                  class="btn btn-sm btn-primary">
-                  Adicionar Novo
-                </a>
+            @can('requisitions_create')
+              <div class="ml-auto mr-3">
+                <a href="{{ route('requisitions.create') }}"
+                  class="btn btn-sm btn-primary">Adicionar Novo</a>
               </div>
             @endcan
           </div>
@@ -22,24 +20,16 @@
         <div class="card-body">
           @include('alerts.success')
           @include('alerts.error')
-
           {!! Form::open()->fill(request()->all())->get() !!}
           <div class="row">
-
             <div class="col-md-4">
-              <x-select-ajax name="seach"
-                label="Nome Completo/Razão Social/CPF/CNPJ"
-                route="/api/v1/leads"
-                prop="info" />
+              {!! Form::select('product_id', 'Produto')->options($products->prepend('Selecione...', ''), 'name')->attrs(['class' => 'select2']) !!}
             </div>
-            <div class="col-md-3">
-              {!! Form::date('date_start', 'Dt. Criac. Inicio') !!}
+            <div class="col-md-4">
+              {!! Form::date('start_date', 'Dt. Inicio') !!}
             </div>
-            <div class="col-md-3">
-              {!! Form::date('date_end', 'Dt. Criac. Fim') !!}
-            </div>
-            <div class="col-md-2">
-              {!! Form::select('status', 'Status')->options(\App\Enums\LeadStatus::all()->prepend('Selecione...', ''))->attrs(['class' => 'select2']) !!}
+            <div class="col-md-4">
+              {!! Form::date('end_date', 'Dt. Fim') !!}
             </div>
 
             <div class="col-md-12 d-flex justify-content-end align-items-center">
@@ -60,7 +50,7 @@
               <a id="clear-filter"
                 style="font-size: 9px;"
                 class="btn btn-sm btn-danger"
-                href="{{ route('leads.index') }}">
+                href="{{ route('requisitions.index') }}">
                 <svg xmlns="http://www.w3.org/2000/svg"
                   width="9"
                   height="9"
@@ -73,31 +63,31 @@
                 Limpar
               </a>
             </div>
-
           </div>
           {!! Form::close() !!}
-
           <div class="table-responsive-md">
-            <table class="table table-striped">
+            <table class="table tablesorter table-striped">
               <caption>N. Registros: {{ $data->total() }}</caption>
-              <thead class="text-primary">
-                <th scope="col">Nome C./Razão S./CPF/CNPJ</th>
-                <th scope="col">Email</th>
-                <th scope="col">Celular</th>
-                <th scope="col">Dt. Criac.</th>
-                <th scope="col">Dt. Atualiz.</th>
-                <th scope="col">Status</th>
-                <th scope="col">Ação</th>
+              <thead class=" text-primary">
+                <th scope="col">Código</th>
+                <th scope="col">Usuário</th>
+                <th scope="col">Produto</th>
+                <th scope="col">Quantidade</th>
+                <th scope="col">Un. Medida</th>
+                <th scope="col">Dt. Criação</th>
+                <th scope="col"
+                  class="text-right">Ação</th>
               </thead>
               <tbody>
                 @forelse ($data as $item)
-                  <tr>
-                    <td>{{ $item->info }}</td>
-                    <td>{{ $item->email }}</td>
-                    <td>{{ $item->phone }}</td>
+                  <tr style="font-size: 12px;">
+                    <td>{{ $item->code }}</td>
+                    <td>{{ $item->user->info }}</td>
+                    <td>{{ $item->stock->info }}</td>
+                    <td> {{ floatToMoney($item->quantity) }}</td>
+                    <td>{{ $item->stock->product->um->name }}</td>
                     <td>{{ $item->created_at->format('d/m/Y') }}</td>
-                    <td>{{ $item->updated_at->format('d/m/Y') }}</td>
-                    <td>{{ $item->status->name() }}</td>
+
                     <td class="text-right">
                       <div class="dropdown">
                         <a class="btn btn-sm btn-icon-only text-light"
@@ -109,20 +99,16 @@
                           <i class="fas fa-ellipsis-v"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                          <form action="{{ route('leads.destroy', $item->id) }}"
+                          <form action="{{ route('requisitions.destroy', $item->id) }}"
                             method="post"
                             id="form-{{ $item->id }}">
                             @csrf
                             @method('delete')
-                            @can('leads_view')
+                            @can('requisitions_view')
                               <a class="dropdown-item"
-                                href="{{ route('leads.show', $item) }}">Visualizar</a>
+                                href="{{ route('requisitions.show', $item) }}">Visualizar</a>
                             @endcan
-                            @can('leads_edit')
-                              <a class="dropdown-item"
-                                href="{{ route('leads.edit', $item) }}">Editar</a>
-                            @endcan
-                            @can('leads_delete')
+                            @can('requisitions_delete')
                               <button type="button"
                                 class="dropdown-item btn-delete">
                                 Excluir
@@ -146,8 +132,9 @@
             </table>
           </div>
         </div>
-        <div class="card-footer py-4">
-          <nav class="d-flex justify-content-end"
+        <div style="overflow: auto"
+          class="my-4 mx-3 row">
+          <nav class="d-flex ml-auto"
             aria-label="...">
             {{ $data->appends(request()->all())->links() }}
           </nav>

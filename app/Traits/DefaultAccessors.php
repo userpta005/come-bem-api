@@ -17,21 +17,21 @@ trait DefaultAccessors
     public function nif(): Attribute
     {
         return new Attribute(
-            get: fn ($value) => ($value ?? ($this->people->nif ?? null)) ? nifMask($value ?? $this->people->nif) : ''
+            get: fn ($value) => !empty($value) ? nifMask($value) : (!empty($this->people->nif) ? $this->people->nif : '')
         );
     }
 
     public function phone(): Attribute
     {
         return new Attribute(
-            get: fn ($value) => ($value ?? ($this->people->phone ?? null)) ? phoneMask($value ?? $this->people->phone) : ''
+            get: fn ($value) => !empty($value) ? nifMask($value) : (!empty($this->people->phone) ? $this->people->phone : '')
         );
     }
 
     public function zipCode(): Attribute
     {
         return new Attribute(
-            get: fn ($value) => ($value ?? ($this->people->zip_code ?? null)) ? zipCodeMask($value ?? $this->people->zip_code) : ''
+            get: fn ($value) => !empty($value) ? nifMask($value) : (!empty($this->people->zip_code) ? $this->people->zip_code : '')
         );
     }
 }
