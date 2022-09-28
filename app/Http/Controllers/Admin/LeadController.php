@@ -39,7 +39,12 @@ class LeadController extends Controller
             ->when(!empty($request->date_end), function ($query) use ($request) {
                 $query->whereDate('leads.created_at', '<=', $request->date_end);
             })
-            ->where('leads.store_id', session('store')['id'])
+            ->when(session()->exists('store'), function ($query) {
+                $query->where('leads.store_id', session('store')['id']);
+            })
+            ->when(!session()->exists('store'), function ($query) {
+                $query->whereNull('leads.store_id');
+            })
             ->orderBy('people.name')
             ->paginate(10);
 
@@ -68,7 +73,7 @@ class LeadController extends Controller
                 $inputs
             );
 
-            $inputs['store_id'] = session('store')['id'];
+            $inputs['store_id'] = session()->exists('store') ? session('store')['id'] : null;
             $inputs['person_id'] = $person->id;
 
             Lead::updateOrCreate(

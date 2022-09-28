@@ -22,6 +22,7 @@ class UserController extends Controller
         $this->middleware('permission:users_edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:users_view', ['only' => ['show', 'index']]);
         $this->middleware('permission:users_delete', ['only' => ['destroy']]);
+        $this->middleware('store');
     }
 
     public function index(Request $request)
@@ -38,6 +39,12 @@ class UserController extends Controller
             })
             ->when(!empty($request->date_end), function ($query) use ($request) {
                 $query->whereDate('users.created_at', '<=', $request->date_end);
+            })
+            ->when(session()->exists('store'), function ($query) {
+                $query->where('users.store_id', session('store')['id']);
+            })
+            ->when(!session()->exists('store'), function ($query) {
+                $query->whereNull('users.store_id');
             })
             ->orderBy('users.name')
             ->paginate(10);
@@ -72,6 +79,7 @@ class UserController extends Controller
                 $inputs
             );
 
+            $inputs['store_id'] = session()->exists('store') ? session('store')['id'] : null;
             $inputs['person_id'] = $person->id;
             $inputs['password'] = bcrypt($inputs['password']);
 

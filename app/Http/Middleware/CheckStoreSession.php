@@ -16,7 +16,7 @@ class CheckStoreSession
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!$request->session()->exists('store')) {
+        if (session()->exists('tenant') && !session()->exists('store')) {
             abort(403, 'Você precisa ter acesso a loja para acessar essa funcionalidade');
         }
 

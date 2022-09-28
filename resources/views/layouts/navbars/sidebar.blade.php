@@ -47,16 +47,14 @@
                     id="people"
                     style="">
                     <ul class="nav pl-4">
-                      @if (session()->has('store'))
-                        @can('leads_view')
-                          <li>
-                            <a href="{{ route('leads.index') }}">
-                              <i class="fas fa-user"></i>
-                              <p>Leads</p>
-                            </a>
-                          </li>
-                        @endcan
-                      @endif
+                      @can('leads_view')
+                        <li>
+                          <a href="{{ route('leads.index') }}">
+                            <i class="fas fa-user"></i>
+                            <p>Leads</p>
+                          </a>
+                        </li>
+                      @endcan
                       @can('tenants_view')
                         <li>
                           <a href="{{ route('tenants.index') }}">

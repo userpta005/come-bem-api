@@ -102,17 +102,16 @@ class TenantController extends Controller
                     'name' => $inputs['name'],
                     'email' => $inputs['email'],
                     'password' => bcrypt(preg_replace("/\D+/", "", $inputs['nif'])),
-                    'status' => $inputs['status'] == TenantStatus::ENABLED->value ? Status::ACTIVE : Status::INACTIVE
+                    'status' => TenantStatus::from($inputs['status'])->isEnabled() ? Status::ACTIVE : Status::INACTIVE
                 ]
             );
 
-            $contractor = Role::updateOrCreate(
+            Role::updateOrCreate(
                 ['name' => 'contractor'],
                 [
                     'description' => 'Contratante'
                 ]
             );
-            $contractor->permissions()->sync(Permission::all());
 
             $user->assignRole('contractor');
         });

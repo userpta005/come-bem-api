@@ -39,9 +39,7 @@ class SectionController extends Controller
 
         $section = Section::withDepth()->find($data);
 
-        if (!$section) {
-            $types = SectionType::only(['S']);
-        } else if ($section->depth == 1) {
+        if (!empty($section) && $section->depth == 1) {
             $types = SectionType::only(['A']);
         }
 
@@ -86,9 +84,7 @@ class SectionController extends Controller
 
         $section = Section::withDepth()->find($data);
 
-        if (!$section) {
-            $types = SectionType::only(['S']);
-        } else if ($section->depth == 1) {
+        if ($section->depth == 1) {
             $types = SectionType::only(['A']);
         }
 

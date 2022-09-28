@@ -64,7 +64,22 @@ class DefenderSeeder extends Seeder
             'description' => 'Contratante'
         ]);
 
-        $contractor->permissions()->sync(Permission::all());
+        $contractor->permissions()->sync(Permission::query()->where(
+            [
+                ['name', 'not like', '%tenants_%'],
+                ['name', 'not like', '%sections_%'],
+                ['name', 'not like', '%payment-methods_%'],
+                ['name', 'not like', '%measurement-units_%'],
+                ['name', 'not like', '%cities_%'],
+                ['name', 'not like', '%states_%'],
+                ['name', 'not like', '%ncms_%'],
+                ['name', 'not like', '%roles_%'],
+                ['name', 'not like', '%permissions_%'],
+                ['name', 'not like', '%parameters_%'],
+                ['name', 'not like', '%faqs_%'],
+                ['name', 'not like', '%banners_%'],
+            ]
+        )->get());
     }
 
     private function createRules()
