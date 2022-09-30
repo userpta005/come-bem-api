@@ -236,6 +236,50 @@
           </li>
         @endcanany
       @endif
+      @canany(['financialcategories_view'])
+        <li>
+          <a data-toggle="collapse"
+            href="#collapseFiance"
+            aria-expanded="false"
+            class="collapsed">
+            <i class="fas fa-money-bill"></i>
+            <span class="nav-link-text">Financeiro</span>
+            <b class="caret mt-1"></b>
+          </a>
+          <div class="collapse"
+            id="collapseFiance"
+            style="">
+            <ul class="nav pl-4">
+              @canany(['financialcategories_view'])
+                <li>
+                  <a data-toggle="collapse"
+                    href="#general1"
+                    aria-expanded="false"
+                    class="collapsed">
+                    <i class="fas fa-bars"></i>
+                    <span class="nav-link-text">Gerais</span>
+                    <b class="caret mt-1"></b>
+                  </a>
+                  <div class="collapse"
+                    id="general1"
+                    style="">
+                    <ul class="nav pl-4">
+                      @can('financialcategories_view')
+                        <li>
+                          <a href="{{ route('financialcategories.index') }}">
+                            <i class="fas fa-tags"></i>
+                            <p>Categorias <br /> Financeira</p>
+                          </a>
+                        </li>
+                      @endcan
+                    </ul>
+                  </div>
+                </li>
+              @endcanany
+            </ul>
+          </div>
+        </li>
+      @endcanany
       @canany(['users_view', 'roles_view', 'permissions_view'])
         <li>
           <a data-toggle="collapse"

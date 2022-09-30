@@ -44,5 +44,15 @@ class ParametersTableSeeder extends Seeder
                 'value' => true,
             ]
         );
+
+        Parameter::updateOrCreate(
+            ['name' => 'CATEGF'],
+            [
+                'name' => 'CATEGF',
+                'description' => 'Máscara da categoria financeira',
+                'type' => ParameterType::NUMERIC,
+                'value' => '1234',
+            ]
+        );
     }
 }

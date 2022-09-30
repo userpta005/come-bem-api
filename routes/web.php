@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\{
     ClientController,
     DevolutionController,
     FaqController,
+    FinancialCategoryController,
     LeadController,
     MeasurementUnitController,
     NcmController,
@@ -77,6 +78,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('requisitions', RequisitionController::class)->except(['edit', 'update']);
     Route::resource('devolutions', DevolutionController::class)->except(['edit', 'update']);
     Route::resource('openingbalances', OpeningBalanceController::class);
+    Route::resource('financialcategories', FinancialCategoryController::class);
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class)->only(['index', 'show']);

@@ -165,6 +165,25 @@ class Permission extends \Spatie\Permission\Models\Permission
                 ]
             ],
             [
+                'title' => 'Financeiro',
+                'items' => [
+                    [
+                        'title' => 'Gerais',
+                        'items' => [
+                            [
+                                'title' => 'Categorias Financeira',
+                                'items' => [
+                                    array('name' => 'financialcategories_view', 'description' => 'Visualizar'),
+                                    array('name' => 'financialcategories_create', 'description' => 'Criar'),
+                                    array('name' => 'financialcategories_edit', 'description' => 'Editar'),
+                                    array('name' => 'financialcategories_delete', 'description' => 'Deletar'),
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            [
                 'title' => 'Gerencimento',
                 'items' => [
                     [

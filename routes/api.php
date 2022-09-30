@@ -5,6 +5,7 @@ use App\Http\Controllers\API\{
     CityController,
     ClientController,
     FaqController,
+    FinancialCategoryController,
     GetPersonByNifController,
     LeadController,
     MeasurementUnitController,
@@ -51,6 +52,7 @@ Route::prefix('v1')->group(function () {
     Route::get('sections', [SectionController::class, 'index']);
     Route::get('payment-methods', [PaymentMethodController::class, 'index']);
     Route::apiResource('measurement-units', MeasurementUnitController::class)->only('store');
+    Route::get('financialcategories', [FinancialCategoryController::class, 'index']);
     
     Route::get('settings', SettingsController::class);
     Route::get('faqs', [FaqController::class, 'index']);
