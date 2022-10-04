@@ -1,4 +1,4 @@
-@extends('layouts.app', ['page' => 'Clientes', 'pageSlug' => 'clients'])
+@extends('layouts.app', ['page' => 'Consumidores', 'pageSlug' => 'dependents'])
 
 @section('content')
   <div class="container-fluid p-0">
@@ -8,10 +8,10 @@
           <div class="card-header">
             <div class="row align-items-center">
               <div class="col-md-8">
-                <h4 class="card-title">Clientes</h4>
+                <h4 class="card-title">Consumidores</h4>
               </div>
               <div class="ml-auto mr-3">
-                <a href="{{ route('clients.index') }}"
+                <a href="{{ route('clients.dependents.index', ['client' => $client]) }}"
                   class="btn btn-sm btn-primary">Voltar</a>
               </div>
             </div>
@@ -20,7 +20,7 @@
             <div class="card-deck">
               <div class="card m-2 shadow-sm">
                 <div class="card-body">
-                  <p><strong>CPF/CNPJ: </strong></p>
+                  <p><strong>CPF: </strong></p>
                   <p class="card-text">
                     {{ $item->nif }}
                   </p>
@@ -28,7 +28,7 @@
               </div>
               <div class="card m-2 shadow-sm">
                 <div class="card-body">
-                  <p><strong>Nome Completo/Razão Social: </strong></p>
+                  <p><strong>Nome Completo: </strong></p>
                   <p class="card-text">
                     {{ $item->name }}
                   </p>
@@ -36,7 +36,7 @@
               </div>
               <div class="card m-2 shadow-sm">
                 <div class="card-body">
-                  <p><strong>Nome Social/Nome Fantasia: </strong></p>
+                  <p><strong>Nome Social: </strong></p>
                   <p class="card-text">
                     {{ $item->full_name }}
                   </p>
@@ -44,22 +44,6 @@
               </div>
             </div>
             <div class="card-deck">
-              <div class="card m-2 shadow-sm">
-                <div class="card-body">
-                  <p><strong>Inscrição Estadual: </strong></p>
-                  <p class="card-text">
-                    {{ $item->state_registration }}
-                  </p>
-                </div>
-              </div>
-              <div class="card m-2 shadow-sm">
-                <div class="card-body">
-                  <p><strong>Inscrição Municipal: </strong></p>
-                  <p class="card-text">
-                    {{ $item->city_registration }}
-                  </p>
-                </div>
-              </div>
               <div class="card m-2 shadow-sm">
                 <div class="card-body">
                   <p><strong>DT. Nasc/Abertura: </strong></p>
@@ -106,40 +90,6 @@
             <div class="card-deck">
               <div class="card m-2 shadow-sm">
                 <div class="card-body">
-                  <p><strong>CEP: </strong></p>
-                  <p class="card-text">
-                    {{ $item->zip_code }}
-                  </p>
-                </div>
-              </div>
-              <div class="card m-2 shadow-sm">
-                <div class="card-body">
-                  <p><strong>Endereço: </strong></p>
-                  <p class="card-text">
-                    {{ $item->address }}
-                  </p>
-                </div>
-              </div>
-              <div class="card m-2 shadow-sm">
-                <div class="card-body">
-                  <p><strong>Bairro: </strong></p>
-                  <p class="card-text">
-                    {{ $item->district }}
-                  </p>
-                </div>
-              </div>
-              <div class="card m-2 shadow-sm">
-                <div class="card-body">
-                  <p><strong>Número: </strong></p>
-                  <p class="card-text">
-                    {{ $item->number }}
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="card-deck">
-              <div class="card m-2 shadow-sm">
-                <div class="card-body">
                   <p><strong>Dt. Criação: </strong></p>
                   <p class="card-text">
                     {{ $item->created_at->format('d/m/Y') }}
@@ -151,16 +101,6 @@
                   <p><strong>Dt. Atualização</strong></p>
                   <p class="card-text">
                     {{ $item->updated_at->format('d/m/Y') }}
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="card-deck">
-              <div class="card m-2 shadow-sm">
-                <div class="card-body">
-                  <p><strong>Tipo</strong></p>
-                  <p class="card-text">
-                    {{ $item->type->name() }}
                   </p>
                 </div>
               </div>

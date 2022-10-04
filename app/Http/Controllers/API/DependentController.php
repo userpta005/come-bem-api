@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Models\User;
+use App\Models\Dependent;
 use Illuminate\Http\Request;
 
-class UserController extends BaseController
+class DependentController extends BaseController
 {
     public function search(Request $request)
     {
-        $query = User::query();
+        $query = Dependent::query();
 
         if ($request->filled('search')) {
             $query->person()

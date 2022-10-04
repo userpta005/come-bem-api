@@ -1,4 +1,4 @@
-@extends('layouts.app', ['page' => 'Clientes', 'pageSlug' => 'clients'])
+@extends('layouts.app', ['page' => 'Consumidores', 'pageSlug' => 'dependents'])
 
 @section('content')
   <div class="row">
@@ -7,10 +7,12 @@
         <div class="card-header">
           <div class="row">
             <div class="col-md-6">
-              <h4 class="card-title">Clientes</h4>
+              <h4 class="card-title">Consumidores</h4>
             </div>
             <div class="col-md-6 text-right">
-              <a href="{{ route('clients.create') }}"
+              <a href="{{ route('clients.index') }}"
+              class="btn btn-sm btn-primary">Voltar</a>
+              <a href="{{ route('clients.dependents.create', ['client' => $client]) }}"
                 class="btn btn-sm btn-primary">Adicionar Novo</a>
             </div>
           </div>
@@ -23,8 +25,8 @@
           <div class="row">
             <div class="col-md-4">
               <x-select-ajax name="search"
-                label="Nome Completo/Razão Social/CPF/CNPJ"
-                route="/api/v1/clients"
+                label="Nome Completo/CPF"
+                route="/api/v1/dependents"
                 prop="info" />
             </div>
             <div class="col-md-3">
@@ -54,7 +56,7 @@
               <a id="clear-filter"
                 style="font-size: 9px;"
                 class="btn btn-sm btn-danger"
-                href="{{ route('clients.index') }}">
+                href="{{ route('clients.dependents.index', ['client' => $client]) }}">
                 <svg xmlns="http://www.w3.org/2000/svg"
                   width="9"
                   height="9"
@@ -73,7 +75,7 @@
             <table class="table table-striped">
               <caption>N. Registros: {{ $data->total() }}</caption>
               <thead class="text-primary">
-                <th scope="col">Nome C./Razão S./CPF/CNPJ</th>
+                <th scope="col">Nome Completo/CPF</th>
                 <th scope="col">Email</th>
                 <th scope="col">Dt. Criac.</th>
                 <th scope="col">Dt. Atualiz.</th>
@@ -100,24 +102,24 @@
                           <i class="fas fa-ellipsis-v"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                          <form action="{{ route('clients.destroy', $item->id) }}"
+                          <form action="{{ route('clients.dependents.destroy', ['client' => $client, $item->id]) }}"
                             method="post"
                             id="form-{{ $item->id }}">
                             @csrf
                             @method('delete')
+                            @can('cards_view')
+                              <a class="dropdown-item"
+                                href="{{ route('dependents.cards.index', ['dependent' => $item]) }}">Cartões</a>
+                            @endcan
                             @can('dependents_view')
                               <a class="dropdown-item"
-                                href="{{ route('clients.dependents.index', ['client' => $item]) }}">Consumidores</a>
+                                href="{{ route('clients.dependents.show', ['client' => $client, $item->id]) }}">Visualizar</a>
                             @endcan
-                            @can('clients_view')
+                            @can('dependents_edit')
                               <a class="dropdown-item"
-                                href="{{ route('clients.show', $item) }}">Visualizar</a>
+                                href="{{ route('clients.dependents.edit', ['client' => $client, $item->id]) }}">Editar</a>
                             @endcan
-                            @can('clients_edit')
-                              <a class="dropdown-item"
-                                href="{{ route('clients.edit', $item) }}">Editar</a>
-                            @endcan
-                            @can('clients_delete')
+                            @can('dependents_delete')
                               <button type="button"
                                 class="dropdown-item btn-delete">
                                 Excluir

@@ -11,7 +11,7 @@ class ClientController extends BaseController
     {
         $query = Client::query();
 
-        if ($request->has('search')) {
+        if ($request->filled('search')) {
             $query->person()
                 ->where(function ($query) use ($request) {
                     $query->where('people.name', 'like', '%' . $request->search . '%')

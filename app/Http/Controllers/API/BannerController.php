@@ -13,15 +13,15 @@ class BannerController extends BaseController
 
         $query =  Banner::query()
             ->where('banners.status', Status::ACTIVE)
-            ->when($request->has('position'), function ($query) use ($request) {
+            ->when($request->filled('position'), function ($query) use ($request) {
                 $query->where('banners.position', $request->position);
             })
-            ->when($request->has('type'), function ($query) use ($request) {
+            ->when($request->filled('type'), function ($query) use ($request) {
                 $query->where('banners.type', $request->type);
             })
             ->orderBy("sequence");
 
-        ($request->has('page'))  ? $data = $query->paginate(10) : $data = $query->get();
+        ($request->filled('page'))  ? $data = $query->paginate(10) : $data = $query->get();
 
         return $this->sendResponse($data);
     }

@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-md-3">
-    {!! Form::text('nif', 'CPF/CNPJ')->attrs(['class' => 'cpf_cnpj'])->readonly(isset($item))->required(false) !!}
+    {!! Form::text('nif', 'CPF/CNPJ')->attrs(['class' => 'cpf_cnpj'])->readonly(isset($item))->required() !!}
   </div>
   <div class="col-md-5">
     {!! Form::text('name', 'Nome Completo/Razão Social')->attrs(['class' => 'name'])->required() !!}
@@ -40,6 +40,9 @@
   </div>
   <div class="col-md-2">
     {!! Form::text('number', 'Número')->attrs(['class' => 'number']) !!}
+  </div>
+  <div class="col-md-4">
+    {!! Form::select('type', 'Tipo')->options(\App\Enums\ClientType::all()->prepend('Selecione...', ''))->attrs(['class' => 'select2'])->required() !!}
   </div>
 </div>
 

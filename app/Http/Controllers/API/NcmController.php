@@ -12,7 +12,7 @@ class NcmController extends BaseController
     {
         $query = Ncm::orderBy('description', 'asc');
 
-        if ($request->has('search')) {
+        if ($request->filled('search')) {
             $query = $query->where('description', 'like', '%' . $request->search . '%');
         }
 

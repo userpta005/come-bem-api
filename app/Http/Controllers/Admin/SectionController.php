@@ -20,11 +20,16 @@ class SectionController extends Controller
         $this->middleware('permission:sections_edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:sections_view', ['only' => ['show', 'index']]);
         $this->middleware('permission:sections_delete', ['only' => ['destroy']]);
+        $this->middleware('store');
     }
 
     public function index()
     {
-        $data = Section::withDepth()->withCount('descendants')->get()->toFlatTree();
+        $data = Section::withDepth()
+            ->withCount('descendants')
+            ->where('store_id', session('store')['id'])
+            ->get()
+            ->toFlatTree();
 
         return view('sections.index', compact('data'));
     }
@@ -58,6 +63,7 @@ class SectionController extends Controller
         )->validate();
 
         $inputs = $request->all();
+        $inputs['store_id'] = session('store')['id'];
         $inputs['use'] = 1;
         Section::create($inputs);
 

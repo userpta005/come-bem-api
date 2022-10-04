@@ -67,7 +67,6 @@ class DefenderSeeder extends Seeder
         $contractor->permissions()->sync(Permission::query()->where(
             [
                 ['name', 'not like', '%tenants_%'],
-                ['name', 'not like', '%sections_%'],
                 ['name', 'not like', '%payment-methods_%'],
                 ['name', 'not like', '%measurement-units_%'],
                 ['name', 'not like', '%cities_%'],

@@ -58,6 +58,24 @@ class Permission extends \Spatie\Permission\Models\Permission
                                     array('name' => 'clients_create', 'description' => 'Criar'),
                                     array('name' => 'clients_edit', 'description' => 'Editar'),
                                     array('name' => 'clients_delete', 'description' => 'Deletar'),
+                                    [
+                                        'title' => 'Dependentes',
+                                        'items' => [
+                                            array('name' => 'dependents_view', 'description' => 'Visualizar'),
+                                            array('name' => 'dependents_create', 'description' => 'Criar'),
+                                            array('name' => 'dependents_edit', 'description' => 'Editar'),
+                                            array('name' => 'dependents_delete', 'description' => 'Deletar'),
+                                            [
+                                                'title' => 'Cartões',
+                                                'items' => [
+                                                    array('name' => 'cards_view', 'description' => 'Visualizar'),
+                                                    array('name' => 'cards_create', 'description' => 'Criar'),
+                                                    array('name' => 'cards_edit', 'description' => 'Editar'),
+                                                    array('name' => 'cards_delete', 'description' => 'Deletar'),
+                                                ]
+                                            ]
+                                        ]
+                                    ]
                                 ]
                             ],
                         ]

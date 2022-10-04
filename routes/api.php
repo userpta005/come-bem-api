@@ -4,6 +4,7 @@ use App\Http\Controllers\API\{
     BannerController,
     CityController,
     ClientController,
+    DependentController,
     FaqController,
     FinancialCategoryController,
     GetPersonByNifController,
@@ -43,6 +44,7 @@ Route::prefix('v1')->group(function () {
     Route::get('tenants', [TenantController::class, 'search']);
     Route::get('stores', [StoreController::class, 'search']);
     Route::get('clients', [ClientController::class, 'search']);
+    Route::get('dependents', [DependentController::class, 'search']);
     Route::get('users', [UserController::class, 'search']);
     Route::get('get-person-by-nif', GetPersonByNifController::class);
     Route::apiResource('cities', CityController::class)->only(['index', 'show']);

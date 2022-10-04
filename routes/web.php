@@ -3,10 +3,12 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\{
     BannerController,
+    CardController,
     ChangeFirtsPasswordController,
     ChangeStoreSessionController,
     CityController,
     ClientController,
+    DependentController,
     DevolutionController,
     FaqController,
     FinancialCategoryController,
@@ -71,6 +73,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('tenants', TenantController::class);
     Route::resource('stores', StoreController::class);
     Route::resource('clients', ClientController::class);
+    Route::resource('clients.dependents', DependentController::class);
+    Route::resource('dependents.cards', CardController::class);
     Route::resource('sections', SectionController::class);
     Route::resource('payment-methods', PaymentMethodController::class);
     Route::resource('measurement-units', MeasurementUnitController::class);

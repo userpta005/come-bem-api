@@ -98,14 +98,16 @@
                     id="operational"
                     style="">
                     <ul class="nav pl-4">
-                      @can('sections_view')
-                        <li>
-                          <a href="{{ route('sections.index') }}">
-                            <i class="fas fa-tag"></i>
-                            <p>Seções</p>
-                          </a>
-                        </li>
-                      @endcan
+                      @if (session()->has('store'))
+                        @can('sections_view')
+                          <li>
+                            <a href="{{ route('sections.index') }}">
+                              <i class="fas fa-tag"></i>
+                              <p>Seções</p>
+                            </a>
+                          </li>
+                        @endcan
+                      @endif
                       @can('measurement-units_view')
                         <li>
                           <a href="{{ route('measurement-units.index') }}">

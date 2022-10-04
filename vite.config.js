@@ -11,7 +11,7 @@ export default defineConfig({
     plugins: [
         vue(),
         laravel({
-            input: 'resources/js/app.js',
+            input: 'resources/js/clients/app.js',
             refresh: true,
         }),
         AutoImport({

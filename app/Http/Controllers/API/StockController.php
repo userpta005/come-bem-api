@@ -21,10 +21,10 @@ class StockController extends BaseController
             ->join('measurement_units', 'products.um_id', '=', 'measurement_units.id')
             ->join('stores', 'stores.id', '=', 'stocks.store_id')
             ->join('people', 'people.id', '=', 'stores.person_id')
-            ->when($request->has('store'), function ($query) use ($request) {
+            ->when($request->filled('store'), function ($query) use ($request) {
                 $query->where('stocks.store_id', $request->store);
             })
-            ->when($request->has('has-quantity'), function ($query) {
+            ->when($request->filled('has-quantity'), function ($query) {
                 $query->where('quantity', '>', 0);
             })
             ->get();

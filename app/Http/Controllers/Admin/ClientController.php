@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\ClientType;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Person;
 use App\Models\Client;
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Traits\PersonRules;
+use Illuminate\Validation\Rules\Enum;
 
 class ClientController extends Controller
 {
@@ -72,6 +76,25 @@ class ClientController extends Controller
                 ['person_id' => $person->id],
                 $inputs
             );
+
+            $user = User::updateOrCreate(
+                ['person_id' => $inputs['person_id']],
+                [
+                    'name' => $inputs['name'],
+                    'email' => $inputs['email'],
+                    'password' => bcrypt(preg_replace("/\D+/", "", $inputs['nif'])),
+                    'status' => $inputs['status']
+                ]
+            );
+
+            Role::updateOrCreate(
+                ['name' => 'client'],
+                [
+                    'description' => 'Cliente'
+                ]
+            );
+
+            $user->assignRole('client');
         });
 
         return redirect()->route('clients.index')
@@ -128,7 +151,9 @@ class ClientController extends Controller
 
     public function rules(Request $request, $primaryKey = null, bool $changeMessages = false)
     {
-        $rules = [];
+        $rules = [
+            'type' => ['required', 'integer', new Enum(ClientType::class)],
+        ];
 
         $this->PersonRules($primaryKey);
         $rules = array_merge($rules, $this->rules);
