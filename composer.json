@@ -9,8 +9,8 @@
         "guzzlehttp/guzzle": "^7.2",
         "kalnoy/nestedset": "^6.0",
         "laravel-frontend-presets/white-dashboard": "^1.0.4",
-        "laravel/framework": "^9.3",
-        "laravel/sanctum": "^2.14.1",
+        "laravel/framework": "^9.19",
+        "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
         "laravel/ui": "^3.4",
         "netojose/laravel-bootstrap-4-forms": "^3.0.5",
@@ -65,7 +65,10 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true
