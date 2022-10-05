@@ -1,9 +1,9 @@
 <div class="row">
   <div class="col-md-3">
-    {!! Form::text('balance', 'Saldo')->attrs(['class' => 'money'])->required() !!}
+    {!! Form::text('balance', 'Saldo')->attrs(['class' => 'money'])->value(!empty($item->balance) ? floatToMoney($item->balance) : null)->required() !!}
   </div>
   <div class="col-md-3">
-    {!! Form::text('daily_limit', 'Limite Diário')->attrs(['class' => 'money'])->required() !!}
+    {!! Form::text('daily_limit', 'Limite Diário')->attrs(['class' => 'money'])->value(!empty($item->daily_limit) ? floatToMoney($item->daily_limit) : null)->required() !!}
   </div>
   <div class="col-md-3">
     {!! Form::text('class', 'Turma')->attrs(['maxlength' => 10])->required(false) !!}

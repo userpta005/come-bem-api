@@ -82,7 +82,10 @@ class AccountController extends Controller
         )->validate();
 
         DB::transaction(function () use ($request, $item) {
-            $item->fill($request->all())->save();
+            $inputs = $request->all();
+            $inputs['balance'] = moneyToFloat($inputs['balance']);
+            $inputs['daily_limit'] = moneyToFloat($inputs['daily_limit']);
+            $item->fill($inputs)->save();
         });
 
         return redirect()->route('dependents.accounts.index', ['dependent' => $dependent])
