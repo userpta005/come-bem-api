@@ -1,4 +1,4 @@
-@extends('layouts.app', ['page' => 'Cartões', 'pageSlug' => 'cards'])
+@extends('layouts.app', ['page' => 'Contas', 'pageSlug' => 'accounts'])
 
 @section('content')
   <div class="row">
@@ -7,13 +7,13 @@
         <div class="card-header">
           <div class="row">
             <div class="col-8">
-              <h4 class="card-title">Cartões</h4>
+              <h4 class="card-title">Contas</h4>
             </div>
-            @can('cards_create')
+            @can('accounts_create')
               <div class="col-4 text-right">
-                <a href="{{ route('dependents.accounts.index', ['dependent' => $account->dependent_id]) }}"
+                <a href="{{ route('clients.dependents.index', ['client' => $dependent->client_id]) }}"
                   class="btn btn-sm btn-primary">Voltar</a>
-                <a href="{{ route('accounts.cards.create', ['account' => $account]) }}"
+                <a href="{{ route('dependents.accounts.create', ['dependent' => $dependent]) }}"
                   class="btn btn-sm btn-primary">Adicionar Novo</a>
               </div>
             @endcan
@@ -26,7 +26,11 @@
           <div class="table-responsive-md">
             <table class="table tablesorter table-striped">
               <thead class=" text-primary">
-                <th scope="col">UUID</th>
+                <th scope="col">Dependente</th>
+                <th scope="col">Saldo</th>
+                <th scope="col">Limite Diário</th>
+                <th scope="col">Turma</th>
+                <th scope="col">Série</th>
                 <th scope="col">Dt. Criac.</th>
                 <th scope="col">Dt. Atualiz.</th>
                 <th scope="col">Status</th>
@@ -36,7 +40,11 @@
               <tbody>
                 @forelse ($data as $item)
                   <tr style="font-size: 12px;">
-                    <td>{{ $item->uuid }}</td>
+                    <td>{{ $item->dependent->info }}</td>
+                    <td>{{ floatToMoney($item->balance) }}</td>
+                    <td>{{ floatToMoney($item->daily_limit) }}</td>
+                    <td>{{ $item->class }}</td>
+                    <td>{{ $item->school_year }}</td>
                     <td>{{ $item->created_at->format('d/m/Y') }}</td>
                     <td>{{ $item->updated_at->format('d/m/Y') }}</td>
                     <td>{{ $item->status->name() }}</td>
@@ -51,20 +59,24 @@
                           <i class="fas fa-ellipsis-v"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                          <form action="{{ route('accounts.cards.destroy', ['account' => $account, $item]) }}"
+                          <form action="{{ route('dependents.accounts.destroy', ['dependent' => $dependent, $item]) }}"
                             method="post"
                             id="form-{{ $item->id }}">
                             @csrf
                             @method('delete')
                             @can('cards_view')
                               <a class="dropdown-item"
-                                href="{{ route('accounts.cards.show', ['account' => $account, $item]) }}">Visualizar</a>
+                                href="{{ route('accounts.cards.index', ['account' => $item]) }}">Cartões</a>
                             @endcan
-                            @can('cards_edit')
+                            @can('accounts_view')
                               <a class="dropdown-item"
-                                href="{{ route('accounts.cards.edit', ['account' => $account, $item]) }}">Editar</a>
+                                href="{{ route('dependents.accounts.show', ['dependent' => $dependent, $item]) }}">Visualizar</a>
                             @endcan
-                            @can('cards_delete')
+                            @can('accounts_edit')
+                              <a class="dropdown-item"
+                                href="{{ route('dependents.accounts.edit', ['dependent' => $dependent, $item]) }}">Editar</a>
+                            @endcan
+                            @can('accounts_delete')
                               <button type="button"
                                 class="dropdown-item btn-delete">
                                 Excluir

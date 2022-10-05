@@ -11,7 +11,7 @@
             </div>
             <div class="col-md-6 text-right">
               <a href="{{ route('clients.index') }}"
-              class="btn btn-sm btn-primary">Voltar</a>
+                class="btn btn-sm btn-primary">Voltar</a>
               <a href="{{ route('clients.dependents.create', ['client' => $client]) }}"
                 class="btn btn-sm btn-primary">Adicionar Novo</a>
             </div>
@@ -107,10 +107,12 @@
                             id="form-{{ $item->id }}">
                             @csrf
                             @method('delete')
-                            @can('cards_view')
-                              <a class="dropdown-item"
-                                href="{{ route('dependents.cards.index', ['dependent' => $item]) }}">Cartões</a>
-                            @endcan
+                            @if (session()->exists('store'))
+                              @can('accounts_view')
+                                <a class="dropdown-item"
+                                  href="{{ route('dependents.accounts.index', ['dependent' => $item]) }}">Contas</a>
+                              @endcan
+                            @endif
                             @can('dependents_view')
                               <a class="dropdown-item"
                                 href="{{ route('clients.dependents.show', ['client' => $client, $item->id]) }}">Visualizar</a>

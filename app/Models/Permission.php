@@ -66,12 +66,21 @@ class Permission extends \Spatie\Permission\Models\Permission
                                             array('name' => 'dependents_edit', 'description' => 'Editar'),
                                             array('name' => 'dependents_delete', 'description' => 'Deletar'),
                                             [
-                                                'title' => 'Cartões',
+                                                'title' => 'Contas',
                                                 'items' => [
-                                                    array('name' => 'cards_view', 'description' => 'Visualizar'),
-                                                    array('name' => 'cards_create', 'description' => 'Criar'),
-                                                    array('name' => 'cards_edit', 'description' => 'Editar'),
-                                                    array('name' => 'cards_delete', 'description' => 'Deletar'),
+                                                    array('name' => 'accounts_view', 'description' => 'Visualizar'),
+                                                    array('name' => 'accounts_create', 'description' => 'Criar'),
+                                                    array('name' => 'accounts_edit', 'description' => 'Editar'),
+                                                    array('name' => 'accounts_delete', 'description' => 'Deletar'),
+                                                    [
+                                                        'title' => 'Cartões',
+                                                        'items' => [
+                                                            array('name' => 'cards_view', 'description' => 'Visualizar'),
+                                                            array('name' => 'cards_create', 'description' => 'Criar'),
+                                                            array('name' => 'cards_edit', 'description' => 'Editar'),
+                                                            array('name' => 'cards_delete', 'description' => 'Deletar'),
+                                                        ]
+                                                    ]
                                                 ]
                                             ]
                                         ]

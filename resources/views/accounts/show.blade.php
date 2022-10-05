@@ -1,4 +1,4 @@
-@extends('layouts.app', ['page' => 'Cartões', 'pageSlug' => 'cards'])
+@extends('layouts.app', ['page' => 'Contas', 'pageSlug' => 'accounts'])
 
 @section('content')
   <div class="container-fluid p-0">
@@ -8,10 +8,10 @@
           <div class="card-header">
             <div class="row align-items-center">
               <div class="col-8">
-                <h4 class="mb-card-title">Cartões</h4>
+                <h4 class="mb-card-title">Contas</h4>
               </div>
               <div class="col-4 text-right">
-                <a href="{{ route('accounts.cards.index', ['account' => $account]) }}"
+                <a href="{{ route('dependents.accounts.index', ['dependent' => $dependent]) }}"
                   class="btn btn-sm btn-primary">Voltar</a>
               </div>
             </div>
@@ -20,9 +20,9 @@
             <div class="card-deck">
               <div class="card m-2 shadow-sm">
                 <div class="card-body">
-                  <p><strong>UUID: </strong></p>
+                  <p><strong>Dependente: </strong></p>
                   <p class="card-text">
-                    {{ $item->uuid }}
+                    {{ $item->dependent->info }}
                   </p>
                 </div>
               </div>
@@ -31,6 +31,40 @@
                   <p><strong>Status: </strong></p>
                   <p class="card-text">
                     {{ $item->status->name() }}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="card-deck">
+              <div class="card m-2 shadow-sm">
+                <div class="card-body">
+                  <p><strong>Saldo: </strong></p>
+                  <p class="card-text">
+                    {{ floatToMoney($item->balance) }}
+                  </p>
+                </div>
+              </div>
+              <div class="card m-2 shadow-sm">
+                <div class="card-body">
+                  <p><strong>Status: </strong></p>
+                  <p class="card-text">
+                    {{ floatToMoney($item->daily_limit) }}
+                  </p>
+                </div>
+              </div>
+              <div class="card m-2 shadow-sm">
+                <div class="card-body">
+                  <p><strong>Turma: </strong></p>
+                  <p class="card-text">
+                    {{ $item->class }}
+                  </p>
+                </div>
+              </div>
+              <div class="card m-2 shadow-sm">
+                <div class="card-body">
+                  <p><strong>Série: </strong></p>
+                  <p class="card-text">
+                    {{ $item->school_year }}
                   </p>
                 </div>
               </div>

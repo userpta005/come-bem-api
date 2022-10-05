@@ -11,7 +11,7 @@ export default defineConfig({
     plugins: [
         vue(),
         laravel({
-            input: 'resources/js/clients/app.js',
+            input: 'resources/js/app.js',
             refresh: true,
         }),
         AutoImport({
@@ -22,4 +22,9 @@ export default defineConfig({
         }),
         Icons(),
     ],
+    resolve: {
+        alias: {
+            '~bootstrap': path.resolve(__dirname, 'node_modules/bootstrap'),
+        }
+    },
 });

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Dependent extends PersonModel
+class Account extends CommonModel
 {
     use HasFactory;
 
@@ -25,22 +25,22 @@ class Dependent extends PersonModel
     protected $casts = [];
 
     /**
-     * Get the client that owns the Dependent
+     * Get the dependent that owns the Account
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function client(): BelongsTo
+    public function dependent(): BelongsTo
     {
-        return $this->belongsTo(Client::class);
+        return $this->belongsTo(Dependent::class);
     }
 
     /**
-     * Get all of the accounts for the Dependent
+     * Get all of the cards for the Account
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function accounts(): HasMany
+    public function cards(): HasMany
     {
-        return $this->hasMany(Account::class);
+        return $this->hasMany(Card::class);
     }
 }

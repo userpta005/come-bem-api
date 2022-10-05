@@ -11,13 +11,13 @@
                 <h4 class="card-title">Cartões</h4>
               </div>
               <div class="col-4 text-right">
-                <a href="{{ route('dependents.cards.index', ['dependent' => $dependent]) }}"
+                <a href="{{ route('accounts.cards.index', ['account' => $account]) }}"
                   class="btn btn-sm btn-primary">Voltar</a>
               </div>
             </div>
           </div>
           <div class="card-body">
-            {!! Form::open()->fill($item)->put()->route('dependents.cards.update', ['dependent' => $dependent, $item->id])->multipart() !!}
+            {!! Form::open()->fill($item)->put()->route('accounts.cards.update', ['account' => $account, $item->id])->multipart() !!}
             @include('cards._forms')
             {!! Form::close() !!}
           </div>

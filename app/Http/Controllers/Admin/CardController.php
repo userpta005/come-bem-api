@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Card;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
-use App\Models\Dependent;
+use App\Models\Account;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Enum;
 
@@ -20,21 +20,21 @@ class CardController extends Controller
         $this->middleware('permission:cards_delete', ['only' => ['destroy']]);
     }
 
-    public function index(Request $request, Dependent $dependent)
+    public function index(Request $request, Account $account)
     {
         $data = Card::query()
-        ->where('dependent_id', $dependent->id)
+        ->where('account_id', $account->id)
         ->orderBy('uuid')->paginate(10);
 
-        return view('cards.index', compact('data', 'dependent'));
+        return view('cards.index', compact('data', 'account'));
     }
 
-    public function create(Dependent $dependent)
+    public function create(Account $account)
     {
-        return view('cards.create', compact('dependent'));
+        return view('cards.create', compact('account'));
     }
 
-    public function store(Request $request, Dependent $dependent)
+    public function store(Request $request, Account $account)
     {
         Validator::make(
             $request->all(),
@@ -42,29 +42,29 @@ class CardController extends Controller
         )->validate();
 
         $inputs = $request->all();
-        $inputs['dependent_id'] = $dependent->id;
+        $inputs['account_id'] = $account->id;
 
         Card::create($inputs);
 
-        return redirect()->route('dependents.cards.index', ['dependent' => $dependent])
+        return redirect()->route('accounts.cards.index', ['account' => $account])
             ->withStatus('Registro adicionado com sucesso.');
     }
 
-    public function show(Dependent $dependent, $id)
+    public function show(Account $account, $id)
     {
         $item = Card::findOrFail($id);
 
-        return view('cards.show', compact('item', 'dependent'));
+        return view('cards.show', compact('item', 'account'));
     }
 
-    public function edit(Dependent $dependent, $id)
+    public function edit(Account $account, $id)
     {
         $item = Card::findOrFail($id);
 
-        return view('cards.edit', compact('item', 'dependent'));
+        return view('cards.edit', compact('item', 'account'));
     }
 
-    public function update(Request $request, Dependent $dependent, $id)
+    public function update(Request $request, Account $account, $id)
     {
         $item = Card::findOrFail($id);
 
@@ -76,20 +76,20 @@ class CardController extends Controller
 
         $item->fill($request->all())->save();
 
-        return redirect()->route('dependents.cards.index', ['dependent' => $dependent])
+        return redirect()->route('accounts.cards.index', ['account' => $account])
             ->withStatus('Registro atualizado com sucesso.');
     }
 
-    public function destroy(Dependent $dependent, $id)
+    public function destroy(Account $account, $id)
     {
         $item = Card::findOrFail($id);
 
         try {
             $item->delete();
-            return redirect()->route('dependents.cards.index', ['dependent' => $dependent])
+            return redirect()->route('accounts.cards.index', ['account' => $account])
                 ->withStatus('Registro deletado com sucesso.');
         } catch (\Exception $e) {
-            return redirect()->route('dependents.cards.index', ['dependent' => $dependent])
+            return redirect()->route('accounts.cards.index', ['account' => $account])
                 ->withError('Registro vinculado á outra tabela, somente poderá ser excluído se retirar o vinculo.');
         }
     }

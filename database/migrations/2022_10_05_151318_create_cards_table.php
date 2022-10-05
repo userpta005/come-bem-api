@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('uuid');
             $table->tinyInteger('status');
-            $table->foreignId('dependent_id')->constrained();
+            $table->foreignId('account_id')->constrained();
             $table->timestamps();
         });
     }
