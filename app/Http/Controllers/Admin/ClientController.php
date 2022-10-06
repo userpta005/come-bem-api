@@ -28,7 +28,9 @@ class ClientController extends Controller
 
     public function index(Request $request)
     {
-        $data = Client::person()
+        $data = Client::query()
+            ->person()
+            ->with('dependents.accounts.cards')
             ->when(!empty($request->search), function ($query) use ($request) {
                 $query->where('clients.id', $request->search);
             })

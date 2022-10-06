@@ -69,76 +69,20 @@
             </div>
           </div>
           {!! Form::close() !!}
-          <div class="table-responsive-md">
-            <table class="table table-striped">
-              <caption>N. Registros: {{ $data->total() }}</caption>
-              <thead class="text-primary">
-                <th scope="col">Nome C./Razão S./CPF/CNPJ</th>
-                <th scope="col">Email</th>
-                <th scope="col">Dt. Criac.</th>
-                <th scope="col">Dt. Atualiz.</th>
-                <th scope="col">Status</th>
-                <th scope="col"
-                  class="text-right">Ações</th>
-              </thead>
-              <tbody>
-                @forelse ($data as $item)
-                  <tr style="font-size: 12px;">
-                    <td>{{ $item->info }}</td>
-                    <td>{{ $item->email }}</td>
-                    <td>{{ $item->created_at->format('d/m/Y') }}</td>
-                    <td>{{ $item->updated_at->format('d/m/Y') }}</td>
-                    <td>{{ $item->status->name() }}</td>
-                    <td class="text-right">
-                      <div class="dropdown">
-                        <a class="btn btn-sm btn-icon-only text-light"
-                          href="#"
-                          role="button"
-                          data-toggle="dropdown"
-                          aria-haspopup="true"
-                          aria-expanded="false">
-                          <i class="fas fa-ellipsis-v"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                          <form action="{{ route('clients.destroy', $item->id) }}"
-                            method="post"
-                            id="form-{{ $item->id }}">
-                            @csrf
-                            @method('delete')
-                            @can('dependents_view')
-                              <a class="dropdown-item"
-                                href="{{ route('clients.dependents.index', ['client' => $item]) }}">Consumidores</a>
-                            @endcan
-                            @can('clients_view')
-                              <a class="dropdown-item"
-                                href="{{ route('clients.show', $item) }}">Visualizar</a>
-                            @endcan
-                            @can('clients_edit')
-                              <a class="dropdown-item"
-                                href="{{ route('clients.edit', $item) }}">Editar</a>
-                            @endcan
-                            @can('clients_delete')
-                              <button type="button"
-                                class="dropdown-item btn-delete">
-                                Excluir
-                              </button>
-                            @endcan
-                          </form>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                @empty
-                  <tr>
-                    <td colspan="20"
-                      style="text-align: center; font-size: 1.1em;">
-                      Nenhuma informação cadastrada.
-                    </td>
-                  </tr>
-                @endforelse
-              </tbody>
-            </table>
+
+          @push('js')
+            <script>
+              window.clients = {{ Illuminate\Support\Js::from($data->getCollection()->toArray()) }}
+            </script>
+          @endpush
+          <div id="app"
+            class="mt-3"></div>
+          @vite('resources/js/clients/app.js')
+
+          <div class="mt-3">
+            <caption>N° Registros: {{ $data->count() }}</caption>
           </div>
+
           <div style="overflow: auto"
             class="my-4 mx-3 row">
             <nav class="d-flex ml-auto"

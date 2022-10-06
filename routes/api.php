@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\API\{
+    AccountController,
     BannerController,
+    CardController,
     CityController,
     ClientController,
     DependentController,
@@ -39,6 +41,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::prefix('v1')->group(function () {
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::delete('clients/{id}', [ClientController::class, 'destroy']);
+        Route::delete('dependents/{id}', [DependentController::class, 'destroy']);
+        Route::delete('accounts/{id}', [AccountController::class, 'destroy']);
+        Route::delete('cards/{id}', [CardController::class, 'destroy']);
+    });
+
     Route::get('ncms', [NcmController::class, 'search']);
     Route::get('leads', [LeadController::class, 'search']);
     Route::get('tenants', [TenantController::class, 'search']);

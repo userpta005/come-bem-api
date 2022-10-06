@@ -2,35 +2,30 @@
   <el-table :data="tableData" :border="false" size="small" style="width: 100%;">
     <el-table-column type="expand" :width="25">
       <template #default="props">
-        <Phases :phases="props.row.phases" :rowStyle="rowStyle" v-if="props.row.phases.length"></Phases>
+        <Dependents :table-data="props.row.dependents" v-if="props.row.dependents.length"></Dependents>
       </template>
     </el-table-column>
-    <el-table-column label="#" :width="30">
-      <template #default="props">
-        <Status :status="props.row.status"></Status>
-      </template>
-    </el-table-column>
-    <el-table-column label="ANO" prop="year" sortable />
-    <el-table-column label="NOME" prop="name" sortable />
-    <el-table-column label="CATG." prop="category.name" sortable />
-    <el-table-column label="DT. CRIAC." prop="dt_created" sortable :width="110" />
+    <el-table-column label="Nome C./Razão S./CPF/CNPJ" prop="info" sortable />
+    <el-table-column label="Email" prop="email" sortable />
+    <el-table-column label="Status" prop="attr_status" sortable :width="110" />
+    <el-table-column label="DT. CRIAC." prop="attr_created_at" sortable :width="110" />
+    <el-table-column label="DT. ATUAL." prop="attr_updated_at" sortable :width="110" />
     <el-table-column label="AÇÃO" align="right" :width="70">
       <template #default="props">
-        <DropDown competition="true" :show="'/competitions/' + props.row.id"
-          :competition-phases="'/competitions/' + props.row.id + /phases/"
-          :competition-classifications="'/competitions/' + props.row.id + /classifications/"
-          :edit="'/competitions/' + props.row.id + /edit/" :destroy="'/api/competitions/' + props.row.id">
+        <DropDown client="true" :client-dependents="'/clients/' + props.row.id + /dependents/"
+          :show="'/clients/' + props.row.id" :edit="'/clients/' + props.row.id + /edit/"
+          :destroy="'/api/v1/clients/' + props.row.id">
         </DropDown>
       </template>
     </el-table-column>
   </el-table>
+
 </template>
 
 <script setup>
-import Phases from './phases.vue'
+import Dependents from './dependents.vue'
 import DropDown from './dropdown.vue'
-import Status from './status.vue'
-const tableData = window.competitions
+const tableData = window.clients
 
 function rowStyle() {
   return {
