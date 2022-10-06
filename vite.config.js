@@ -9,13 +9,13 @@ import Icons from 'unplugin-icons/vite'
 
 export default defineConfig({
     plugins: [
+        vue(),
         laravel({
             input: [
                 'resources/js/clients/app.js'
             ],
             refresh: true,
         }),
-        vue(),
         AutoImport({
             resolvers: [ElementPlusResolver()],
         }),
