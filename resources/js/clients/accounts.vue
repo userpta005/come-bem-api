@@ -9,10 +9,26 @@
       </template>
 
     </el-table-column>
-    <el-table-column label="Saldo" prop="attr_balance" sortable />
-    <el-table-column label="Limite Diário" prop="attr_daily_limit" sortable />
-    <el-table-column label="Turma" prop="class" sortable />
-    <el-table-column label="Série" prop="school_year" sortable />
+    <el-table-column label="Saldo" prop="attr_balance" sortable>
+      <template #default="props">
+        <span><b>Saldo: </b>{{ props.row.attr_balance }}</span>
+      </template>
+    </el-table-column>
+    <el-table-column label="Limite Diário" prop="attr_daily_limit" sortable>
+      <template #default="props">
+        <span><b>Limite/Dia: </b>{{ props.row.attr_daily_limit }}</span>
+      </template>
+    </el-table-column>
+    <el-table-column label="Turma" prop="class" sortable>
+      <template #default="props">
+        <span><b>Turma: </b>{{ props.row.class }}</span>
+      </template>
+    </el-table-column>
+    <el-table-column label="Série" prop="school_year" sortable >
+      <template #default="props">
+        <span><b>Série: </b>{{ props.row.school_year }}</span>
+      </template>
+    </el-table-column>
     <el-table-column label="Status" prop="attr_status" sortable :width="110" />
     <el-table-column label="DT. CRIAC." prop="attr_created_at" sortable :width="110" />
     <el-table-column label="DT. ATUAL." prop="attr_updated_at" sortable :width="110" />
