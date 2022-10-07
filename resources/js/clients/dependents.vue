@@ -14,10 +14,15 @@
     <el-table-column label="DT. ATUAL." prop="attr_updated_at" sortable :width="110" />
     <el-table-column align="right" :width="70">
       <template #default="props">
-        <DropDown dependent="true" :dependentAccounts="'/dependents/' + props.row.id + '/accounts'"
+        <DropDown
           :show="'/clients/' + props.row.client_id + '/dependents/' + props.row.id"
           :edit="'/clients/' + props.row.client_id + '/dependents/' + props.row.id + '/edit'"
           :destroy="'/api/v1/dependents/' + props.row.id">
+          <el-dropdown-item>
+            <el-link type="info" :href="url + '/dependents/' + props.row.id + '/accounts'" :underline="false">
+              Contas
+            </el-link>
+          </el-dropdown-item>
         </DropDown>
       </template>
     </el-table-column>
@@ -28,6 +33,7 @@
 import Accounts from './accounts.vue'
 import DropDown from './dropdown.vue'
 const props = defineProps(['tableData'])
+const url = getUrl();
 
 function rowStyle() {
   return {

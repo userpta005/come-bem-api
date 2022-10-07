@@ -11,7 +11,7 @@
     <el-table-column label="DT. ATUAL." prop="attr_updated_at" sortable :width="110" />
     <el-table-column align="right" :width="70">
       <template #default="props">
-        <DropDown card="true" :show="'/accounts/' + props.row.account_id + '/cards/' + props.row.id"
+        <DropDown :show="'/accounts/' + props.row.account_id + '/cards/' + props.row.id"
           :edit="'/accounts/' + props.row.account_id + '/cards/' + props.row.id + '/edit'"
           :destroy="'/api/v1/cards/' + props.row.id">
         </DropDown>

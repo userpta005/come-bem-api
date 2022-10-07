@@ -7,15 +7,7 @@
     </span>
     <template #dropdown>
       <el-dropdown-menu>
-        <el-dropdown-item v-if="client">
-          <el-link type="info" :href="url + clientDependents" :underline="false">Dependentes</el-link>
-        </el-dropdown-item>
-        <el-dropdown-item v-if="dependent">
-          <el-link type="info" :href="url + dependentAccounts" :underline="false">Contas</el-link>
-        </el-dropdown-item>
-        <el-dropdown-item v-if="account">
-          <el-link type="info" :href="url + accountCards" :underline="false">Cartões</el-link>
-        </el-dropdown-item>
+        <slot></slot>
         <el-dropdown-item>
           <el-link type="info" :href="url + show" :underline="false">Visualizar</el-link>
         </el-dropdown-item>
@@ -37,13 +29,6 @@ const props = defineProps([
   'show',
   'edit',
   'destroy',
-  'client',
-  'clientDependents',
-  'dependent',
-  'dependentAccounts',
-  'account',
-  'accountCards',
-  'card',
 ])
 
 const url = getUrl();

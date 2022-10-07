@@ -24,7 +24,7 @@
         <span><b>Turma: </b>{{ props.row.class }}</span>
       </template>
     </el-table-column>
-    <el-table-column label="Série" prop="school_year" sortable >
+    <el-table-column label="Série" prop="school_year" sortable>
       <template #default="props">
         <span><b>Série: </b>{{ props.row.school_year }}</span>
       </template>
@@ -34,10 +34,14 @@
     <el-table-column label="DT. ATUAL." prop="attr_updated_at" sortable :width="110" />
     <el-table-column align="right" :width="70">
       <template #default="props">
-        <DropDown account="true" :accountCards="'/accounts/' + props.row.id + '/cards'"
-          :show="'/dependents/' + props.row.dependent_id + '/accounts/' + props.row.id"
+        <DropDown :show="'/dependents/' + props.row.dependent_id + '/accounts/' + props.row.id"
           :edit="'/dependents/' + props.row.dependent_id + '/accounts/' + props.row.id + '/edit'"
           :destroy="'/api/v1/accounts/' + props.row.id">
+          <el-dropdown-item>
+            <el-link type="info" :href="url + '/accounts/' + props.row.id + '/cards'" :underline="false">
+              Cartões
+            </el-link>
+          </el-dropdown-item>
         </DropDown>
       </template>
     </el-table-column>
@@ -48,6 +52,7 @@
 import Cards from './cards.vue'
 import DropDown from './dropdown.vue'
 const props = defineProps(['tableData'])
+const url = getUrl();
 
 function rowStyle() {
   return {
