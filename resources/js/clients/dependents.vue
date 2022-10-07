@@ -18,8 +18,8 @@
           :edit="`/clients/${props.row.client_id}/dependents/${props.row.id}/edit`"
           :destroy="`/api/v1/dependents/${props.row.id}`">
           <el-dropdown-item>
-            <el-link type="info" :href="`${url}/dependents/${props.row.id}/accounts`" :underline="false">
-              Contas
+            <el-link type="info" :href="`${url}/dependents/${props.row.id}/accounts/create`" :underline="false">
+              Criar Conta
             </el-link>
           </el-dropdown-item>
         </DropDown>

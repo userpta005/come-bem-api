@@ -15,8 +15,8 @@
         <DropDown :show="`/clients/${props.row.id}`" :edit="`/clients/${props.row.id}/edit/`"
           :destroy="`/api/v1/clients/${props.row.id}`">
           <el-dropdown-item>
-            <el-link type="info" :href="`${url}/clients/${props.row.id}/dependents/`" :underline="false">
-              Dependentes
+            <el-link type="info" :href="`${url}/clients/${props.row.id}/dependents/create`" :underline="false">
+              Criar Dependente
             </el-link>
           </el-dropdown-item>
         </DropDown>
