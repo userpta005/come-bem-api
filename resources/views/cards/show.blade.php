@@ -11,8 +11,8 @@
                 <h4 class="mb-card-title">Cartões</h4>
               </div>
               <div class="col-4 text-right">
-                <a href="{{ route('accounts.cards.index', ['account' => $account]) }}"
-                  class="btn btn-sm btn-primary">Voltar</a>
+                <a href="{{ route('clients.index') }}"
+                class="btn btn-sm btn-primary">Voltar</a>
               </div>
             </div>
           </div>

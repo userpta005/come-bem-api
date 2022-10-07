@@ -11,8 +11,8 @@
                 <h4 class="card-title">Consumidores</h4>
               </div>
               <div class="ml-auto mr-3">
-                <a href="{{ route('clients.dependents.index', ['client' => $client]) }}"
-                  class="btn btn-sm btn-primary">Voltar</a>
+                <a href="{{ route('clients.index') }}"
+                class="btn btn-sm btn-primary">Voltar</a>
               </div>
             </div>
           </div>

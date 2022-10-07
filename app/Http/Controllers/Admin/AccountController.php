@@ -54,7 +54,7 @@ class AccountController extends Controller
             Account::create($inputs);
         });
 
-        return redirect()->route('dependents.accounts.index', ['dependent' => $dependent])
+        return redirect()->route('clients.index')
             ->withStatus('Registro adicionado com sucesso.');
     }
 
@@ -88,7 +88,7 @@ class AccountController extends Controller
             $item->fill($inputs)->save();
         });
 
-        return redirect()->route('dependents.accounts.index', ['dependent' => $dependent])
+        return redirect()->route('clients.index')
             ->withStatus('Registro atualizado com sucesso.');
     }
 
@@ -98,10 +98,10 @@ class AccountController extends Controller
 
         try {
             $item->delete();
-            return redirect()->route('dependents.accounts.index', ['dependent' => $dependent])
+            return redirect()->route('clients.index')
                 ->withStatus('Registro deletado com sucesso.');
         } catch (\Exception $e) {
-            return redirect()->route('dependents.accounts.index', ['dependent' => $dependent])
+            return redirect()->route('clients.index')
                 ->withError('Registro vinculado á outra tabela, somente poderá ser excluído se retirar o vinculo.');
         }
     }

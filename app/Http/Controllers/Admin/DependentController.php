@@ -82,7 +82,7 @@ class DependentController extends Controller
             );
         });
 
-        return redirect()->route('clients.dependents.index', ['client' => $client])
+        return redirect()->route('clients.index')
             ->withStatus('Registro adicionado com sucesso.');
     }
 
@@ -116,7 +116,7 @@ class DependentController extends Controller
             $item->fill($inputs)->save();
         });
 
-        return redirect()->route('clients.dependents.index', ['client' => $client])
+        return redirect()->route('clients.index')
             ->withStatus('Registro atualizado com sucesso.');
     }
 
@@ -126,10 +126,10 @@ class DependentController extends Controller
 
         try {
             $item->delete();
-            return redirect()->route('clients.dependents.index', ['client' => $client])
+            return redirect()->route('clients.index')
                 ->withStatus('Registro deletado com sucesso.');
         } catch (\Exception $e) {
-            return redirect()->route('clients.dependents.index', ['client' => $client])
+            return redirect()->route('clients.index')
                 ->withError('Registro vinculado á outra tabela, somente poderá ser excluído se retirar o vinculo.');
         }
     }

@@ -46,7 +46,7 @@ class CardController extends Controller
 
         Card::create($inputs);
 
-        return redirect()->route('accounts.cards.index', ['account' => $account])
+        return redirect()->route('clients.index')
             ->withStatus('Registro adicionado com sucesso.');
     }
 
@@ -76,7 +76,7 @@ class CardController extends Controller
 
         $item->fill($request->all())->save();
 
-        return redirect()->route('accounts.cards.index', ['account' => $account])
+        return redirect()->route('clients.index')
             ->withStatus('Registro atualizado com sucesso.');
     }
 
@@ -86,10 +86,10 @@ class CardController extends Controller
 
         try {
             $item->delete();
-            return redirect()->route('accounts.cards.index', ['account' => $account])
+            return redirect()->route('clients.index')
                 ->withStatus('Registro deletado com sucesso.');
         } catch (\Exception $e) {
-            return redirect()->route('accounts.cards.index', ['account' => $account])
+            return redirect()->route('clients.index')
                 ->withError('Registro vinculado á outra tabela, somente poderá ser excluído se retirar o vinculo.');
         }
     }

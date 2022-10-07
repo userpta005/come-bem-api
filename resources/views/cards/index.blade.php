@@ -11,8 +11,8 @@
             </div>
             @can('cards_create')
               <div class="col-4 text-right">
-                <a href="{{ route('dependents.accounts.index', ['dependent' => $account->dependent_id]) }}"
-                  class="btn btn-sm btn-primary">Voltar</a>
+                <a href="{{ route('clients.index') }}"
+                class="btn btn-sm btn-primary">Voltar</a>
                 <a href="{{ route('accounts.cards.create', ['account' => $account]) }}"
                   class="btn btn-sm btn-primary">Adicionar Novo</a>
               </div>
