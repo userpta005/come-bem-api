@@ -21,7 +21,6 @@ class LeadController extends Controller
         $this->middleware('permission:leads_edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:leads_view', ['only' => ['show', 'index']]);
         $this->middleware('permission:leads_delete', ['only' => ['destroy']]);
-        $this->middleware('store');
     }
 
     public function index(Request $request)

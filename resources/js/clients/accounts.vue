@@ -35,11 +35,16 @@
     <el-table-column align="right" :width="70">
       <template #default="props">
         <DropDown :show="`/dependents/${props.row.dependent_id}/accounts/${props.row.id}`"
-          :edit="`/dependents/${props.row.dependent_id}/accounts/${props.row.id/edit}`"
+          :edit="`/dependents/${props.row.dependent_id}/accounts/${props.row.id}/edit`"
           :destroy="`/api/v1/accounts/${props.row.id}`">
           <el-dropdown-item>
             <el-link type="info" :href="`${url}/accounts/${props.row.id}/cards/create`" :underline="false">
               Criar Cartão
+            </el-link>
+          </el-dropdown-item>
+          <el-dropdown-item>
+            <el-link type="info" :href="`${url}/accounts/${props.row.id}/limited_products`" :underline="false">
+              Restrição de Produtos
             </el-link>
           </el-dropdown-item>
         </DropDown>

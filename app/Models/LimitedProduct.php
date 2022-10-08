@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Card extends CommonModel
+class LimitedProduct extends CommonModel
 {
     use HasFactory;
 
@@ -32,20 +32,7 @@ class Card extends CommonModel
     protected $appends = [
         'attr_created_at',
         'attr_updated_at',
-        'attr_status',
     ];
-
-    /**
-     * Get the status name of the enum.
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
-     */
-    public function attrStatus(): Attribute
-    {
-        return new Attribute(
-            get: fn () => $this->status->name(),
-        );
-    }
 
     /**
      * Get created_at converted to Brazilian format .
@@ -72,7 +59,17 @@ class Card extends CommonModel
     }
 
     /**
-     * Get the account that owns the Card
+     * Get the product that owns the limitedProduct
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class);
+    }
+
+    /**
+     * Get the account that owns the limitedProduct
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

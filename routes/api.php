@@ -11,6 +11,7 @@ use App\Http\Controllers\API\{
     FinancialCategoryController,
     GetPersonByNifController,
     LeadController,
+    LimitedProductController,
     MeasurementUnitController,
     NcmController,
     ParameterController,
@@ -46,6 +47,7 @@ Route::prefix('v1')->group(function () {
         Route::delete('dependents/{id}', [DependentController::class, 'destroy']);
         Route::delete('accounts/{id}', [AccountController::class, 'destroy']);
         Route::delete('cards/{id}', [CardController::class, 'destroy']);
+        Route::put('limited_products', [LimitedProductController::class, 'store']);
     });
 
     Route::get('ncms', [NcmController::class, 'search']);

@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\{
     FaqController,
     FinancialCategoryController,
     LeadController,
+    LimitedProductController,
     MeasurementUnitController,
     NcmController,
     OpeningBalanceController,
@@ -69,6 +70,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('change-store/{id}', ChangeStoreSessionController::class)->name('change.store');
     Route::get('stocks', [StockController::class, 'index'])->name('stocks.index');
     Route::get('stock', [StockController::class, 'show'])->name('stocks.show');
+    Route::get('accounts/{account}/limited_products', [LimitedProductController::class, 'index'])->name('accounts.limited_products.index');
 
     Route::resource('leads', LeadController::class);
     Route::resource('tenants', TenantController::class);

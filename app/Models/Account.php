@@ -117,4 +117,14 @@ class Account extends CommonModel
     {
         return $this->hasMany(Card::class);
     }
+
+    /**
+     * Get all of the limitedProducts for the Account
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function limitedProducts(): HasMany
+    {
+        return $this->hasMany(Comment::class, 'foreign_key', 'local_key');
+    }
 }
