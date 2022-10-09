@@ -32,6 +32,7 @@ use App\Http\Controllers\Admin\{
     StockController,
     StoreController,
     TenantController,
+    TotenController,
     UserController
 };
 use Illuminate\Support\Facades\Auth;
@@ -75,6 +76,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('leads', LeadController::class);
     Route::resource('tenants', TenantController::class);
     Route::resource('stores', StoreController::class);
+    Route::resource('stores.totens', TotenController::class);
     Route::resource('clients', ClientController::class);
     Route::resource('clients.dependents', DependentController::class);
     Route::resource('dependents.accounts', AccountController::class);
