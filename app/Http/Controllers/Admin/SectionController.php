@@ -135,7 +135,7 @@ class SectionController extends Controller
     private function rules(Request $request, $primaryKey = null, bool $changeMessages = false)
     {
         $rules = [
-            'name' => ['required', 'string', 'max:40'],
+            'name' => ['required', 'string', 'max:40', Rule::unique('sections', 'name')->ignore($primaryKey)],
             'type' => ['required', new Enum(SectionType::class)],
             'status' => ['required', new Enum(Status::class)],
             'description' => ['nullable', 'max:120'],

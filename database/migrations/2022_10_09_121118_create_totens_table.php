@@ -16,7 +16,7 @@ class CreateTotensTable extends Migration
         Schema::create('totens', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->string('token', 36)->unique();
+            $table->uuid('token')->unique();
             $table->foreignId('store_id')->constrained();
             $table->tinyInteger('status');
             $table->timestamps();

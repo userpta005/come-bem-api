@@ -74,6 +74,17 @@
                     </div>
                   </div>
                 </div>
+
+                <div class="card-deck">
+                  <div class="card m-2 shadow-sm">
+                    <div class="card-body">
+                      <p><strong>Preço: </strong></p>
+                      <p class="card-text">
+                        {{ floatToMoney($item->price) }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div class="col-md-12">
 

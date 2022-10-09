@@ -50,6 +50,7 @@ class ProductController extends Controller
 
         DB::transaction(function () use ($request) {
             $inputs = $request->all();
+            $inputs['price'] = moneyToFloat($inputs['price']);
             $inputs['store_id'] = session('store')['id'];
 
             if ($request->hasFile('image') && $request->file('image')->isValid()) {
@@ -90,6 +91,7 @@ class ProductController extends Controller
 
         DB::transaction(function () use ($item, $request) {
             $inputs = $request->all();
+            $inputs['price'] = moneyToFloat($inputs['price']);
 
             if ($request->hasFile('image') && $request->file('image')->isValid()) {
                 $upload = $request->file('image')->store('products', 'public');
@@ -133,6 +135,7 @@ class ProductController extends Controller
             'um_id' => ['required', Rule::exists('measurement_units', 'id')],
             'nutritional_classification' => ['required', new Enum(NutritionalClassification::class)],
             'status' => ['required', new Enum(Status::class)],
+            'price' => ['required'],
         ];
 
         $messages = [];

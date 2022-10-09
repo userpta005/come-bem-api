@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('sections', function (Blueprint $table) {
-            $table->foreignId('store_id')->nullable()->constrained();
+            $table->foreignId('store_id')->constrained();
         });
     }
 

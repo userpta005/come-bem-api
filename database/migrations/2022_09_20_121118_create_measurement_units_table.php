@@ -1,11 +1,10 @@
 <?php
 
-use App\Enums\ClientType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class CreateMeasurementUnitsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('clients', function (Blueprint $table) {
-            $table->tinyInteger('type')->default(ClientType::RESPONSIBLE->value);
+        Schema::create('measurement_units', function (Blueprint $table) {
+            $table->id();
+            $table->string('initials');
+            $table->string('name');
+            $table->tinyInteger('status');
+            $table->timestamps();
         });
     }
 
@@ -26,8 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('clients', function (Blueprint $table) {
-            $table->dropColumn('type');
-        });
+        Schema::dropIfExists('measurement_units');
     }
-};
+}

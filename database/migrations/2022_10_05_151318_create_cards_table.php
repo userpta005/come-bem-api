@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('cards', function (Blueprint $table) {
             $table->id();
-            $table->string('uuid');
-            $table->tinyInteger('status');
+            $table->uuid()->unique();
             $table->foreignId('account_id')->constrained();
+            $table->tinyInteger('status');
             $table->timestamps();
         });
     }

@@ -97,7 +97,7 @@ class CardController extends Controller
     private function rules(Request $request, $primaryKey = null, bool $changeMessages = false)
     {
         $rules = [
-            'uuid' => ['required', 'max:100', Rule::unique('cards')->ignore($primaryKey)],
+            'uuid' => ['required', 'uuid', Rule::unique('cards')->ignore($primaryKey)],
             'status' => ['required', new Enum(\App\Enums\Common\Status::class)],
         ];
 
