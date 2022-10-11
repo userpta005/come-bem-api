@@ -220,6 +220,23 @@ class Permission extends \Spatie\Permission\Models\Permission
                 ]
             ],
             [
+                'title' => 'Relatórios',
+                'items' => [
+                    [
+                        'title' => 'Dependentes',
+                        'items' => [
+                            array('name' => 'client-dependents-report_view', 'description' => 'Visualizar'),
+                        ]
+                    ],
+                    [
+                        'title' => 'Estoque',
+                        'items' => [
+                            array('name' => 'stocks-report_view', 'description' => 'Visualizar'),
+                        ]
+                    ]
+                ]
+            ],
+            [
                 'title' => 'Gerencimento',
                 'items' => [
                     [

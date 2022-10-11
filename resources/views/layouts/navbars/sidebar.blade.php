@@ -282,6 +282,41 @@
           </div>
         </li>
       @endcanany
+
+      @canany(['client-dependents-report_view', 'stocks-report_view'])
+        <li>
+          <a data-toggle="collapse"
+            href="#reports"
+            aria-expanded="false"
+            class="collapsed">
+            <i class="fas fa-file"></i>
+            <span class="nav-link-text">Relatórios</span>
+            <b class="caret mt-1"></b>
+          </a>
+          <div class="collapse"
+            id="reports"
+            style="">
+            <ul class="nav pl-4">
+              @can('client-dependents-report_view')
+                <li>
+                  <a href="{{ route('reports.client-dependents') }}">
+                    <i class="fas fa-child"></i>
+                    <p>Dependentes</p>
+                  </a>
+                </li>
+              @endcan
+              @can('stocks-report_view')
+                <li>
+                  <a href="{{ route('reports.stocks') }}">
+                    <i class="fas fa-boxes"></i>
+                    <p>Estoque</p>
+                  </a>
+                </li>
+              @endcan
+            </ul>
+          </div>
+        </li>
+      @endcanany
       @canany(['users_view', 'roles_view', 'permissions_view'])
         <li>
           <a data-toggle="collapse"
