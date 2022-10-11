@@ -12,7 +12,7 @@ class ReportController extends Controller
     public function __construct()
     {
         $this->middleware('permission:client-dependents-report_view', ['only' => ['clientDependents']]);
-        $this->middleware('permission:stock-report_view', ['only' => ['stocks']]);
+        $this->middleware('permission:stocks-report_view', ['only' => ['stocks']]);
     }
 
     public function clientDependents(Request $request)
