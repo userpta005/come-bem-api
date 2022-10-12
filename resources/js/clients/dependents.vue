@@ -3,22 +3,22 @@
     :row-style="rowStyle">
     <el-table-column :width="12"></el-table-column>
     <el-table-column type="expand" :width="25">
-      <template #default="props">
-        <Accounts :table-data="props.row.accounts" v-if="props.row.accounts.length"></Accounts>
+      <template #default="scope">
+        <Accounts :table-data="scope.row.accounts" v-if="scope.row.accounts.length"></Accounts>
       </template>
     </el-table-column>
     <el-table-column label="Nome Completo/CPF" prop="info" sortable />
     <el-table-column label="Email" prop="email" sortable />
-    <el-table-column label="Status" prop="attr_status" sortable :width="110" />
+    <el-table-column label="Status" prop="attr_status" sortable :width="90" />
     <el-table-column label="DT. CRIAC." prop="attr_created_at" sortable :width="110" />
     <el-table-column label="DT. ATUAL." prop="attr_updated_at" sortable :width="110" />
     <el-table-column align="right" :width="70">
-      <template #default="props">
-        <DropDown :show="`/clients/${props.row.client_id}/dependents/${props.row.id}`"
-          :edit="`/clients/${props.row.client_id}/dependents/${props.row.id}/edit`"
-          :destroy="`/api/v1/dependents/${props.row.id}`">
+      <template #default="scope">
+        <DropDown :show="`/clients/${scope.row.client_id}/dependents/${scope.row.id}`"
+          :edit="`/clients/${scope.row.client_id}/dependents/${scope.row.id}/edit`"
+          :destroy="`/api/v1/dependents/${scope.row.id}`">
           <el-dropdown-item>
-            <el-link type="info" :href="`${url}/dependents/${props.row.id}/accounts/create`" :underline="false">
+            <el-link type="info" :href="`${url}/dependents/${scope.row.id}/accounts/create`" :underline="false">
               Criar Conta
             </el-link>
           </el-dropdown-item>

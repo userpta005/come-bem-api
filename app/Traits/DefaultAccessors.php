@@ -14,7 +14,7 @@ trait DefaultAccessors
     public function info(): Attribute
     {
         return new Attribute(
-            get: fn () => ($this->name ?? $this->people->name) .
+            get: fn () => (substr($this->name, 0, 20) ?? substr($this->people->name, 0, 20)) .
                 (($this->nif ?? ($this->people->nif ?? null)) ? (' - ' . ($this->nif ?? $this->people->nif)) : '')
         );
     }

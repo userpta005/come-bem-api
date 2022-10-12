@@ -58,18 +58,28 @@ class DependentController extends Controller
 
     public function store(Request $request, Client $client)
     {
-        $person = Person::where('nif',  $request->nif)->first();
+        $person = null;
+        if ($request->filled('nif') || $request->filled('email')) {
+            $person = Person::query()
+                ->when($request->filled('nif'), function ($query) use ($request) {
+                    $query->where('nif',  $request->nif);
+                })
+                ->when($request->filled('email'), function ($query) use ($request) {
+                    $query->where('email',  $request->email);
+                })
+                ->first();
+        }
 
         Validator::make(
             $request->all(),
             $this->rules($request, $person->id ?? null)
         )->validate();
 
-        DB::transaction(function () use ($request, $client) {
+        DB::transaction(function () use ($request, $client, $person) {
             $inputs = $request->all();
 
             $person = Person::updateOrCreate(
-                ['nif' => $inputs['nif']],
+                ['id' => $person->id ?? null],
                 $inputs
             );
 
@@ -145,9 +155,7 @@ class DependentController extends Controller
             })],
             'name' => ['required', 'max:100'],
             'full_name' => ['required', 'max:100'],
-            'email' => ['nullable', 'max:100', Rule::when($request->filled('email'), function () use ($primaryKey) {
-                return [Rule::unique('people')->ignore($primaryKey)];
-            })],
+            'email' => ['nullable', 'max:100', Rule::unique('people')->ignore($primaryKey)],
             'phone' => ['required', 'max:11'],
             'city_id' => ['required', Rule::exists('cities', 'id')],
             'zip_code' => ['nullable', 'max:8'],

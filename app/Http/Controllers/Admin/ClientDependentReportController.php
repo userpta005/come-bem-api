@@ -21,7 +21,9 @@ class ClientDependentReportController extends Controller
 
         $clients = Client::query()
             ->person()
-            ->with(['dependents.accounts'])
+            ->with(['dependents.accounts' => function ($query) use ($request) {
+                $query->where('store_id', $request->store_id);
+            }])
             ->whereHas('dependents', function ($query) use ($request) {
                 $query->where('status', Status::ACTIVE)
                     ->whereHas('accounts', function ($query) use ($request) {
