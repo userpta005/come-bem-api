@@ -29,7 +29,7 @@
             <div class="col-md-4">
               <x-select-ajax name="search"
                 label="Nome Completo/Razão Social/CPF/CNPJ"
-                route="/api/v1/leads"
+                route="/api/v1/people"
                 prop="info" />
             </div>
             <div class="col-md-3">

@@ -1,13 +1,15 @@
 @props([
-    'formats' => 'jpeg,png,jpg,gif,svg',
+    'formats' => 'jpeg,png,jpg',
     'value' => asset('images/noimage.png'),
     'name' => 'image',
     'label' => 'Imagem',
     'required' => false,
+    'disabled' => false,
+    'readonly' => false,
 ])
 
 <div class="form-group">
-  <label for="inp-{{ $name }}">{{ $label }}</label>
+  <label for="inp-{{ $name }} {{ $required ? 'required' : '' }}">{{ $label }}</label>
   <img src="{{ $value }}"
     class="d-block"
     id="preview-{{ $name }}"
@@ -17,11 +19,14 @@
     name="{{ $name }}"
     value="{{ $value }}"
     class="d-none"
-    {{ $required ? 'required' : '' }}>
+    {{ $required ? 'required' : '' }}
+    {{ $disabled ? 'disabled' : '' }}
+    {{ $readonly ? 'readonly' : '' }}>
   <label for="inp-{{ $name }}"
-    class="text-primary cp">Trocar</label>
+    class="text-primary cp {{ $disabled || $readonly ? 'd-none' : '' }}">Trocar</label>
   @if ($errors->has($name))
-    <div class="invalid-feedback" style="display: block">{{ $errors->first($name) }}</div>
+    <div class="invalid-feedback"
+      style="display: block">{{ $errors->first($name) }}</div>
   @endif
 </div>
 

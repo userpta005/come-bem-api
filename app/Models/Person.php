@@ -18,6 +18,15 @@ class Person extends PersonModel
     protected $guarded = [];
 
     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'info'
+    ];
+
+    /**
      * Get the city that owns the Person
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

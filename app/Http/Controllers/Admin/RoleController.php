@@ -33,6 +33,15 @@ class RoleController extends Controller
 
         $rules = ModelsRule::orderBy('name')->get();
 
+        if (session()->has('tenant')) {
+            /** @var User $user */
+            $user = auth()->user();
+
+            $userPermissions = $user->getPermissionsViaRoles()->pluck('name')->all();
+
+            $permissions = $this->checkPermissionsTenant($permissions, $userPermissions);
+        }
+
         return view('roles.create', compact('permissions', 'rules'));
     }
 
@@ -69,6 +78,15 @@ class RoleController extends Controller
         $item = Role::findOrFail($id);
 
         $permissions = Permission::defaultPermissions();
+
+        if (session()->has('tenant')) {
+            /** @var User $user */
+            $user = auth()->user();
+
+            $userPermissions = $user->getPermissionsViaRoles()->pluck('name')->all();
+
+            $permissions = $this->checkPermissionsTenant($permissions, $userPermissions);
+        }
 
         $rules = ModelsRule::orderBy('name')->get();
 
@@ -122,6 +140,37 @@ class RoleController extends Controller
             return redirect()->route('roles.index')
                 ->withError('Registro vinculado á outra tabela, somente poderá ser excluído se retirar o vinculo.');
         }
+    }
+
+    private function checkPermissionsTenant(array &$permissions, array $userPermissions)
+    {
+        foreach ($permissions as  $key => &$value) {
+            if (!is_array($value) && !empty($value)) {
+                return;
+            }
+
+            if (
+                array_key_exists('title', $value) &&
+                !empty($value['items'])
+            ) {
+                $value['items'] = $this->checkPermissionsTenant($value['items'], $userPermissions);
+            }
+
+            if (
+                array_key_exists('title', $value) &&
+                empty($value['items'])
+            ) {
+                unset($permissions[$key]);
+            }
+
+            if (
+                array_key_exists('name', $value) &&
+                !in_array($value['name'], $userPermissions)
+            ) {
+                unset($permissions[$key]);
+            }
+        }
+        return $permissions;
     }
 
     private function rules(Request $request, $primaryKey = null, bool $changeMessages = false)

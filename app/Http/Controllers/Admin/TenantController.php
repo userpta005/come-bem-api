@@ -34,7 +34,9 @@ class TenantController extends Controller
     {
         $data = Tenant::person()
             ->when(!empty($request->search), function ($query) use ($request) {
-                $query->where('tenants.id', $request->search);
+                $query->whereHas('people', function ($query) use ($request) {
+                    $query->where('id', $request->search);
+                });
             })
             ->when(!empty($request->status), function ($query) use ($request) {
                 $query->where('tenants.status', $request->status);

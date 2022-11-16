@@ -10,18 +10,15 @@ use App\Http\Controllers\API\{
     FaqController,
     FinancialCategoryController,
     GetPersonByNifController,
-    LeadController,
     LimitedProductController,
     MeasurementUnitController,
     NcmController,
     ParameterController,
     PaymentMethodController,
+    PersonController,
     SectionController,
     SettingsController,
     StockController,
-    StoreController,
-    TenantController,
-    UserController
 };
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -50,13 +47,10 @@ Route::prefix('v1')->group(function () {
         Route::put('limited_products', [LimitedProductController::class, 'store']);
     });
 
+    Route::get('people', [PersonController::class, 'index']);
+
     Route::get('ncms', [NcmController::class, 'search']);
-    Route::get('leads', [LeadController::class, 'search']);
-    Route::get('tenants', [TenantController::class, 'search']);
-    Route::get('stores', [StoreController::class, 'search']);
-    Route::get('clients', [ClientController::class, 'search']);
     Route::get('dependents', [DependentController::class, 'search']);
-    Route::get('users', [UserController::class, 'search']);
     Route::get('get-person-by-nif', GetPersonByNifController::class);
     Route::apiResource('cities', CityController::class)->only(['index', 'show']);
     Route::get('parameters', [ParameterController::class, 'index']);

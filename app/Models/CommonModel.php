@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\Common\Status;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Schema;
 
 abstract class CommonModel extends Model
 {
@@ -17,18 +18,21 @@ abstract class CommonModel extends Model
     {
         parent::__construct($attributes);
 
-        $guarded = [
-            'id',
-            'created_at',
-            'updated_at'
-        ];
+        $attributes = Schema::getColumnListing($this->getTable());
+        $guarded = ['id'];
+        $casts = [];
+
+        if (in_array('created_at', $attributes)) {
+            $guarded[] = 'created_at';
+        }
+        if (in_array('updated_at', $attributes)) {
+            $guarded[] = 'updated_at';
+        }
+        if (in_array('status', $attributes)) {
+            $casts['status'] = Status::class;
+        }
 
         $this->guarded = array_merge($guarded, $this->guarded);
-
-        $casts = [
-            'status' => Status::class,
-        ];
-
         $this->casts = array_merge($casts, $this->casts);
     }
 }

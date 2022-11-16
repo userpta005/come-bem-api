@@ -32,7 +32,9 @@ class ClientController extends Controller
             ->person()
             ->with('dependents.accounts.cards')
             ->when(!empty($request->search), function ($query) use ($request) {
-                $query->where('clients.id', $request->search);
+                $query->whereHas('people', function ($query) use ($request) {
+                    $query->where('id', $request->search);
+                });
             })
             ->when(!empty($request->status), function ($query) use ($request) {
                 $query->where('clients.status', $request->status);

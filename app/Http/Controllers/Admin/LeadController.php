@@ -27,7 +27,9 @@ class LeadController extends Controller
     {
         $data = Lead::person()
             ->when(!empty($request->search), function ($query) use ($request) {
-                $query->where('leads.id', $request->search);
+                $query->whereHas('people', function ($query) use ($request) {
+                    $query->where('id', $request->search);
+                });
             })
             ->when(!empty($request->status), function ($query) use ($request) {
                 $query->where('leads.status', $request->status);

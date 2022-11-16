@@ -28,7 +28,9 @@ class UserController extends Controller
     {
         $data = User::person()
             ->when(!empty($request->search), function ($query) use ($request) {
-                $query->where('users.id', $request->search);
+                $query->whereHas('people', function ($query) use ($request) {
+                    $query->where('id', $request->search);
+                });
             })
             ->when(!empty($request->status), function ($query) use ($request) {
                 $query->where('users.status', $request->status);

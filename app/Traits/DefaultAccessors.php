@@ -14,8 +14,27 @@ trait DefaultAccessors
     public function info(): Attribute
     {
         return new Attribute(
-            get: fn () => (substr($this->name, 0, 20) ?? substr($this->people->name, 0, 20)) .
-                (($this->nif ?? ($this->people->nif ?? null)) ? (' - ' . ($this->nif ?? $this->people->nif)) : '')
+            get: function () {
+                if (!empty($this->name) && !empty($this->nif)) {
+                    return ($this->name . ' - ' . $this->nif);
+                }
+                if (!empty($this->people->name) && !empty($this->people->nif)) {
+                    return ($this->people->name . ' - ' . $this->people->nif);
+                }
+                if (!empty($this->name)) {
+                    return $this->name;
+                }
+                if (!empty($this->people->name)) {
+                    return $this->people->name;
+                }
+                if (!empty($this->full_name)) {
+                    return $this->full_name;
+                }
+                if (!empty($this->people->full_name)) {
+                    return $this->people->full_name;
+                }
+                return null;
+            }
         );
     }
 
@@ -27,7 +46,7 @@ trait DefaultAccessors
     public function nif(): Attribute
     {
         return new Attribute(
-            get: fn ($value) => !empty($value) ? nifMask($value) : (!empty($this->people->nif) ? $this->people->nif : '')
+            get: fn ($value) => !empty($value) ? nifMask($value) : (!empty($this->people->nif) ? $this->people->nif : null)
         );
     }
 
@@ -39,7 +58,7 @@ trait DefaultAccessors
     public function phone(): Attribute
     {
         return new Attribute(
-            get: fn ($value) => !empty($value) ? phoneMask($value) : (!empty($this->people->phone) ? $this->people->phone : '')
+            get: fn ($value) => !empty($value) ? phoneMask($value) : (!empty($this->people->phone) ? $this->people->phone : null)
         );
     }
 
@@ -51,7 +70,19 @@ trait DefaultAccessors
     public function zipCode(): Attribute
     {
         return new Attribute(
-            get: fn ($value) => !empty($value) ? zipCodeMask($value) : (!empty($this->people->zip_code) ? $this->people->zip_code : '')
+            get: fn ($value) => !empty($value) ? zipCodeMask($value) : (!empty($this->people->zip_code) ? $this->people->zip_code : null)
+        );
+    }
+
+    /**
+     * Get the product person url.
+     *
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    public function imageUrl(): Attribute
+    {
+        return new Attribute(
+            get: fn () => $this->image ? asset('storage/' . $this->image) : (!empty($this->people->image) ? asset('storage/' . $this->people->image) : null)
         );
     }
 }
