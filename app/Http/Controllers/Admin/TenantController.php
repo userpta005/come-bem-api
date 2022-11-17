@@ -15,13 +15,13 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
+use App\Rules\CpfCnpj;
 use App\Traits\PersonRules;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 
 class TenantController extends Controller
 {
-    use PersonRules;
-
     public function __construct()
     {
         $this->middleware('permission:tenants_create', ['only' => ['create', 'store']]);
@@ -193,11 +193,21 @@ class TenantController extends Controller
             'dt_accession' => ['required', 'date'],
             'due_date' => ['required', 'date'],
             'due_day' => ['required', new Enum(TenantDueDays::class)],
-            'value' => ['required']
+            'value' => ['required'],
+            'nif' => ['required', 'max:14', new CpfCnpj, Rule::unique('people')->ignore($primaryKey)],
+            'name' => ['required', 'max:100'],
+            'full_name' => ['nullable', 'max:100'],
+            'state_registration' => ['nullable', 'max:25'],
+            'city_registration' => ['nullable', 'max:25'],
+            'birthdate' => ['required', 'date'],
+            'email' => ['required', 'max:100', Rule::unique('people')->ignore($primaryKey)],
+            'phone' => ['required', 'max:11'],
+            'city_id' => ['required', Rule::exists('cities', 'id')],
+            'zip_code' => ['required', 'max:8'],
+            'address' => ['required', 'max:50'],
+            'district' => ['nullable', 'max:50'],
+            'number' => ['nullable', 'max:4'],
         ];
-
-        $this->PersonRules($primaryKey);
-        $rules = array_merge($rules, $this->rules);
 
         $messages = [];
 

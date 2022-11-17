@@ -8,15 +8,15 @@ use Illuminate\Http\Request;
 use App\Models\Person;
 use App\Models\Store;
 use App\Models\User;
+use App\Rules\CpfCnpj;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Traits\PersonRules;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 
 class StoreController extends Controller
 {
-    use PersonRules;
-
     public function __construct()
     {
         $this->middleware('permission:stores_create', ['only' => ['create', 'store']]);
@@ -156,10 +156,21 @@ class StoreController extends Controller
     {
         $rules = [
             'status' => ['required', new Enum(StoreStatus::class)],
+            'nif' => ['required', 'max:14', new CpfCnpj, Rule::unique('people')->ignore($primaryKey)],
+            'name' => ['required', 'max:100'],
+            'full_name' => ['nullable', 'max:100'],
+            'state_registration' => ['nullable', 'max:25'],
+            'city_registration' => ['nullable', 'max:25'],
+            'birthdate' => ['required', 'date'],
+            'status' => ['required', new Enum(Status::class)],
+            'email' => ['required', 'max:100', Rule::unique('people')->ignore($primaryKey)],
+            'phone' => ['required', 'max:11'],
+            'city_id' => ['required', Rule::exists('cities', 'id')],
+            'zip_code' => ['required', 'max:8'],
+            'address' => ['required', 'max:50'],
+            'district' => ['nullable', 'max:50'],
+            'number' => ['nullable', 'max:4'],
         ];
-
-        $this->PersonRules($primaryKey);
-        $rules = array_merge($rules, $this->rules);
 
         $messages = [];
 

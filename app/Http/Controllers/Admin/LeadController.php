@@ -6,15 +6,15 @@ use App\Enums\LeadStatus;
 use App\Models\Lead;
 use App\Models\Person;
 use App\Http\Controllers\Controller;
+use App\Rules\CpfCnpj;
 use App\Traits\PersonRules;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 
 class LeadController extends Controller
 {
-    use PersonRules;
-
     public function __construct()
     {
         $this->middleware('permission:leads_create', ['only' => ['create', 'store']]);
@@ -140,11 +140,22 @@ class LeadController extends Controller
     {
         $rules = [
             'status' => ['required', new Enum(LeadStatus::class)],
-            'observation' => ['nullable', 'max:191']
+            'observation' => ['nullable', 'max:191'],
+            'nif' => ['required', 'max:14', new CpfCnpj, Rule::unique('people')->ignore($primaryKey)],
+            'name' => ['required', 'max:100'],
+            'full_name' => ['nullable', 'max:100'],
+            'state_registration' => ['nullable', 'max:25'],
+            'city_registration' => ['nullable', 'max:25'],
+            'birthdate' => ['required', 'date'],
+            'status' => ['required', new Enum(Status::class)],
+            'email' => ['required', 'max:100', Rule::unique('people')->ignore($primaryKey)],
+            'phone' => ['required', 'max:11'],
+            'city_id' => ['required', Rule::exists('cities', 'id')],
+            'zip_code' => ['required', 'max:8'],
+            'address' => ['required', 'max:50'],
+            'district' => ['nullable', 'max:50'],
+            'number' => ['nullable', 'max:4'],
         ];
-
-        $this->personRules($primaryKey);
-        $rules = array_merge($rules, $this->rules);
 
         $messages = [];
 

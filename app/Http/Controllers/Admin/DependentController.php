@@ -14,11 +14,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Traits\PersonRules;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 
 class DependentController extends Controller
 {
-    use PersonRules;
-
     public function __construct()
     {
         $this->middleware('permission:dependents_create', ['only' => ['create', 'client']]);
@@ -155,6 +154,10 @@ class DependentController extends Controller
             })],
             'name' => ['required', 'max:100'],
             'full_name' => ['required', 'max:100'],
+            'state_registration' => ['nullable', 'max:25'],
+            'city_registration' => ['nullable', 'max:25'],
+            'birthdate' => ['required', 'date'],
+            'status' => ['required', new Enum(Status::class)],
             'email' => ['nullable', 'max:100', Rule::unique('people')->ignore($primaryKey)],
             'phone' => ['required', 'max:11'],
             'city_id' => ['required', Rule::exists('cities', 'id')],
@@ -163,9 +166,6 @@ class DependentController extends Controller
             'district' => ['nullable', 'max:50'],
             'number' => ['nullable', 'max:4'],
         ];
-
-        $this->PersonRules($primaryKey);
-        $rules = array_merge($this->rules, $rules);
 
         $messages = [];
 
