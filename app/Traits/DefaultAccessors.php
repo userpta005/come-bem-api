@@ -73,16 +73,4 @@ trait DefaultAccessors
             get: fn ($value) => !empty($value) ? zipCodeMask($value) : (!empty($this->people->zip_code) ? $this->people->zip_code : null)
         );
     }
-
-    /**
-     * Get the product person url.
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
-     */
-    public function imageUrl(): Attribute
-    {
-        return new Attribute(
-            get: fn () => $this->image ? asset('storage/' . $this->image) : (!empty($this->people->image) ? asset('storage/' . $this->people->image) : null)
-        );
-    }
 }

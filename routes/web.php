@@ -62,8 +62,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('home', [HomeController::class, 'index'])->name('home');
     Route::get('profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::get('password', [PasswordController::class, 'edit'])->name('password.edit');
-    Route::put('password', [PasswordController::class, 'update'])->name('password.update');
+    Route::get('change-password', [PasswordController::class, 'edit'])->name('change-password.edit');
+    Route::put('change-password', [PasswordController::class, 'update'])->name('change-password.update');
     Route::get('states', [StateController::class, 'index'])->name('states.index');
     Route::get('cities', [CityController::class, 'index'])->name('cities.index');
     Route::get('ncms', [NcmController::class, 'index'])->name('ncms.index');

@@ -67,7 +67,7 @@
             </li>
             <li class="dropdown-divider"></li>
             <li class="nav-link">
-              <a href="{{ route('password.edit') }}"
+              <a href="{{ route('change-password.edit') }}"
                 class="nav-item dropdown-item">Alterar Senha</a>
             </li>
             <li class="dropdown-divider"></li>

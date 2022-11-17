@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class PersonController extends BaseController
 {
-    public function index(Request $request)
+    public function search(Request $request)
     {
         $query = Person::query();
 

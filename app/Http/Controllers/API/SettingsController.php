@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
 use App\Models\Settings;
 use Illuminate\Http\Request;
 
 class SettingsController extends BaseController
 {
-    public function __invoke()
+    public function index(Request $request)
     {
-        $settings = Settings::with('city.state')->first();
+        $settings = Settings::query()
+            ->with('city.state')
+            ->get();
 
         return $this->sendResponse($settings);
     }

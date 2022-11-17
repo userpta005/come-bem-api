@@ -12,18 +12,18 @@ class FinancialCategoryController extends BaseController
     public function index(Request $request)
     {
         $data = FinancialCategory::withDepth()
-        ->where('status', Status::ACTIVE)
+            ->where('status', Status::ACTIVE)
             ->when($request->filled('tenant'), function ($query) use ($request) {
                 $query->where('tenant_id', $request->tenant);
             })
             ->when($request->filled('type'), function ($query) use ($request) {
                 if ($request->type == 3) {
-                    return $query->where('code', 'LIKE', '3%')->where('code', '!=', '3.01.002');
+                    $query->where('code', 'LIKE', '3%')->where('code', '!=', '3.01.002');
                 }
                 if ($request->type == 4) {
-                    return $query->where('code', 'LIKE', '3%')->where('code', '!=', '3.01.001');
+                    $query->where('code', 'LIKE', '3%')->where('code', '!=', '3.01.001');
                 }
-                return $query->where('type', $request->type);
+                $query->where('type', $request->type);
             })
             ->get()
             ->toFlatTree();

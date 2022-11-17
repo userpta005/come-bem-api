@@ -4,15 +4,27 @@ namespace App\Http\Controllers\API;
 
 use App\Enums\Common\Status;
 use App\Models\Faq;
+use Illuminate\Http\Request;
 
 class FaqController extends BaseController
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        $faqs = Faq::where('status', Status::ACTIVE)
-            ->get();
+        $query = Faq::query()
+            ->where('status', Status::ACTIVE);
 
-        return $this->sendResponse($faqs);
+        $data = $request->filled('page') ? $query->paginate(10) : $query->get();
+
+        return $this->sendResponse($data);
+    }
+
+    public function show(Request $request, $id)
+    {
+        $item = Faq::query()
+            ->where('status', Status::ACTIVE)
+            ->findOrFail($id);
+
+        return $this->sendResponse($item);
     }
 }

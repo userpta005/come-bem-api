@@ -32,8 +32,8 @@ trait ScopePerson
             'people.district',
             'people.number',
         )
-            ->join('people', 'people.id', '=', "{$this->getTable()}.person_id")
-            ->join('cities', 'cities.id', '=', 'people.city_id')
-            ->join('states', 'states.id', '=', 'cities.state_id');
+            ->leftJoin('people', 'people.id', '=', "{$this->getTable()}.person_id")
+            ->leftJoin('cities', 'cities.id', '=', 'people.city_id')
+            ->leftJoin('states', 'states.id', '=', 'cities.state_id');
     }
 }

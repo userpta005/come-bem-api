@@ -7,7 +7,7 @@
             <div class="card-header">
                 <h4 class="title">Alterar Senha</h4>
             </div>
-            <form method="post" action="{{ route('password.update') }}" autocomplete="off">
+            <form method="post" action="{{ route('change-password.update') }}" autocomplete="off">
                 <div class="card-body">
                     @csrf
                     @method('put')

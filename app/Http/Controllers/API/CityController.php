@@ -10,30 +10,26 @@ class CityController extends BaseController
 {
     public function index(Request $request)
     {
-        $query = City::select(
-            'cities.id',
-            'cities.title',
-            'states.letter',
-            'cities.lat',
-            'cities.long'
-        )
-            ->join('states', 'states.id', '=', 'cities.state_id')
-            ->orderBy('title', 'asc')
-            ->when($request->filled('state'), function ($query) use ($request) {
-                return $query->where('state_id', $request->state);
+        $query = City::query()
+            ->with('state')
+            ->when($request->filled('state_id'), function ($query) use ($request) {
+                $query->where('state_id', $request->state_id);
             })
             ->when($request->filled('search'), function ($query) use ($request) {
-                return $query->where('cities.title', 'like', '%' . $request->search . '%');
-            });
+                $query->where('title', 'like', '%' . $request->search . '%');
+            })
+            ->orderBy('title', 'asc');
 
-        ($request->filled('page'))  ? $data = $query->paginate(10) : $data = $query->get();
+        $data = $request->filled('page') ? $query->paginate(10) : $query->get();
 
         return $this->sendResponse($data);
     }
 
     public function show($id)
     {
-        $item = City::findOrFail($id);
+        $item = City::query()
+        ->with('state')
+        ->findOrFail($id);
 
         return $this->sendResponse($item);
     }
