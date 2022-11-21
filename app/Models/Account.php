@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Enums\AccountTurn;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Account extends CommonModel
@@ -23,7 +25,9 @@ class Account extends CommonModel
      *
      * @var array
      */
-    protected $casts = [];
+    protected $casts = [
+        'turn' => AccountTurn::class,
+    ];
 
     /**
      * The accessors to append to the model's array form.
@@ -119,12 +123,22 @@ class Account extends CommonModel
     }
 
     /**
-     * Get all of the limitedProducts for the Account
+     * The limitedProducts that belong to the Product
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function limitedProducts(): HasMany
     {
-        return $this->hasMany(Comment::class, 'foreign_key', 'local_key');
+        return $this->hasMany(LimitedProduct::class);
+    }
+
+    /**
+     * Get the store that owns the Account
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function store(): BelongsTo
+    {
+        return $this->belongsTo(Store::class);
     }
 }

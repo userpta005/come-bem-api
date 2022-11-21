@@ -19,6 +19,7 @@ trait ScopePerson
             'people.nif',
             'people.name',
             'people.full_name',
+            'people.gender',
             'people.birthdate',
             'people.state_registration',
             'people.city_registration',

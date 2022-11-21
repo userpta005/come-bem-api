@@ -90,7 +90,7 @@
                         <input type="checkbox"
                           id="product-{{ $item->id }}"
                           data-product="{{ $item }}"
-                          @checked($limitedProducts->where('product_id', $item->id)->where('account_id', $account->id)->first())>
+                          @checked($item->limitedProducts->where('product_id', $item->id)->first())>
                         <span class="group-title">
                           @if ($item->nutritional_classification->isUnder_Analysis())
                             <span class="square ml-1"

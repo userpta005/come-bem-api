@@ -12,6 +12,12 @@
     {!! Form::text('school_year', 'Série')->attrs(['maxlength' => 10])->required(false) !!}
   </div>
   <div class="col-md-3">
+    {!! Form::select('turn', 'Turno', \App\Enums\AccountTurn::all())->attrs(['class' => 'select2'])->required() !!}
+  </div>
+  <div class="col-md-3">
+    {!! Form::select('store_id', 'Escola')->options($stores->prepend('Selecione', ''))->attrs(['class' => 'select2'])->value($item->store_id ?? session('store')['id'])->disabled() !!}
+  </div>
+  <div class="col-md-3">
     {!! Form::select('status', 'Status', \App\Enums\Common\Status::all())->attrs(['class' => 'select2'])->required() !!}
   </div>
 </div>

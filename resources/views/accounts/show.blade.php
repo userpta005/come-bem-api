@@ -34,8 +34,24 @@
                   </p>
                 </div>
               </div>
+              <div class="card m-2 shadow-sm">
+                <div class="card-body">
+                  <p><strong>Escola: </strong></p>
+                  <p class="card-text">
+                    {{ $item->store->people->info }}
+                  </p>
+                </div>
+              </div>
             </div>
             <div class="card-deck">
+              <div class="card m-2 shadow-sm">
+                <div class="card-body">
+                  <p><strong>Turno: </strong></p>
+                  <p class="card-text">
+                    {{ $item->turn->name() }}
+                  </p>
+                </div>
+              </div>
               <div class="card m-2 shadow-sm">
                 <div class="card-body">
                   <p><strong>Saldo: </strong></p>
@@ -46,7 +62,7 @@
               </div>
               <div class="card m-2 shadow-sm">
                 <div class="card-body">
-                  <p><strong>Status: </strong></p>
+                  <p><strong>Limite Diário: </strong></p>
                   <p class="card-text">
                     {{ floatToMoney($item->daily_limit) }}
                   </p>

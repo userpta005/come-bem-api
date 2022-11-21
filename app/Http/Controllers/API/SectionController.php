@@ -12,9 +12,19 @@ class SectionController extends BaseController
     {
         $sections = Section::query()
             ->where('status', Status::ACTIVE)
-            ->get(['id', 'name', 'description', 'parent_id', '_lft', '_rgt', 'order'])
+            ->where('store_id', $request->get('store')['id'])
+            ->get()
             ->toTree();
 
         return $this->sendResponse($sections);
+    }
+
+    public function show(Request $request, $id)
+    {
+        $item = Section::query()
+        ->where('store_id', $request->get('store')['id'])
+        ->findOrFail($id);
+
+        return $this->sendResponse($item);
     }
 }

@@ -11,6 +11,7 @@ class SettingsController extends BaseController
     {
         $settings = Settings::query()
             ->with('city.state')
+            ->where('store_id', $request->get('store')['id'])
             ->get();
 
         return $this->sendResponse($settings);

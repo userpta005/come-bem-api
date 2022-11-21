@@ -43,9 +43,6 @@ class LeadController extends Controller
             ->when(session()->exists('store'), function ($query) {
                 $query->where('leads.store_id', session('store')['id']);
             })
-            ->when(!session()->exists('store'), function ($query) {
-                $query->whereNull('leads.store_id');
-            })
             ->orderBy('people.name')
             ->paginate(10);
 

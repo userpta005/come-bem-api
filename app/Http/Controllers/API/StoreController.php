@@ -3,15 +3,15 @@
 namespace App\Http\Controllers\API;
 
 use App\Enums\Common\Status;
-use App\Models\PaymentMethod;
+use App\Models\Store;
 use Illuminate\Http\Request;
 
-class PaymentMethodController extends BaseController
+class StoreController extends BaseController
 {
     public function index(Request $request)
     {
-        $query = PaymentMethod::query()
-            ->where('status', Status::ACTIVE);
+        $query = Store::query()
+            ->with('people.city.state', 'tenant.people.city.state');
 
         $data = $request->filled('page') ? $query->paginate(10) : $query->get();
 
@@ -20,7 +20,9 @@ class PaymentMethodController extends BaseController
 
     public function show($id)
     {
-        $item = PaymentMethod::query()->findOrFail($id);
+        $item = Store::query()
+            ->with('people.city.state', 'tenant.people.city.state')
+            ->findOrFail($id);
 
         return $this->sendResponse($item);
     }

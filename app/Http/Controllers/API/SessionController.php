@@ -29,7 +29,9 @@ class SessionController extends BaseController
         if (Auth::attempt(array('email' => $inputs['email'], 'password' => $inputs['password']))) {
             $id = Auth::id();
 
-            $user = User::person()->find($id);
+            $user = User::person()
+                ->with('people.city.state', 'stores', 'store')
+                ->findOrFail($id);
 
             $token = $user->createToken(config('app.key'));
 

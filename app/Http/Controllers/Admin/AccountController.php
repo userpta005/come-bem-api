@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\Common\Status;
 use Illuminate\Http\Request;
 use App\Models\Account;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use App\Models\Dependent;
+use App\Models\Store;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Enum;
@@ -34,11 +36,35 @@ class AccountController extends Controller
 
     public function create(Dependent $dependent)
     {
-        return view('accounts.create', compact('dependent'));
+        $account = Account::query()
+            ->where('dependent_id', $dependent->id)
+            ->where('store_id', session('store')['id'])
+            ->first();
+
+        if ($account instanceof Account) {
+            return redirect()->route('clients.index')
+                ->withError('Já existe uma conta para este dependente nesta escola');
+        }
+
+        $stores = Store::person()
+            ->where('stores.status', Status::ACTIVE)
+            ->get();
+
+        return view('accounts.create', compact('dependent', 'stores'));
     }
 
     public function store(Request $request, Dependent $dependent)
     {
+        $account = Account::query()
+            ->where('dependent_id', $dependent->id)
+            ->where('store_id', session('store')['id'])
+            ->first();
+
+        if ($account instanceof Account) {
+            return redirect()->route('clients.index')
+                ->withError('Já existe uma conta para este dependente nesta escola');
+        }
+
         Validator::make(
             $request->all(),
             $this->rules($request)
@@ -69,7 +95,11 @@ class AccountController extends Controller
     {
         $item = Account::findOrFail($id);
 
-        return view('accounts.edit', compact('item', 'dependent'));
+        $stores = Store::person()
+            ->where('stores.status', Status::ACTIVE)
+            ->get();
+
+        return view('accounts.edit', compact('item', 'dependent', 'stores'));
     }
 
     public function update(Request $request, Dependent $dependent, $id)
@@ -113,6 +143,7 @@ class AccountController extends Controller
             'daily_limit' => ['nullable', 'max:14'],
             'class' => ['nullable', 'max:10'],
             'school_year' => ['nullable', 'max:10'],
+            'turn' => ['required', new Enum(\App\Enums\AccountTurn::class)],
             'status' => ['required', new Enum(\App\Enums\Common\Status::class)],
         ];
 

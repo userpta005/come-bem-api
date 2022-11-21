@@ -19,7 +19,7 @@
         ])->required() !!}
   </div>
   <div class="col-md-8">
-    {!! Form::select('parent_id', 'Antecessor', $sections)->value($data)->attrs(['class' => 'select2'])->required(!empty($data))->readonly() !!}
+    {!! Form::select('parent_id', 'Antecessor', $sections)->value($parentId)->attrs(['class' => 'select2'])->required(!empty($data))->readonly() !!}
   </div>
 </div>
 <div class="row">

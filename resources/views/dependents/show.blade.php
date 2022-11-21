@@ -46,6 +46,14 @@
             <div class="card-deck">
               <div class="card m-2 shadow-sm">
                 <div class="card-body">
+                  <p><strong>Genêro: </strong></p>
+                  <p class="card-text">
+                    {{ $item->people->gender->name() }}
+                  </p>
+                </div>
+              </div>
+              <div class="card m-2 shadow-sm">
+                <div class="card-body">
                   <p><strong>DT. Nasc/Abertura: </strong></p>
                   <p class="card-text">
                     {{ brDate($item->birthdate) }}

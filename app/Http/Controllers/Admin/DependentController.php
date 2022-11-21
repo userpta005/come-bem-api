@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\Common\Status;
+use App\Enums\PeopleGender;
 use App\Http\Controllers\Controller;
 use App\Models\Client;
 use Illuminate\Http\Request;
 use App\Models\Person;
 use App\Models\Dependent;
-use App\Models\Role;
-use App\Models\User;
 use App\Rules\CpfCnpj;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use App\Traits\PersonRules;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 
@@ -158,6 +157,7 @@ class DependentController extends Controller
             'city_registration' => ['nullable', 'max:25'],
             'birthdate' => ['required', 'date'],
             'status' => ['required', new Enum(Status::class)],
+            'gender' => ['required', new Enum(PeopleGender::class)],
             'email' => ['nullable', 'max:100', Rule::unique('people')->ignore($primaryKey)],
             'phone' => ['required', 'max:11'],
             'city_id' => ['required', Rule::exists('cities', 'id')],

@@ -44,9 +44,6 @@ class UserController extends Controller
             ->when(session()->exists('store'), function ($query) {
                 $query->where('users.store_id', session('store')['id']);
             })
-            ->when(!session()->exists('store'), function ($query) {
-                $query->whereNull('users.store_id');
-            })
             ->paginate(10);
 
         $users = User::person()->get();

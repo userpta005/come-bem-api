@@ -36,20 +36,19 @@ class SectionController extends Controller
 
     public function create(Request $request)
     {
-        $data = $request->parent_id;
+        $parentId = $request->parent_id;
 
         $sections = $this->getPlanOptions();
 
+        $section = Section::withDepth()->find($parentId);
+
         $types = SectionType::all();
-
-        $section = Section::withDepth()->find($data);
-
         if (!empty($section) && $section->depth == 1) {
             $types = SectionType::only(['A']);
         }
 
         return view('sections.create', compact(
-            'data',
+            'parentId',
             'sections',
             'types'
         ));
@@ -82,22 +81,21 @@ class SectionController extends Controller
     {
         $item = Section::findOrFail($id);
 
-        $data = $item->parent_id;
+        $parentId = $item->parent_id;
 
         $sections = $this->getPlanOptions();
 
+        $section = Section::withDepth()->find($parentId);
+
         $types = SectionType::all();
-
-        $section = Section::withDepth()->find($data);
-
-        if ($section->depth == 1) {
+        if (!empty($section) && $section->depth == 1) {
             $types = SectionType::only(['A']);
         }
 
         return view('sections.edit', compact(
             'item',
             'sections',
-            'data',
+            'parentId',
             'types'
         ));
     }

@@ -18,6 +18,9 @@
     {!! Form::text('email', 'Email')->type('email')->attrs(['class' => 'email'])->readonly(!empty($item->email)) !!}
   </div>
   <div class="col-md-3">
+    {!! Form::select('gender', 'Genêro')->options(\App\Enums\PeopleGender::all()->prepend('Selecione...', ''))->attrs(['class' => 'select2'])->required() !!}
+  </div>
+  <div class="col-md-3">
     {!! Form::text('phone', 'Telefone')->attrs(['class' => 'phone'])->required() !!}
   </div>
   <div class="col-md-4">

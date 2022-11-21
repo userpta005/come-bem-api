@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\Common\Status;
+use App\Notifications\ResetPassword;
 use App\Traits\DefaultAccessors;
 use App\Traits\ScopePerson;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -97,5 +98,10 @@ class User extends Authenticatable
             ->where('rules.name', $name)
             ->where('model_has_roles.model_id', $this->id)
             ->exists();
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPassword($token));
     }
 }

@@ -9,7 +9,7 @@ class CardController extends BaseController
 {
     public function destroy($id)
     {
-        $item = Card::findOrFail($id);
+        $item = Card::query()->findOrFail($id);
 
         try {
             $item->delete();

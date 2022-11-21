@@ -12,7 +12,6 @@ use App\Models\User;
 use App\Rules\CpfCnpj;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use App\Traits\PersonRules;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 
@@ -30,7 +29,11 @@ class ClientController extends Controller
     {
         $data = Client::query()
             ->person()
-            ->with('dependents.accounts.cards')
+            ->with(['dependents.accounts.cards', 'dependents.accounts' => function ($query) {
+                $query->when(session()->exists('store'), function ($query) {
+                    $query->where('store_id', session('store')['id']);
+                });
+            }])
             ->when(!empty($request->search), function ($query) use ($request) {
                 $query->whereHas('people', function ($query) use ($request) {
                     $query->where('id', $request->search);

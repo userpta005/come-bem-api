@@ -19,14 +19,13 @@ class LimitedProductController extends Controller
     public function index(Account $account, Request $request)
     {
         $data = Product::query()
+            ->with(['limitedProducts' => function ($query) use ($account) {
+                $query->where('account_id', $account->id);
+            }])
             ->where('status', Status::ACTIVE)
             ->where('store_id', $account->store_id)
             ->get();
 
-        $limitedProducts = LimitedProduct::query()
-            ->where('account_id', $account->id)
-            ->get();
-
-        return view('limited_products.index', compact('data', 'account', 'limitedProducts'));
+        return view('limited_products.index', compact('data', 'account'));
     }
 }

@@ -4,11 +4,13 @@ namespace App\Http\Controllers\API;
 
 use App\Enums\ClientType;
 use App\Enums\Common\Status;
+use App\Models\Account;
 use App\Models\Client;
 use App\Models\Dependent;
 use App\Models\Person;
 use App\Models\Role;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -74,9 +76,16 @@ class UserController extends BaseController
 
             if (ClientType::from($inputs['type']) === ClientType::RESPONSIBLE_DEPENDENT) {
                 $inputs['client_id'] = $client->id;
-                Dependent::query()
+                $dependent = Dependent::query()
                     ->updateOrCreate(
                         ['client_id' => $client->id],
+                        $inputs
+                    );
+
+                $inputs['store_id'] = $request->get('store')['id'];
+                Account::query()
+                    ->updateOrCreate(
+                        ['dependent_id' => $dependent->id, 'store_id' => $inputs['store_id']],
                         $inputs
                     );
             }
@@ -85,7 +94,7 @@ class UserController extends BaseController
             return $this->sendResponse([], 'Registro criado com sucesso', 201);
         } catch (\Throwable $th) {
             DB::rollBack();
-            return $this->sendError("Erro interno do servidor");
+            return $this->sendError($th->getMessage());
         }
     }
 

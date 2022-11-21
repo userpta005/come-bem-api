@@ -6,6 +6,8 @@ use App\Enums\NutritionalClassification;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Product extends CommonModel
 {
@@ -78,5 +80,15 @@ class Product extends CommonModel
     public function um(): BelongsTo
     {
         return $this->belongsTo(MeasurementUnit::class, 'um_id');
+    }
+
+    /**
+     * The limitedProducts that belong to the Product
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function limitedProducts(): HasMany
+    {
+        return $this->hasMany(LimitedProduct::class);
     }
 }

@@ -9,7 +9,7 @@ class ClientController extends BaseController
 {
     public function destroy($id)
     {
-        $item = Client::findOrFail($id);
+        $item = Client::query()->findOrFail($id);
 
         try {
             $item->delete();

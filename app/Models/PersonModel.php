@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\Common\Status;
+use App\Enums\PeopleGender;
 use App\Traits\DefaultAccessors;
 use App\Traits\ScopePerson;
 use Illuminate\Database\Eloquent\Model;
@@ -35,6 +36,9 @@ abstract class PersonModel extends Model
         }
         if (in_array('status', $attributes)) {
             $casts['status'] = Status::class;
+        }
+        if (in_array('gender', $attributes)) {
+            $casts['gender'] = PeopleGender::class;
         }
 
         $this->guarded = array_merge($guarded, $this->guarded);
