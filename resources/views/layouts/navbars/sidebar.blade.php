@@ -4,7 +4,7 @@
       <a href="#"
         class="simple-text logo-normal"
         style="text-align:center;">
-        <img src="{{ asset('images/logoDixBranca.png') }}"
+        <img src="{{ asset('images/logo.png') }}"
           alt="Logo"
           style="max-width: 150px;">
       </a>
