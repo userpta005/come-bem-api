@@ -98,6 +98,24 @@ class UserController extends BaseController
         }
     }
 
+    public function show()
+    {
+        $user = User::person()
+            ->with(
+                'stores',
+                'people.city.state',
+                'people.client.dependents.accounts.store',
+                'people.client.dependents.accounts.cards',
+                'people.client.dependents.accounts.limitedProducts',
+                'people.dependent.accounts.store',
+                'people.dependent.accounts.cards',
+                'people.dependent.accounts.limitedProducts'
+            )
+            ->findOrFail(auth()->user()->id);
+
+        return $this->sendResponse($user);
+    }
+
     private function rules(Request $request, $primaryKey = null, bool $changeMessages = false)
     {
         $rules = [

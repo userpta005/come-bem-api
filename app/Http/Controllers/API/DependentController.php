@@ -8,6 +8,7 @@ use App\Models\Account;
 use App\Models\Client;
 use App\Models\Dependent;
 use App\Models\Person;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -46,15 +47,29 @@ class DependentController extends BaseController
 
             $person = Person::query()->create($inputs);
 
-            $inputs['person'] = $person->id;
+            $inputs['person_id'] = $person->id;
             $inputs['client_id'] = $client->id;
             $dependent = Dependent::query()->create($inputs);
 
             $inputs['dependent_id'] = $dependent->id;
             Account::query()->create($inputs);
 
+            $user = User::person()
+                ->with(
+                    'stores',
+                    'people.city.state',
+                    'people.client.dependents.accounts.store',
+                    'people.client.dependents.accounts.cards',
+                    'people.client.dependents.accounts.limitedProducts',
+                    'people.dependent.accounts.store',
+                    'people.dependent.accounts.cards',
+                    'people.dependent.accounts.limitedProducts'
+                )
+                ->findOrFail(auth()->user()->id);
+
             DB::commit();
-            return $this->sendResponse([], "Registro criado com sucesso", 201);
+
+            return $this->sendResponse($user, "Registro criado com sucesso", 201);
         } catch (Throwable $th) {
             DB::rollBack();
             return $this->sendError($th->getMessage());

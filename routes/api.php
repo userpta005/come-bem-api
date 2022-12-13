@@ -26,6 +26,7 @@ Route::prefix('v1')->group(function () {
         Route::post('reset-password', App\Http\Controllers\API\ResetPasswordController::class);
 
         Route::middleware('auth:sanctum')->group(function () {
+            Route::get('users', [App\Http\Controllers\API\UserController::class, 'show']);
             Route::delete('logout', [App\Http\Controllers\API\SessionController::class, 'destroy']);
             Route::get('profile', [App\Http\Controllers\API\ProfileController::class, 'show']);
             Route::put('profile', [App\Http\Controllers\API\ProfileController::class, 'update']);
