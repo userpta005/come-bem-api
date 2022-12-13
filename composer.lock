@@ -6805,16 +6805,16 @@
         },
         {
             "name": "laradumps/laradumps",
-            "version": "v1.4.0",
+            "version": "v1.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laradumps/laradumps.git",
-                "reference": "db3cfc44168d7c4befc5a62d41fa41b91d33506c"
+                "reference": "227bd7c1357f9c54462ec111fcd511bf2560c506"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laradumps/laradumps/zipball/db3cfc44168d7c4befc5a62d41fa41b91d33506c",
-                "reference": "db3cfc44168d7c4befc5a62d41fa41b91d33506c",
+                "url": "https://api.github.com/repos/laradumps/laradumps/zipball/227bd7c1357f9c54462ec111fcd511bf2560c506",
+                "reference": "227bd7c1357f9c54462ec111fcd511bf2560c506",
                 "shasum": ""
             },
             "require": {
@@ -6860,7 +6860,7 @@
             "homepage": "https://github.com/laradumps/laradumps",
             "support": {
                 "issues": "https://github.com/laradumps/laradumps/issues",
-                "source": "https://github.com/laradumps/laradumps/tree/v1.4.0"
+                "source": "https://github.com/laradumps/laradumps/tree/v1.5.1"
             },
             "funding": [
                 {
@@ -6868,7 +6868,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-10-04T20:00:57+00:00"
+            "time": "2022-11-25T21:12:20+00:00"
         },
         {
             "name": "laravel/sail",

@@ -138,7 +138,7 @@
                 $.each(response.data, function (i, v) {
                     var o = {};
                     o.id = v.id;
-                    o.text = v.title + " - " + v.letter;
+                    o.text = v.info;
                     o.value = v.id;
                     results.push(o);
                 });

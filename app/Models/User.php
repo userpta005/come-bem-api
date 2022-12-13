@@ -71,16 +71,6 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the store that owns the User
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function store(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    /**
      * The rules that belong to the User
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,6 +10,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class City extends Model
 {
     use HasFactory;
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'info'
+    ];
 
     /**
      * Get the state that owns the City
@@ -20,19 +30,10 @@ class City extends Model
         return $this->belongsTo(State::class);
     }
 
-    /**
-     * Scope a query to include state information.
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeState($query)
+    public function info(): Attribute
     {
-        return $query->select(
-            'cities.*',
-            'states.title as state',
-            'states.letter'
-        )
-            ->join('states', 'states.id', '=', 'cities.state_id');
+        return new Attribute(
+            get: fn () => $this->title . ' - ' . $this->state->letter
+        );
     }
 }

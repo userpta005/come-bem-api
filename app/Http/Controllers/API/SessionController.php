@@ -30,8 +30,21 @@ class SessionController extends BaseController
             $id = Auth::id();
 
             $user = User::person()
-                ->with('people.city.state', 'stores', 'store')
+                ->with(
+                    'stores',
+                    'people.city.state',
+                    'people.client.dependents.accounts.store',
+                    'people.client.dependents.accounts.cards',
+                    'people.client.dependents.accounts.limitedProducts',
+                    'people.dependent.accounts.store',
+                    'people.dependent.accounts.cards',
+                    'people.dependent.accounts.limitedProducts'
+                )
                 ->findOrFail($id);
+
+            if ($user->status->isInactive()) {
+                return $this->sendError('Usuário não ativado. Entre em contato com o suporte !', [], 403);
+            }
 
             $token = $user->createToken(config('app.key'));
 

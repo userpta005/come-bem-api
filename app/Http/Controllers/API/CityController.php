@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
 use App\Models\City;
 use Illuminate\Http\Request;
 
@@ -13,12 +12,12 @@ class CityController extends BaseController
         $query = City::query()
             ->with('state')
             ->when($request->filled('state_id'), function ($query) use ($request) {
-                $query->where('state_id', $request->state_id);
+                $query->where('cities.state_id', $request->state_id);
             })
             ->when($request->filled('search'), function ($query) use ($request) {
-                $query->where('title', 'like', '%' . $request->search . '%');
+                $query->where('cities.title', 'like', '%' . $request->search . '%');
             })
-            ->orderBy('title', 'asc');
+            ->orderBy('cities.title', 'asc');
 
         $data = $request->filled('page') ? $query->paginate(10) : $query->get();
 

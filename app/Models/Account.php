@@ -113,6 +113,16 @@ class Account extends CommonModel
     }
 
     /**
+     * Get the store that owns the Account
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function store(): BelongsTo
+    {
+        return $this->belongsTo(Store::class);
+    }
+
+    /**
      * Get all of the cards for the Account
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -130,15 +140,5 @@ class Account extends CommonModel
     public function limitedProducts(): HasMany
     {
         return $this->hasMany(LimitedProduct::class);
-    }
-
-    /**
-     * Get the store that owns the Account
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function store(): BelongsTo
-    {
-        return $this->belongsTo(Store::class);
     }
 }

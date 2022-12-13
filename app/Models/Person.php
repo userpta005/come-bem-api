@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\DefaultAccessors;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Person extends PersonModel
+class Person extends CommonModel
 {
-    use HasFactory;
+    use HasFactory, DefaultAccessors;
 
     /**
      * The attributes that aren't mass assignable.
@@ -44,5 +45,25 @@ class Person extends PersonModel
     public function tenant(): HasOne
     {
         return $this->hasOne(Tenant::class);
+    }
+
+    /**
+     * Get the client associated with the Person
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function client(): HasOne
+    {
+        return $this->hasOne(Client::class);
+    }
+
+    /**
+     * Get the dependent associated with the Person
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function dependent(): HasOne
+    {
+        return $this->hasOne(Dependent::class);
     }
 }

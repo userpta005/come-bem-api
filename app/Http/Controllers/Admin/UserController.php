@@ -42,7 +42,7 @@ class UserController extends Controller
                 $query->whereDate('users.created_at', '<=', $request->date_end);
             })
             ->when(session()->exists('store'), function ($query) {
-                $query->where('users.store_id', session('store')['id']);
+                $query->whereHas('stores', fn ($query) => $query->where('store_id', session('store')['id']));
             })
             ->paginate(10);
 
@@ -76,7 +76,6 @@ class UserController extends Controller
                 $inputs
             );
 
-            $inputs['store_id'] = session()->exists('store') ? session('store')['id'] : null;
             $inputs['person_id'] = $person->id;
             $inputs['password'] = bcrypt($inputs['password']);
 
@@ -84,6 +83,8 @@ class UserController extends Controller
                 ['person_id' => $inputs['person_id']],
                 $inputs
             );
+
+            !session()->exists('store') or $user->stores()->attach(session('store')['id']);
 
             $user->roles()->sync($request->roles);
         });
@@ -158,13 +159,13 @@ class UserController extends Controller
         $rules = [
             'roles' => ['required'],
             'roles.*' => [Rule::exists('roles', 'id')],
-            'nif' => ['required', 'max:14', new CpfCnpj, Rule::unique('people')->ignore($primaryKey)],
+            'nif' => ['nullable', 'max:14', new CpfCnpj, Rule::unique('people')->ignore($primaryKey)],
             'name' => ['required', 'max:100'],
             'full_name' => ['nullable', 'max:100'],
             'state_registration' => ['nullable', 'max:25'],
             'city_registration' => ['nullable', 'max:25'],
             'birthdate' => ['required', 'date'],
-            'status' => ['required', new Enum(Status::class)],
+            'status' => ['required', new Enum(\App\Enums\Common\Status::class)],
             'email' => ['required', 'max:100', Rule::unique('people')->ignore($primaryKey)],
             'phone' => ['required', 'max:11'],
             'city_id' => ['required', Rule::exists('cities', 'id')],

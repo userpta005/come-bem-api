@@ -18,7 +18,8 @@
           </a>
         </li>
       @endcan
-      @canany(['leads_view', 'tenants_view', 'cities_view', 'states_view', 'stores_view'])
+      @canany(['leads_view', 'tenants_view', 'stores_view', 'clients_view', 'sections_view', 'payment-methods_view',
+        'measurement-units_view', 'products_view', 'cities_view', 'states_view', 'ncms_view'])
         <li>
           <a data-toggle="collapse"
             href="#register"

@@ -19,21 +19,21 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::prefix('v1')->group(function () {
-    Route::middleware(['app'])->group(function () {
-        Route::group(['prefix' => 'auth'], function () {
-            Route::post('users', [App\Http\Controllers\API\UserController::class, 'store']);
-            Route::post('login', [App\Http\Controllers\API\SessionController::class, 'store']);
-            Route::post('forgot-password', App\Http\Controllers\API\ForgotPasswordController::class);
-            Route::post('reset-password', App\Http\Controllers\API\ResetPasswordController::class);
+    Route::group(['prefix' => 'auth'], function () {
+        Route::post('users', [App\Http\Controllers\API\UserController::class, 'store']);
+        Route::post('login', [App\Http\Controllers\API\SessionController::class, 'store']);
+        Route::post('forgot-password', App\Http\Controllers\API\ForgotPasswordController::class);
+        Route::post('reset-password', App\Http\Controllers\API\ResetPasswordController::class);
 
-            Route::middleware('auth:sanctum')->group(function () {
-                Route::delete('logout', [App\Http\Controllers\API\SessionController::class, 'destroy']);
-                Route::get('profile', [App\Http\Controllers\API\ProfileController::class, 'show']);
-                Route::put('profile', [App\Http\Controllers\API\ProfileController::class, 'update']);
-                Route::post('change-password', App\Http\Controllers\API\ChangePasswordController::class);
-            });
+        Route::middleware('auth:sanctum')->group(function () {
+            Route::delete('logout', [App\Http\Controllers\API\SessionController::class, 'destroy']);
+            Route::get('profile', [App\Http\Controllers\API\ProfileController::class, 'show']);
+            Route::put('profile', [App\Http\Controllers\API\ProfileController::class, 'update']);
+            Route::post('change-password', App\Http\Controllers\API\ChangePasswordController::class);
         });
+    });
 
+    Route::middleware(['app'])->group(function () {
         Route::middleware('auth:sanctum')->group(function () {
             Route::delete('clients/{client}/dependents/{id}/block', [App\Http\Controllers\API\DependentController::class, 'block']);
             Route::apiResource('dependents.accounts', App\Http\Controllers\API\AccountController::class)->only(['show', 'update']);

@@ -27,6 +27,7 @@ abstract class PersonModel extends Model
         $attributes = Schema::getColumnListing($this->getTable());
         $guarded = ['id'];
         $casts = [];
+        $appends = ['info'];
 
         if (in_array('created_at', $attributes)) {
             $guarded[] = 'created_at';
@@ -43,6 +44,7 @@ abstract class PersonModel extends Model
 
         $this->guarded = array_merge($guarded, $this->guarded);
         $this->casts = array_merge($casts, $this->casts);
+        $this->appends = array_merge($appends, $this->appends);
     }
 
     /**

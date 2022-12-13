@@ -42,8 +42,8 @@ class UserController extends BaseController
             DB::beginTransaction();
 
             $inputs = $request->all();
-            $inputs['password'] = bcrypt($request->input('password'));
-            $inputs['status'] = Status::ACTIVE;
+            $inputs['password'] = bcrypt(preg_replace("/\D+/", "", $inputs['phone']));
+            $inputs['status'] = Status::INACTIVE;
 
             $person = Person::query()
                 ->updateOrCreate(
@@ -68,13 +68,14 @@ class UserController extends BaseController
 
             $user->assignRole('client');
 
+            $inputs['status'] = Status::ACTIVE;
             $client = Client::query()
                 ->updateOrCreate(
                     ['person_id' => $person->id],
                     $inputs
                 );
 
-            if (ClientType::from($inputs['type']) === ClientType::RESPONSIBLE_DEPENDENT) {
+            if ($inputs['type'] === ClientType::RESPONSIBLE_DEPENDENT->value) {
                 $inputs['client_id'] = $client->id;
                 $dependent = Dependent::query()
                     ->updateOrCreate(
@@ -82,7 +83,6 @@ class UserController extends BaseController
                         $inputs
                     );
 
-                $inputs['store_id'] = $request->get('store')['id'];
                 Account::query()
                     ->updateOrCreate(
                         ['dependent_id' => $dependent->id, 'store_id' => $inputs['store_id']],
@@ -101,13 +101,13 @@ class UserController extends BaseController
     private function rules(Request $request, $primaryKey = null, bool $changeMessages = false)
     {
         $rules = [
-            'type' => ['required', new Enum(ClientType::class)],
             'name' => ['required', 'max:100'],
             'email' => ['required', 'max:100', Rule::unique('people')->ignore($primaryKey)],
             'phone' => ['required', 'max:15'],
-            'city_id' => ['required', Rule::exists('cities', 'id')],
             'birthdate' => ['required', 'date'],
-            'password' => ['required', 'confirmed', Password::min(8)],
+            'city_id' => ['required', Rule::exists('cities', 'id')],
+            'type' => ['required', new Enum(ClientType::class)],
+            'store_id' => ['required', Rule::exists('stores', 'id')],
         ];
 
         $messages = [];
