@@ -42,7 +42,10 @@ class UserController extends Controller
                 $query->whereDate('users.created_at', '<=', $request->date_end);
             })
             ->when(session()->exists('store'), function ($query) {
-                $query->whereHas('stores', fn ($query) => $query->where('store_id', session('store')['id']));
+                $query->where(function ($query) {
+                    $query->whereHas('stores', fn ($query) => $query->where('store_id', session('store')['id']))
+                        ->orWhereDoesntHave('stores');
+                });
             })
             ->paginate(10);
 
