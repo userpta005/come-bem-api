@@ -144,12 +144,14 @@ class StoreController extends Controller
         $item = Store::findOrFail($id);
 
         try {
+            $item->users()->detach();
             $item->delete();
             return redirect()->route('stores.index')
                 ->withStatus('Registro deletado com sucesso.');
         } catch (\Exception $e) {
+            $msg = 'Registro vinculado á outra tabela, somente poderá ser excluído se retirar o vinculo.';
             return redirect()->route('stores.index')
-                ->withError('Registro vinculado á outra tabela, somente poderá ser excluído se retirar o vinculo.');
+                ->withError($msg);
         }
     }
 

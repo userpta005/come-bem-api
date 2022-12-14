@@ -41,12 +41,21 @@ class UserController extends Controller
             ->when(!empty($request->date_end), function ($query) use ($request) {
                 $query->whereDate('users.created_at', '<=', $request->date_end);
             })
-            ->when(session()->exists('store'), function ($query) {
-                $query->where(function ($query) {
-                    $query->whereHas('stores', fn ($query) => $query->where('store_id', session('store')['id']))
-                        ->orWhereDoesntHave('stores');
-                });
-            })
+            ->when(
+                session()->exists('tenant'),
+                function ($query) {
+                    $query->where('users.id', '!=', 1)
+                        ->where(function ($query) {
+                            $query->when(session()->exists('store'), function ($query) {
+                                $query->whereHas('stores', function ($query) {
+                                    $query->where('store_id', session('store')['id']);
+                                })
+                                    ->orWhereDoesntHave('stores')
+                                    ->whereDoesntHave('people.tenant');
+                            }, fn ($query) => $query->whereDoesntHave('stores'));
+                        });
+                }
+            )
             ->paginate(10);
 
         $users = User::person()->get();

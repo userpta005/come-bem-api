@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\StoreStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Store extends PersonModel
 {
@@ -25,6 +26,16 @@ class Store extends PersonModel
     protected $casts = [
         'status' => StoreStatus::class,
     ];
+
+    /**
+     * The users that belong to the Store
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class);
+    }
 
     /**
      * Get the tenant that owns the Store
