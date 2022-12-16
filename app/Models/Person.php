@@ -66,4 +66,14 @@ class Person extends CommonModel
     {
         return $this->hasOne(Dependent::class);
     }
+
+    /**
+     * Get the user associated with the Person
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function user(): HasOne
+    {
+        return $this->hasOne(User::class);
+    }
 }

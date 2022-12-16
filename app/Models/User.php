@@ -54,11 +54,11 @@ class User extends Authenticatable
     {
         return User::person()
             ->with(
-                'stores',
                 'people.city.state',
                 'people.client.dependents.accounts.store',
                 'people.client.dependents.accounts.cards',
                 'people.client.dependents.accounts.limitedProducts',
+                'people.client.dependents.people.user',
                 'people.dependent.accounts.store',
                 'people.dependent.accounts.cards',
                 'people.dependent.accounts.limitedProducts'

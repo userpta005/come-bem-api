@@ -153,11 +153,12 @@ class UserController extends Controller
 
         if (auth()->id() != $item->id) {
             try {
+                $item->stores()->detach(session('store')['id']);
                 $item->delete();
                 return redirect()->route('users.index')
                     ->withStatus('Registro deletado com sucesso.');
             } catch (\Exception $e) {
-                return redirect()->route('user.index')
+                return redirect()->route('users.index')
                     ->withError('Registro vinculado á outra tabela, somente poderá ser excluído se retirar o vinculo.');
             }
         } else {

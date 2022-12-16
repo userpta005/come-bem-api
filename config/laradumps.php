@@ -50,7 +50,11 @@ return [
     |
     */
 
-    'send_queries' => env('DS_SEND_QUERIES', false),
+    'send_queries' => [
+        'enabled'                     => env('DS_SEND_QUERIES', false),
+        'formatted'                   => false,
+        'show_connection_information' => false,
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -341,5 +345,4 @@ return [
         'info'      => env('DS_LOG_COLOR_INFO', 'border-blue-300'),
         'debug'     => env('DS_LOG_COLOR_INFO', 'border-black'),
     ],
-
 ];

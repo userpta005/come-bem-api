@@ -39,6 +39,7 @@ class UserController extends BaseController
             DB::beginTransaction();
 
             $inputs = $request->all();
+            $clientType =  ClientType::from($inputs['type']);
             $inputs['password'] = bcrypt(preg_replace("/\D+/", "", $inputs['phone']));
             $inputs['status'] = Status::INACTIVE;
 
@@ -57,13 +58,13 @@ class UserController extends BaseController
                 );
 
             Role::updateOrCreate(
-                ['name' => 'client'],
+                ['name' => $clientType->isResponsible() ? 'responsible' : 'responsible_dependent'],
                 [
-                    'description' => 'Cliente'
+                    'description' => $clientType->isResponsible() ? 'Responsável' : 'Dependente Responsável'
                 ]
             );
 
-            $user->assignRole('client');
+            $user->assignRole($clientType->isResponsible() ? 'responsible' : 'responsible_dependent');
 
             $inputs['status'] = Status::ACTIVE;
             $client = Client::query()
@@ -72,7 +73,7 @@ class UserController extends BaseController
                     $inputs
                 );
 
-            if ($inputs['type'] === ClientType::RESPONSIBLE_DEPENDENT->value) {
+            if ($clientType->isResponsible_Dependent()) {
                 $inputs['client_id'] = $client->id;
                 $dependent = Dependent::query()
                     ->updateOrCreate(

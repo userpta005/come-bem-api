@@ -50,6 +50,7 @@ Route::prefix('v1')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::delete('clients/{id}', [App\Http\Controllers\API\ClientController::class, 'destroy']);
         Route::apiResource('clients.dependents', App\Http\Controllers\API\DependentController::class)->except('destroy');
+        Route::post('dependents/{id}/create-user', [App\Http\Controllers\API\DependentController::class, 'createUser']);
         Route::delete('dependents/{id}', [App\Http\Controllers\API\DependentController::class, 'destroy']);
         Route::delete('accounts/{id}', [App\Http\Controllers\API\AccountController::class, 'destroy']);
         Route::delete('cards/{id}', [App\Http\Controllers\API\CardController::class, 'destroy']);

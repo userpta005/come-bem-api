@@ -8,6 +8,7 @@ use App\Models\Account;
 use App\Models\Client;
 use App\Models\Dependent;
 use App\Models\Person;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -116,6 +117,48 @@ class DependentController extends BaseController
             return $this->sendResponse([], 'Registro deletado com sucesso.');
         } catch (\Exception $e) {
             return $this->sendError('Registro vinculado á outra tabela, somente poderá ser excluído se retirar o vinculo.');
+        }
+    }
+
+    public function createUser(Request $request, $id)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'email' => ['required', 'max:100', Rule::unique('people')],
+                'password' => ['required', 'confirmed', 'min:8']
+            ]
+        );
+
+        if ($validator->fails()) {
+            return $this->sendError('Erro de validação', $validator->errors(), 422);
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $dependent = Dependent::query()->findOrFail($id);
+
+            $inputs = $request->all();
+            $dependent->people->fill($inputs)->save();
+            $inputs['name'] = $dependent->people->name;
+            $inputs['status'] = Status::ACTIVE;
+            $inputs['password'] = bcrypt($inputs['password']);
+            $inputs['person_id'] = $dependent->person_id;
+            $user = User::query()->create($inputs);
+            Role::updateOrCreate(
+                ['name' => 'dependent', 'guard_name' => 'web'],
+                ['description' => 'Dependente']
+            );
+            $user->assignRole('dependent');
+
+            $user = User::getAllDataUser();
+
+            DB::commit();
+            return $this->sendResponse($user, 'Dependente habilitado com sucesso!', 201);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return $this->sendError($th->getMessage());
         }
     }
 
