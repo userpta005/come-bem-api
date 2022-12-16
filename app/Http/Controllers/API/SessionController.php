@@ -29,18 +29,7 @@ class SessionController extends BaseController
         if (Auth::attempt(array('email' => $inputs['email'], 'password' => $inputs['password']))) {
             $id = Auth::id();
 
-            $user = User::person()
-                ->with(
-                    'stores',
-                    'people.city.state',
-                    'people.client.dependents.accounts.store',
-                    'people.client.dependents.accounts.cards',
-                    'people.client.dependents.accounts.limitedProducts',
-                    'people.dependent.accounts.store',
-                    'people.dependent.accounts.cards',
-                    'people.dependent.accounts.limitedProducts'
-                )
-                ->findOrFail($id);
+            $user = User::getAllDataUser();
 
             if ($user->status->isInactive()) {
                 return $this->sendError('Usuário não ativado. Entre em contato com o suporte !', [], 403);

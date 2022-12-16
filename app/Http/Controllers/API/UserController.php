@@ -10,14 +10,11 @@ use App\Models\Dependent;
 use App\Models\Person;
 use App\Models\Role;
 use App\Models\User;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
-use Illuminate\Validation\Rules\Password;
-use Symfony\Component\Mailer\Transport\Dsn;
 
 class UserController extends BaseController
 {
@@ -100,18 +97,7 @@ class UserController extends BaseController
 
     public function show()
     {
-        $user = User::person()
-            ->with(
-                'stores',
-                'people.city.state',
-                'people.client.dependents.accounts.store',
-                'people.client.dependents.accounts.cards',
-                'people.client.dependents.accounts.limitedProducts',
-                'people.dependent.accounts.store',
-                'people.dependent.accounts.cards',
-                'people.dependent.accounts.limitedProducts'
-            )
-            ->findOrFail(auth()->user()->id);
+        $user = User::getAllDataUser();
 
         return $this->sendResponse($user);
     }

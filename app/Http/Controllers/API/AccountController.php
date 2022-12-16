@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Enums\Common\Status;
 use App\Models\Account;
 use App\Models\Dependent;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -64,6 +65,34 @@ class AccountController extends BaseController
         } catch (\Exception $e) {
             return $this->sendError('Registro vinculado á outra tabela, somente poderá ser excluído se retirar o vinculo.');
         }
+    }
+
+    public function block(Request $request, $id)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            ['activate' => ['required', 'boolean']]
+        );
+
+        if ($validator->fails()) {
+            return $this->sendError('Erro de validação', $validator->errors(), 422);
+        }
+
+        $account = Account::query()
+            ->where('store_id', $request->get('store')['id'])
+            ->where('id', $id)
+            ->first();
+
+        if (!$account) {
+            return $this->sendError('Usuário não cadastrado nessa loja.', [], 401);
+        }
+
+        $account->status = $request->get('activate') ? Status::ACTIVE : Status::INACTIVE;
+        $account->save();
+
+        $user = User::getAllDataUser();
+
+        return $this->sendResponse($user, 'Atualização realizada com sucesso!');
     }
 
     private function rules(Request $request, $primaryKey = null, bool $changeMessages = false)

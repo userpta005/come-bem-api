@@ -50,6 +50,22 @@ class User extends Authenticatable
         'status' => Status::class,
     ];
 
+    public static function getAllDataUser()
+    {
+        return User::person()
+            ->with(
+                'stores',
+                'people.city.state',
+                'people.client.dependents.accounts.store',
+                'people.client.dependents.accounts.cards',
+                'people.client.dependents.accounts.limitedProducts',
+                'people.dependent.accounts.store',
+                'people.dependent.accounts.cards',
+                'people.dependent.accounts.limitedProducts'
+            )
+            ->findOrFail(auth()->user()->id);
+    }
+
     /**
      * Get the people that owns the User
      *

@@ -36,7 +36,7 @@ Route::prefix('v1')->group(function () {
 
     Route::middleware(['app'])->group(function () {
         Route::middleware('auth:sanctum')->group(function () {
-            Route::delete('clients/{client}/dependents/{id}/block', [App\Http\Controllers\API\DependentController::class, 'block']);
+            Route::delete('accounts/{id}/block', [App\Http\Controllers\API\AccountController::class, 'block']);
             Route::apiResource('dependents.accounts', App\Http\Controllers\API\AccountController::class)->only(['show', 'update']);
             Route::apiResource('accounts.menu', App\Http\Controllers\API\MenuController::class)->only(['index', 'update', 'show']);
             Route::put('accounts/{account}/menu', [App\Http\Controllers\API\MenuController::class, 'update']);

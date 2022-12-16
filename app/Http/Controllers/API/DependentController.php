@@ -54,18 +54,7 @@ class DependentController extends BaseController
             $inputs['dependent_id'] = $dependent->id;
             Account::query()->create($inputs);
 
-            $user = User::person()
-                ->with(
-                    'stores',
-                    'people.city.state',
-                    'people.client.dependents.accounts.store',
-                    'people.client.dependents.accounts.cards',
-                    'people.client.dependents.accounts.limitedProducts',
-                    'people.dependent.accounts.store',
-                    'people.dependent.accounts.cards',
-                    'people.dependent.accounts.limitedProducts'
-                )
-                ->findOrFail(auth()->user()->id);
+            $user = User::getAllDataUser();
 
             DB::commit();
 
@@ -128,17 +117,6 @@ class DependentController extends BaseController
         } catch (\Exception $e) {
             return $this->sendError('Registro vinculado á outra tabela, somente poderá ser excluído se retirar o vinculo.');
         }
-    }
-
-    public function block(Request $request, Client $client, $id)
-    {
-        $item = Dependent::query()->findOrFail($id);
-        $item->status = Status::INACTIVE;
-        $item->save();
-        $account = $item->accounts->where('store_id', $request->get('store')['id'])->first();
-        $account->status = Status::INACTIVE;
-        $account->save();
-        return $this->sendResponse([], 'Dependente e Conta inativado com sucesso.');
     }
 
     private function rules(Request $request, $primaryKey = null, bool $changeMessages = false)
