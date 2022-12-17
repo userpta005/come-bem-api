@@ -56,11 +56,11 @@ class User extends Authenticatable
             ->with(
                 'people.city.state',
                 'people.client.dependents.accounts.store',
-                'people.client.dependents.accounts.cards',
+                'people.client.dependents.accounts.cards.account',
                 'people.client.dependents.accounts.limitedProducts',
                 'people.client.dependents.people.user',
                 'people.dependent.accounts.store',
-                'people.dependent.accounts.cards',
+                'people.dependent.accounts.cards.account',
                 'people.dependent.accounts.limitedProducts'
             )
             ->findOrFail(auth()->user()->id);

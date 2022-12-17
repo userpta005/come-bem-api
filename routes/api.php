@@ -38,6 +38,7 @@ Route::prefix('v1')->group(function () {
         Route::middleware('auth:sanctum')->group(function () {
             Route::delete('accounts/{id}/block', [App\Http\Controllers\API\AccountController::class, 'block']);
             Route::apiResource('accounts', App\Http\Controllers\API\AccountController::class)->only(['show', 'update']);
+            Route::put('cards/block', [App\Http\Controllers\API\CardController::class, 'block']);
             Route::apiResource('accounts.menu', App\Http\Controllers\API\MenuController::class)->only(['index', 'update', 'show']);
         });
 
