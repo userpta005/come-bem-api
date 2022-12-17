@@ -4,32 +4,29 @@ namespace App\Http\Controllers\API;
 
 use App\Enums\Common\Status;
 use App\Models\Account;
-use App\Models\Dependent;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use Throwable;
 
 class AccountController extends BaseController
 {
-    public function show(Request $request, Dependent $dependent, $id)
+    public function show(Request $request, $id)
     {
         $item = Account::query()
-            ->where('status', Status::ACTIVE)
-            ->where('store_id', $request->get('store')['id'])
-            ->where('dependent_id', $dependent->id)
             ->findOrFail($id);
+
+        $storeId = $request->get('store')['id'];
+
+        if ($item->store->id != $storeId) {
+            return $this->sendError('Conta não cadastrada nessa loja.', [], 401);
+        }
 
         return $this->sendResponse($item);
     }
 
-    public function update(Request $request, Dependent $dependent, $id)
+    public function update(Request $request, $id)
     {
-        $item = Account::query()
-            ->where('store_id', $request->get('store')['id'])
-            ->where('dependent_id', $dependent->id)
-            ->findOrFail($id);
+        $item = Account::query()->findOrFail($id);
 
         $validator = Validator::make(
             $request->all(),
@@ -40,19 +37,20 @@ class AccountController extends BaseController
             return $this->sendError('Erro de validação', $validator->errors(), 422);
         }
 
-        try {
-            DB::beginTransaction();
+        $storeId = $request->get('store')['id'];
 
-            $inputs = $request->all();
-
-            $item->fill($inputs)->save();
-
-            DB::commit();
-            return $this->sendResponse([], "Limite diário atualizado com sucesso", 200);
-        } catch (Throwable $th) {
-            DB::rollBack();
-            return $this->sendError($th->getMessage());
+        if ($item->store->id != $storeId) {
+            return $this->sendError('Conta não cadastrada nessa loja.', [], 401);
         }
+
+        $inputs = $request->all();
+        $inputs['daily_limit'] = moneyToFloat($inputs['daily_limit']);
+
+        $item->fill($inputs)->save();
+
+        $user = User::getAllDataUser();
+
+        return $this->sendResponse($user, "Atualização realizada com sucesso", 200);
     }
 
     public function destroy($id)
@@ -62,7 +60,7 @@ class AccountController extends BaseController
         try {
             $item->delete();
             return $this->sendResponse([], 'Registro deletado com sucesso.');
-        } catch (\Exception $e) {
+        } catch (\Throwable $th) {
             return $this->sendError('Registro vinculado á outra tabela, somente poderá ser excluído se retirar o vinculo.');
         }
     }
@@ -78,21 +76,20 @@ class AccountController extends BaseController
             return $this->sendError('Erro de validação', $validator->errors(), 422);
         }
 
-        $account = Account::query()
-            ->where('store_id', $request->get('store')['id'])
-            ->where('id', $id)
-            ->first();
+        $item = Account::query()->findOrFail($id);
 
-        if (!$account) {
-            return $this->sendError('Usuário não cadastrado nessa loja.', [], 401);
+        $storeId = $request->get('store')['id'];
+
+        if ($item->store->id != $storeId) {
+            return $this->sendError('Conta não cadastrada nessa loja.', [], 401);
         }
 
-        $account->status = $request->get('activate') ? Status::ACTIVE : Status::INACTIVE;
-        $account->save();
+        $item->status = $request->get('activate') ? Status::ACTIVE : Status::INACTIVE;
+        $item->save();
 
         $user = User::getAllDataUser();
 
-        return $this->sendResponse($user, 'Atualização realizada com sucesso!');
+        return $this->sendResponse($user, 'Atualização realizada com sucesso!', 200);
     }
 
     private function rules(Request $request, $primaryKey = null, bool $changeMessages = false)
