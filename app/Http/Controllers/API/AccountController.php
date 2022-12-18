@@ -40,7 +40,7 @@ class AccountController extends BaseController
         $storeId = $request->get('store')['id'];
 
         if ($item->store->id != $storeId) {
-            return $this->sendError('Conta não cadastrada nessa loja.', [], 401);
+            return $this->sendError('Conta não cadastrada nessa loja.', [], 403);
         }
 
         $inputs = $request->all();

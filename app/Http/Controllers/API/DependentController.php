@@ -19,10 +19,11 @@ use Throwable;
 
 class DependentController extends BaseController
 {
-    public function index(Request $request)
+    public function index(Request $request, Client $client)
     {
         $query = Dependent::query()
-            ->with(['people.city.state', 'accounts']);
+            ->with(['people.city.state', 'accounts'])
+            ->where('client_id', $client->id);
 
         $data = $request->filled('page') ? $query->paginate(10) : $query->get();
 

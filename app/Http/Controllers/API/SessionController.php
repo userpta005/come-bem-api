@@ -27,7 +27,6 @@ class SessionController extends BaseController
         $inputs = $request->all();
 
         if (Auth::attempt(array('email' => $inputs['email'], 'password' => $inputs['password']))) {
-            $id = Auth::id();
 
             $user = User::getAllDataUser();
 

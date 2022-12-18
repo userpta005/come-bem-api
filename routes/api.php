@@ -20,14 +20,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix('v1')->group(function () {
     Route::group(['prefix' => 'auth'], function () {
-        Route::post('users', [App\Http\Controllers\API\UserController::class, 'store']);
-        Route::post('login', [App\Http\Controllers\API\SessionController::class, 'store']);
+        Route::post('users', [App\Http\Controllers\API\UserController::class, 'store']); //ok
+        Route::post('login', [App\Http\Controllers\API\SessionController::class, 'store']); //ok
         Route::post('forgot-password', App\Http\Controllers\API\ForgotPasswordController::class);
         Route::post('reset-password', App\Http\Controllers\API\ResetPasswordController::class);
 
         Route::middleware('auth:sanctum')->group(function () {
-            Route::get('users', [App\Http\Controllers\API\UserController::class, 'show']);
-            Route::delete('logout', [App\Http\Controllers\API\SessionController::class, 'destroy']);
+            Route::get('users', [App\Http\Controllers\API\UserController::class, 'show']); //ok
+            Route::delete('logout', [App\Http\Controllers\API\SessionController::class, 'destroy']); //ok
             Route::get('profile', [App\Http\Controllers\API\ProfileController::class, 'show']);
             Route::put('profile', [App\Http\Controllers\API\ProfileController::class, 'update']);
             Route::post('change-password', App\Http\Controllers\API\ChangePasswordController::class);
@@ -36,9 +36,9 @@ Route::prefix('v1')->group(function () {
 
     Route::middleware(['app'])->group(function () {
         Route::middleware('auth:sanctum')->group(function () {
-            Route::delete('accounts/{id}/block', [App\Http\Controllers\API\AccountController::class, 'block']);
-            Route::apiResource('accounts', App\Http\Controllers\API\AccountController::class)->only(['show', 'update']);
-            Route::put('cards/block', [App\Http\Controllers\API\CardController::class, 'block']);
+            Route::put('accounts/{id}/block', [App\Http\Controllers\API\AccountController::class, 'block']); //ok
+            Route::put('cards/block', [App\Http\Controllers\API\CardController::class, 'block']); // ok
+            Route::apiResource('accounts', App\Http\Controllers\API\AccountController::class)->only(['show', 'update']); //update ok
             Route::apiResource('accounts.menu', App\Http\Controllers\API\MenuController::class)->only(['index', 'update', 'show']);
         });
 
@@ -48,13 +48,17 @@ Route::prefix('v1')->group(function () {
     });
 
     Route::middleware('auth:sanctum')->group(function () {
-        Route::delete('clients/{id}', [App\Http\Controllers\API\ClientController::class, 'destroy']);
+        Route::post('dependents/{id}/create-user', [App\Http\Controllers\API\DependentController::class, 'createUser']); //ok
         Route::apiResource('clients.dependents', App\Http\Controllers\API\DependentController::class)->except('destroy');
-        Route::post('dependents/{id}/create-user', [App\Http\Controllers\API\DependentController::class, 'createUser']);
+        Route::put('limited_products', [App\Http\Controllers\API\LimitedProductController::class, 'store']);
+    });
+
+    //Apis para deletar models pelo back office
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::delete('clients/{id}', [App\Http\Controllers\API\ClientController::class, 'destroy']);
         Route::delete('dependents/{id}', [App\Http\Controllers\API\DependentController::class, 'destroy']);
         Route::delete('accounts/{id}', [App\Http\Controllers\API\AccountController::class, 'destroy']);
         Route::delete('cards/{id}', [App\Http\Controllers\API\CardController::class, 'destroy']);
-        Route::put('limited_products', [App\Http\Controllers\API\LimitedProductController::class, 'store']);
     });
 
     Route::get('get-person-by-nif', App\Http\Controllers\API\GetPersonByNifController::class);
