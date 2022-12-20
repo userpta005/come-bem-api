@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\Common\Status;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -18,9 +19,9 @@ return new class extends Migration
             $table->foreignId('account_id')->constrained();
             $table->foreignId('credit_purchase_id')->nullable()->constrained();
             $table->decimal('amount', 12, 2);
-            $table->char('status', 1);
+            $table->tinyInteger('status')->default(Status::ACTIVE->value);
             $table->date('date');
-            $table->char('type', 1);
+            $table->tinyInteger('type');
             $table->timestamps();
         });
     }

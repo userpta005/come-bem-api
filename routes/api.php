@@ -38,6 +38,7 @@ Route::prefix('v1')->group(function () {
         Route::middleware('auth:sanctum')->group(function () {
             Route::put('accounts/{id}/block', [App\Http\Controllers\API\AccountController::class, 'block']); //ok
             Route::put('cards/block', [App\Http\Controllers\API\CardController::class, 'block']); // ok
+            Route::post('accounts/{id}/credit-purchases', [App\Http\Controllers\API\CreditPurchasesController::class, 'store']); //ok
             Route::apiResource('accounts', App\Http\Controllers\API\AccountController::class)->only(['show', 'update']); //update ok
             Route::apiResource('accounts.menu', App\Http\Controllers\API\MenuController::class)->only(['index', 'update', 'show']);
         });

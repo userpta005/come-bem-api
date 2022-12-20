@@ -16,11 +16,11 @@ return new class extends Migration
         Schema::create('account_entries', function (Blueprint $table) {
             $table->id();
             $table->foreignId('account_id')->constrained();
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->decimal('amount', 12, 2);
             $table->foreignId('credit_purchase_id')->nullable()->constrained();
             $table->foreignId('card_id')->nullable()->constrained();
-            $table->char('type', 1);
+            $table->tinyInteger('type');
             $table->timestamps();
         });
     }

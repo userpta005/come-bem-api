@@ -141,4 +141,14 @@ class Account extends CommonModel
     {
         return $this->hasMany(LimitedProduct::class);
     }
+
+    /**
+     * Get all of the accountEntries for the Account
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function accountEntries(): HasMany
+    {
+        return $this->hasMany(AccountEntry::class);
+    }
 }
