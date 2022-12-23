@@ -133,13 +133,13 @@ class Account extends CommonModel
     }
 
     /**
-     * The limitedProducts that belong to the Product
+     * The Product that belong to the Product
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function limitedProducts(): HasMany
+    public function limitedProducts(): BelongsToMany
     {
-        return $this->hasMany(LimitedProduct::class);
+        return $this->belongsToMany(Product::class);
     }
 
     /**

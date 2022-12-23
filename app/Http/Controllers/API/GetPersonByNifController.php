@@ -12,9 +12,7 @@ class GetPersonByNifController extends BaseController
     {
         $nif = removeMask($request->nif);
 
-        $person = Person::with(['city' => function ($query) {
-            $query->state();
-        }])
+        $person = Person::with('city')
             ->where('nif', $nif)
             ->first();
 

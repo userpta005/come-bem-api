@@ -15,7 +15,7 @@ class CityController extends Controller
 
     public function index(Request $request)
     {
-        $data = City::state()
+        $data = City::query()
             ->orderBy('cities.title', 'asc')
             ->paginate(10);
 

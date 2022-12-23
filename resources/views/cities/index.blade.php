@@ -26,7 +26,7 @@
                                 @forelse ($data as $item)
                                     <tr style="font-size: 12px;">
                                         <td>{{ $item->title }}</td>
-                                        <td>{{ $item->state }}</td>
+                                        <td>{{ $item->state->title }}</td>
                                     </tr>
                                 @empty
                                     <tr>

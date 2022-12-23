@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-md-4">
     <x-img name="logo"
-      :value="$settings->logo_url ?? null" />
+      :value="$settings->logo_url" />
   </div>
   <div class="col-md-4">
     <label>Termos de Uso</label>
@@ -90,7 +90,7 @@
             {!! Form::select(
                 'city_id',
                 'Cidade',
-                isset($settings) ? [$settings->city_id => $settings->city->title . ' - ' . $settings->city->letter] : [],
+                isset($settings) ? [$settings->city_id => $settings->city->info] : [],
             )->required() !!}
           </div>
           <div class="col-md-3">

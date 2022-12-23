@@ -75,6 +75,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('stocks', [StockController::class, 'index'])->name('stocks.index');
     Route::get('stock', [StockController::class, 'show'])->name('stocks.show');
     Route::get('accounts/{account}/limited_products', [LimitedProductController::class, 'index'])->name('accounts.limited_products.index');
+    Route::put('accounts/{account}/limited_products', [LimitedProductController::class, 'update'])->name('accounts.limited_products.update');
     Route::get('reports.client-dependents', [ReportController::class, 'clientDependents'])->name('reports.client-dependents');
     Route::get('client-dependents-report', ClientDependentReportController::class)->name('client.dependents.report');
     Route::get('reports.stocks', [ReportController::class, 'stocks'])->name('reports.stocks');

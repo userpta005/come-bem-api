@@ -24,6 +24,15 @@ class PaymentMethod extends CommonModel
     protected $casts = [];
 
     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'icon_url',
+    ];
+
+    /**
      * Get the banners icon.
      *
      * @return \Illuminate\Database\Eloquent\Casts\Attribute
@@ -31,7 +40,7 @@ class PaymentMethod extends CommonModel
     public function iconUrl(): Attribute
     {
         return new Attribute(
-            get: fn () => asset('storage/' . $this->icon)
+            get: fn () => $this->icon ? asset('storage/' . $this->icon) : asset('images/noimage.png')
         );
     }
 }

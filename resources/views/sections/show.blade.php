@@ -20,6 +20,13 @@
             <div class="card-deck">
               <div class="card m-2 shadow-sm">
                 <div class="card-body">
+                  <p><strong>Imagem: </strong></p>
+                  <img src="{{ asset($item->image_url ?? 'images/noimage.png') }}"
+                    style="max-width: 100%; max-height: 100%; border: 1px solid black;" />
+                </div>
+              </div>
+              <div class="card m-2 shadow-sm">
+                <div class="card-body">
                   <p><strong>Nome: </strong></p>
                   <p class="card-text">
                     {{ $item->name }}

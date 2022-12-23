@@ -7,6 +7,7 @@ use App\Enums\SectionType;
 use App\Http\Controllers\Controller;
 use App\Models\Section;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Kalnoy\Nestedset\Collection;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -64,6 +65,10 @@ class SectionController extends Controller
         $inputs = $request->all();
         $inputs['store_id'] = session('store')['id'];
         $inputs['use'] = 1;
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $upload = $request->file('image')->store('sections', 'public');
+            $inputs['image'] = $upload;
+        }
         Section::create($inputs);
 
         return redirect()->route('sections.index')
@@ -109,8 +114,17 @@ class SectionController extends Controller
             $this->rules($request, $item->getKey())
         )->validate();
 
+        $inputs = $request->all();
 
-        $item->fill($request->all())->save();
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $upload = $request->file('image')->store('sections', 'public');
+            if ($item->image) {
+                Storage::disk('public')->delete($item->image);
+            }
+
+            $inputs['image'] = $upload;
+        }
+        $item->fill($inputs)->save();
 
         return redirect()->route('sections.index')
             ->withStatus('Registro atualizado com sucesso.');
@@ -133,6 +147,7 @@ class SectionController extends Controller
     private function rules(Request $request, $primaryKey = null, bool $changeMessages = false)
     {
         $rules = [
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
             'name' => ['required', 'string', 'max:40', Rule::unique('sections', 'name')->ignore($primaryKey)],
             'type' => ['required', new Enum(SectionType::class)],
             'status' => ['required', new Enum(Status::class)],

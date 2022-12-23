@@ -36,22 +36,30 @@ Route::prefix('v1')->group(function () {
 
     Route::middleware(['app'])->group(function () {
         Route::middleware('auth:sanctum')->group(function () {
-            Route::put('accounts/{id}/block', [App\Http\Controllers\API\AccountController::class, 'block']); //ok
-            Route::put('cards/block', [App\Http\Controllers\API\CardController::class, 'block']); // ok
-            Route::post('accounts/{id}/credit-purchases', [App\Http\Controllers\API\CreditPurchasesController::class, 'store']); //ok
-            Route::apiResource('accounts', App\Http\Controllers\API\AccountController::class)->only(['show', 'update']); //update ok
-            Route::apiResource('accounts.menu', App\Http\Controllers\API\MenuController::class)->only(['index', 'update', 'show']);
+            // desativar consumidor - ok
+            Route::put('accounts/{id}/block', [App\Http\Controllers\API\AccountController::class, 'block']);
+            // desativar dispositovs - ok
+            Route::put('cards/block', [App\Http\Controllers\API\CardController::class, 'block']);
+            // realizar recarga de cŕedito - ok
+            Route::post('accounts/{id}/credit-purchases', [App\Http\Controllers\API\CreditPurchasesController::class, 'store']);
+            // alterar limite diário - update ok
+            Route::apiResource('accounts', App\Http\Controllers\API\AccountController::class)->only(['show', 'update']);
+            // restringir produtos - ok
+            Route::put('accounts/{id}/limited-products', [App\Http\Controllers\API\LimitedProductController::class, 'update']);
         });
 
-        Route::apiResource('leads', App\Http\Controllers\API\LeadController::class)->only(['store']);
+        // listar categorias - ok
         Route::apiResource('sections', App\Http\Controllers\API\SectionController::class)->only(['index', 'show']);
+        // listar produtos - ok
+        Route::get('accounts/{id}/products', [App\Http\Controllers\API\ProductController::class, 'index']);
+
+        Route::apiResource('leads', App\Http\Controllers\API\LeadController::class)->only(['store']);
         Route::apiResource('settings', App\Http\Controllers\API\SettingsController::class)->only(['index']);
     });
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('dependents/{id}/create-user', [App\Http\Controllers\API\DependentController::class, 'createUser']); //ok
         Route::apiResource('clients.dependents', App\Http\Controllers\API\DependentController::class)->except('destroy');
-        Route::put('limited_products', [App\Http\Controllers\API\LimitedProductController::class, 'store']);
     });
 
     //Apis para deletar models pelo back office

@@ -2,7 +2,7 @@
 
   <div class="col-md-3">
     <x-img name="image"
-      :value="$item->image_url ?? null" />
+      :value="$item->image_url" />
   </div>
 
   <div class="col-md-9">

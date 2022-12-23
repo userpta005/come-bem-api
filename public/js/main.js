@@ -196,7 +196,7 @@
 
                 $("#inp-city_id").append(
                     new Option(
-                        person.city.title + "- " + person.city.state,
+                        person.city.info,
                         person.city_id
                     )
                 );

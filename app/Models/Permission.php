@@ -89,6 +89,14 @@ class Permission extends \Spatie\Permission\Models\Permission
                                                             array('name' => 'cards_edit', 'description' => 'Editar'),
                                                             array('name' => 'cards_delete', 'description' => 'Deletar'),
                                                         ]
+                                                    ],
+
+                                                    [
+                                                        'title' => 'Restrição de Produtos',
+                                                        'items' => [
+                                                            array('name' => 'limited-products_view', 'description' => 'Visualizar'),
+                                                            array('name' => 'limited-products_edit', 'description' => 'Editar')
+                                                        ]
                                                     ]
                                                 ]
                                             ]

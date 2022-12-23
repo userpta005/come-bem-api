@@ -21,7 +21,7 @@ class SettingsController extends Controller
 
     public function edit()
     {
-        $settings = Settings::with(['city' => fn ($query) => $query->state()])
+        $settings = Settings::query()
             ->where('store_id', session('store')['id'])
             ->first();
 

@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Product extends CommonModel
 {
@@ -30,6 +29,15 @@ class Product extends CommonModel
     ];
 
     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'image_url',
+    ];
+
+    /**
      * Get the product image url.
      *
      * @return \Illuminate\Database\Eloquent\Casts\Attribute
@@ -37,7 +45,7 @@ class Product extends CommonModel
     public function imageUrl(): Attribute
     {
         return new Attribute(
-            get: fn () => $this->image ? asset('storage/' . $this->image) : null
+            get: fn () => $this->image ? asset('storage/' . $this->image) : asset('images/noimage.png')
 
         );
     }
@@ -85,10 +93,10 @@ class Product extends CommonModel
     /**
      * The limitedProducts that belong to the Product
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function limitedProducts(): HasMany
+    public function limitedProducts(): BelongsToMany
     {
-        return $this->hasMany(LimitedProduct::class);
+        return $this->belongsToMany(Account::class);
     }
 }

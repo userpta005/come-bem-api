@@ -29,6 +29,15 @@ class Banner extends CommonModel
     ];
 
     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'image_url',
+    ];
+
+    /**
      * Get the banners image url.
      *
      * @return \Illuminate\Database\Eloquent\Casts\Attribute
@@ -36,7 +45,7 @@ class Banner extends CommonModel
     public function imageUrl(): Attribute
     {
         return new Attribute(
-            get: fn () => $this->image ? asset('storage/' . $this->image) : null
+            get: fn () => $this->image ? asset('storage/' . $this->image) : asset('images/noimage.png')
         );
     }
 }

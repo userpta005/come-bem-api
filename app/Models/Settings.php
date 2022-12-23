@@ -28,6 +28,15 @@ class Settings extends CommonModel
     ];
 
     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'logo_url',
+    ];
+
+    /**
      * Get the setting logo url.
      *
      * @return \Illuminate\Database\Eloquent\Casts\Attribute
@@ -35,7 +44,7 @@ class Settings extends CommonModel
     public function logoUrl(): Attribute
     {
         return new Attribute(
-            get: fn () => $this->logo ? asset('storage/' . $this->logo) : null
+            get: fn () => $this->logo ? asset('storage/' . $this->logo) : asset('images/noimage.png')
         );
     }
 
