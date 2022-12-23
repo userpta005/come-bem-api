@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-md-3">
     <x-img name="image"
-      :value="$item->image_url" />
+      :value="$item->image_url ?? null" />
   </div>
   <div class="col-md-9">
     <div class="row">

@@ -2,7 +2,7 @@
 
   <div class="col-md-3">
     <x-img name="image"
-      :value="$item->image_url" />
+      :value="$item->image_url ?? null" />
   </div>
 
   <div class="col-md-9">
@@ -38,7 +38,7 @@
         {!! Form::select('has_lot', 'Tem Lote?', [0 => 'Não', 1 => 'Sim'])->attrs(['class' => 'select2'])->required() !!}
       </div>
       <div class="col-md-3">
-        {!! Form::text('price', 'Preço')->required()->attrs(['class' => 'money']) !!}
+        {!! Form::text('price', 'Preço')->required()->attrs(['class' => 'money'])->value(floatToMoney($item->price ?? 0)) !!}
       </div>
     </div>
   </div>
