@@ -46,6 +46,9 @@ Route::prefix('v1')->group(function () {
             Route::apiResource('accounts', App\Http\Controllers\API\AccountController::class)->only(['show', 'update']);
             // restringir produtos - ok
             Route::put('accounts/{id}/limited-products', [App\Http\Controllers\API\LimitedProductController::class, 'update']);
+            //realiza pedido de compra - ok
+            Route::post('accounts/{id}/orders', [App\Http\Controllers\API\OrderController::class, 'store']);
+            Route::delete('orders/{id}', [App\Http\Controllers\API\OrderController::class, 'destroy']);
         });
 
         // listar categorias - ok

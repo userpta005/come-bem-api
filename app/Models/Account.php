@@ -151,4 +151,14 @@ class Account extends CommonModel
     {
         return $this->hasMany(AccountEntry::class);
     }
+
+    /**
+     * Get all of the orders for the Account
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
 }

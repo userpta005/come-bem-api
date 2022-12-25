@@ -21,7 +21,8 @@ return new class extends Migration
             $table->decimal('amount', 12, 2);
             $table->tinyInteger('status')->default(Status::ACTIVE->value);
             $table->date('date');
-            $table->tinyInteger('type');
+            $table->time('time');
+            $table->tinyInteger('type')->nullable();
             $table->timestamps();
         });
     }
