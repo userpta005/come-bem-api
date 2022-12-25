@@ -74,6 +74,11 @@ Route::prefix('v1')->group(function () {
     Route::get('people', [App\Http\Controllers\API\PersonController::class, 'search']);
     Route::get('ncms', [App\Http\Controllers\API\NcmController::class, 'search']);
 
+
+    Route::get('stocks', [App\Http\Controllers\API\StockController::class, 'index']);
+    Route::apiResource('measurement-units', App\Http\Controllers\API\MeasurementUnitController::class)->only('store');
+    Route::get('financialcategories', [App\Http\Controllers\API\FinancialCategoryController::class, 'index']);
+
     Route::apiResource('stores', App\Http\Controllers\API\StoreController::class)->only(['index', 'show']);
     Route::apiResource('payment-methods', App\Http\Controllers\API\PaymentMethodController::class)->only(['index', 'show']);
     Route::apiResource('states', App\Http\Controllers\API\StateController::class)->only(['index', 'show']);

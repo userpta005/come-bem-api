@@ -14,7 +14,7 @@ class ProductController extends BaseController
         $query = Product::query()
             ->with(['limitedProducts' => function ($query) use ($account) {
                 $query->where('account_id', $account->id);
-            }])
+            }, 'stock'])
             ->where('status', Status::ACTIVE)
             ->where('store_id', $request->get('store')['id']);
 

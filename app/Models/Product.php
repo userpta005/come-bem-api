@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Product extends CommonModel
 {
@@ -98,5 +99,15 @@ class Product extends CommonModel
     public function limitedProducts(): BelongsToMany
     {
         return $this->belongsToMany(Account::class);
+    }
+
+    /**
+     * Get the stock associated with the Product
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function stock(): HasOne
+    {
+        return $this->hasOne(Stock::class);
     }
 }
