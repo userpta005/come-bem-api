@@ -18,4 +18,14 @@ class OrderItem extends CommonModel
     {
         return $this->belongsTo(Order::class);
     }
+
+    /**
+     * Get the product that owns the OrderItem
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class);
+    }
 }
