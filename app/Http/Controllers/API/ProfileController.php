@@ -53,9 +53,9 @@ class ProfileController extends BaseController
     private function rules(Request $request, $primaryKey = null, bool $changeMessages = false)
     {
         $rules = [
-            'name' => ['required', 'max:120'],
-            'email' => ['required', 'max:89', Rule::unique('users')->ignore($request->user()->id)],
-            'phone' => ['required', 'max:15']
+            'name' => ['required', 'max:100'],
+            'email' => ['required', 'max:100', Rule::unique('users')->ignore($request->user()->id)],
+            'phone' => ['nullable', 'max:15']
         ];
 
         $messages = [];
