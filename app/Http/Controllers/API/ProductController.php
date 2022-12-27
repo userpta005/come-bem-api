@@ -9,8 +9,10 @@ use Illuminate\Http\Request;
 
 class ProductController extends BaseController
 {
-    public function index(Request $request, Account $account)
+    public function index(Request $request, $id)
     {
+        $account = Account::query()->findOrFail($id);
+
         $query = Product::query()
             ->with(['limitedProducts' => function ($query) use ($account) {
                 $query->where('account_id', $account->id);
