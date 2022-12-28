@@ -166,7 +166,7 @@ class ClientController extends Controller
             'state_registration' => ['nullable', 'max:25'],
             'city_registration' => ['nullable', 'max:25'],
             'birthdate' => ['required', 'date'],
-            'status' => ['required', new Enum(Status::class)],
+            'status' => ['required', new Enum(\App\Enums\Common\Status::class)],
             'email' => ['required', 'max:100', Rule::unique('people')->ignore($primaryKey)],
             'phone' => ['required', 'max:11'],
             'city_id' => ['required', Rule::exists('cities', 'id')],

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\OrderStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -9,6 +10,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Order extends CommonModel
 {
     use HasFactory;
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'status' => OrderStatus::class
+    ];
 
     /**
      * Get the account that owns the Order
