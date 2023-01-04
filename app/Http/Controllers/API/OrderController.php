@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Enums\AccountTurn;
 use App\Models\Account;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -11,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 
 class OrderController extends BaseController
 {
@@ -28,6 +30,8 @@ class OrderController extends BaseController
         try {
             DB::beginTransaction();
 
+            $inputs = $request->all();
+
             $account = Account::query()->findOrFail($id);
 
             $storeId = $request->get('store')['id'];
@@ -36,7 +40,18 @@ class OrderController extends BaseController
                 return $this->sendError('Conta não cadastrada nessa loja.', [], 403);
             }
 
-            $inputs = $request->all();
+            $orderExists = Order::query()
+                ->where([
+                    ['account_id', '=', $account->id],
+                    ['turn', '=', $inputs['turn']]
+                ])
+                ->whereDate('date', $inputs['date'])
+                ->first();
+
+            if ($orderExists) {
+                return $this->sendError('Já existe um pedido para este período', [], 403);
+            }
+
             $inputs['account_id'] = $account->id;
             $inputs['amount'] = 0;
 
@@ -86,7 +101,7 @@ class OrderController extends BaseController
             'products.*.id' => ['required', Rule::exists('products', 'id')],
             'products.*.quantity' => ['required', 'integer', 'min:1'],
             'date' => ['required', 'date'],
-            'time' => ['required', 'date_format:H:i']
+            'turn' => ['required', new Enum(AccountTurn::class)]
         ];
 
         $messages = [];
