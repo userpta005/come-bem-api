@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\{
     MeasurementUnitController,
     NcmController,
     OpeningBalanceController,
+    OrderConfirmController,
     ParameterController,
     PasswordController,
     PaymentMethodController,
@@ -80,6 +81,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('client-dependents-report', ClientDependentReportController::class)->name('client.dependents.report');
     Route::get('reports.stocks', [ReportController::class, 'stocks'])->name('reports.stocks');
     Route::get('stocks-report', StockReportController::class)->name('stocks.report');
+    Route::get('order-confirm/{id}', OrderConfirmController::class)->name('orders.confirm');
 
     Route::resource('leads', LeadController::class);
     Route::resource('tenants', TenantController::class);
