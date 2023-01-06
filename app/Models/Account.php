@@ -105,11 +105,13 @@ class Account extends CommonModel
 
     public function dayBalance(): Attribute
     {
-        return new Attribute(
-            get: fn () => ($this->daily_limit - $this->orders()
-                ->whereDate('date', today())
-                ->get()->sum('amount'))
-        );
+        return new Attribute(get: function () {
+            if ($this->orders && $this->orders->isEmpty()) {
+                return 0;
+            }
+            $sum = $this->orders->filter(fn ($item) => $item->date == today()->format('Y-m-d'))->sum('amount');
+            return $this->daily_limit - $sum;
+        });
     }
 
     /**
