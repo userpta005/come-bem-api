@@ -67,8 +67,6 @@
                                                     <i class="fas fa-ellipsis-v"></i>
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                                    {{-- <a class="dropdown-item"
-                                                        href="{{ route('orders.show', $item) }}">Visualizar</a> --}}
                                                     <a class="dropdown-item"
                                                         href="{{ route('orders.confirm', $item) }}">Confirmar Recarga</a>
                                                 </div>
@@ -96,3 +94,11 @@
             </div>
         </div>
     @endsection
+
+    @push('js')
+        <script>
+            $(document).ready(function() {
+                setTimeout('window.location.reload();', 50000);
+            });
+        </script>
+    @endpush
