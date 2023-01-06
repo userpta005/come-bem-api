@@ -33,7 +33,7 @@
                 <div class="card-deck">
                   <div class="card m-2 shadow-sm">
                     <div class="card-body">
-                      <p><strong>Nome: </strong></p>
+                      <p><strong>Nome do Produto: </strong></p>
                       <p class="card-text">
                         {{ $item->name }}
                       </p>
@@ -81,6 +81,14 @@
                       <p><strong>Preço: </strong></p>
                       <p class="card-text">
                         {{ floatToMoney($item->price) }}
+                      </p>
+                    </div>
+                  </div>
+                  <div class="card m-2 shadow-sm">
+                    <div class="card-body">
+                      <p><strong>Preço Promocional: </strong></p>
+                      <p class="card-text">
+                        {{ floatToMoney($item->promotion_price) }}
                       </p>
                     </div>
                   </div>

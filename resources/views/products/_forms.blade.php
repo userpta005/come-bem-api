@@ -8,7 +8,7 @@
   <div class="col-md-9">
     <div class="row">
       <div class="col-md-6">
-        {!! Form::text('name', 'Nome')->required()->attrs(['maxlength' => 40]) !!}
+        {!! Form::text('name', 'Nome do produto')->required()->attrs(['maxlength' => 40]) !!}
       </div>
       <div class="col-md-4">
         {!! Form::select('section_id', 'Seção', $sections->prepend('Selecione...', ''))->attrs(['class' => 'select2'])->required() !!}
@@ -35,10 +35,13 @@
           :required="true" />
       </div>
       <div class="col-md-3">
-        {!! Form::select('has_lot', 'Tem Lote?', [0 => 'Não', 1 => 'Sim'])->attrs(['class' => 'select2'])->required() !!}
+        {!! Form::text('price', 'Preço')->required()->attrs(['class' => 'money'])->value(floatToMoney($item->price ?? 0)) !!}
       </div>
       <div class="col-md-3">
-        {!! Form::text('price', 'Preço')->required()->attrs(['class' => 'money'])->value(floatToMoney($item->price ?? 0)) !!}
+        {!! Form::text('promotion_price', 'Pc. Promocional')->required()->attrs(['class' => 'money'])->value(floatToMoney($item->promotion_price ?? 0)) !!}
+      </div>
+      <div class="col-md-6">
+        {!! Form::textarea('note', 'Observação') !!}
       </div>
     </div>
   </div>
