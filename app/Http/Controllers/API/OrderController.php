@@ -55,9 +55,6 @@ class OrderController extends BaseController
             $inputs['account_id'] = $account->id;
             $inputs['amount'] = 0;
 
-            $order = Order::query()->create($inputs);
-            $productValues['order_id'] = $order->id;
-
             foreach ($inputs['products'] as $value) {
                 $product = Product::query()->findOrFail($value['id']);
                 $productValues['product_id'] = $product->id;
@@ -65,10 +62,17 @@ class OrderController extends BaseController
                 $productValues['quantity'] = $value['quantity'];
                 $productValues['total'] = $value['quantity'] * $product->price;
                 $inputs['amount'] += $productValues['total'];
-                OrderItem::query()->create($productValues);
             }
 
-            $order->fill($inputs)->save();
+            if ($account->balance < $inputs['amount']) {
+                return $this->sendError('Você não tem saldo suficiente.', [], 403);
+            }
+
+            $order = Order::query()->create($inputs);
+
+            $order->orderItems()->create($productValues);
+
+            $account->decrement('balance', $inputs['amount']);
 
             $user = User::getAllDataUser();
 

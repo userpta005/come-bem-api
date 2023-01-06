@@ -9,7 +9,6 @@
                         <div class="col-8">
                             <h4 class="card-title">Painel Administrativo</h4>
                         </div>
-
                     </div>
                 </div>
                 <div class="card-body">
@@ -68,7 +67,7 @@
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
                                                     <a class="dropdown-item"
-                                                        href="{{ route('orders.confirm', $item) }}">Confirmar Recarga</a>
+                                                        href="{{ route('orders.confirm', $item) }}">Confirmar Entrega</a>
                                                 </div>
                                             </div>
                                         </td>
