@@ -39,7 +39,8 @@ class Account extends CommonModel
         'attr_updated_at',
         'attr_status',
         'attr_balance',
-        'attr_daily_limit'
+        'attr_daily_limit',
+        'day_balance'
     ];
 
     /**
@@ -99,6 +100,15 @@ class Account extends CommonModel
     {
         return new Attribute(
             get: fn () => $this->updated_at->format('d/m/Y')
+        );
+    }
+
+    public function dayBalance(): Attribute
+    {
+        return new Attribute(
+            get: fn () => ($this->daily_limit - $this->orders()
+                ->whereDate('date', today())
+                ->get()->sum('amount'))
         );
     }
 

@@ -64,6 +64,10 @@ class OrderController extends BaseController
                 $inputs['amount'] += $productValues['total'];
             }
 
+            if ($account->day_balance < $inputs['amount']) {
+                return $this->sendError('Saldo do dia insuficiente.', [], 403);
+            }
+
             if ($account->balance < $inputs['amount']) {
                 return $this->sendError('Você não tem saldo suficiente.', [], 403);
             }

@@ -6805,16 +6805,16 @@
         },
         {
             "name": "laradumps/laradumps",
-            "version": "v1.5.2",
+            "version": "v1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laradumps/laradumps.git",
-                "reference": "b0d164dedeaeb93dc1a1828f104446a2926b73c5"
+                "reference": "fcf500cd2a2c8d4a729e4c146d439af6dc739e85"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laradumps/laradumps/zipball/b0d164dedeaeb93dc1a1828f104446a2926b73c5",
-                "reference": "b0d164dedeaeb93dc1a1828f104446a2926b73c5",
+                "url": "https://api.github.com/repos/laradumps/laradumps/zipball/fcf500cd2a2c8d4a729e4c146d439af6dc739e85",
+                "reference": "fcf500cd2a2c8d4a729e4c146d439af6dc739e85",
                 "shasum": ""
             },
             "require": {
@@ -6823,6 +6823,7 @@
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^3.8",
+                "illuminate/mail": "^8.18 | ^9.0",
                 "illuminate/support": "^8.18 | ^9.0",
                 "nunomaduro/larastan": "^1.0 | ^2.1",
                 "orchestra/testbench": "^6.17 | ^7.0",
@@ -6860,7 +6861,7 @@
             "homepage": "https://github.com/laradumps/laradumps",
             "support": {
                 "issues": "https://github.com/laradumps/laradumps/issues",
-                "source": "https://github.com/laradumps/laradumps/tree/v1.5.2"
+                "source": "https://github.com/laradumps/laradumps/tree/v1.6.0"
             },
             "funding": [
                 {
@@ -6868,7 +6869,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-12-14T17:07:44+00:00"
+            "time": "2023-01-05T20:15:09+00:00"
         },
         {
             "name": "laravel/sail",
