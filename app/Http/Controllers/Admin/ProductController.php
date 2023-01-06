@@ -23,14 +23,26 @@ class ProductController extends Controller
         $this->middleware('permission:products_edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:products_view', ['only' => ['show', 'index']]);
         $this->middleware('permission:products_delete', ['only' => ['destroy']]);
-        $this->middleware('store');
     }
 
     public function index(Request $request)
     {
-        $data = Product::where('store_id', session('store')['id'])->paginate(10);
+        $sections = Section::where('status', Status::ACTIVE)->get();
 
-        return view('products.index', compact('data'));
+        $classifications = NutritionalClassification::all();
+
+        $status = Status::all();
+
+        $data = Product::query()
+            ->when(session()->has('store'), fn ($query) => $query->where('store_id', session('store')['id']))
+            ->when(!session()->has('store'), fn ($query) => $query->whereNull('store_id'))
+            ->when($request->filled('section'), fn ($query) => $query->where('section_id', $request->section))
+            ->when($request->filled('nutritional_classification'), fn ($query) => $query->where('nutritional_classification', $request->nutritional_classification))
+            ->when($request->filled('status'), fn ($query) => $query->where('status', $request->status))
+            ->when($request->filled('search'), fn ($query) => $query->where('name', 'like', "%{$request->search}%"))
+            ->paginate(10);
+
+        return view('products.index', compact('data', 'sections', 'classifications', 'status'));
     }
 
     public function create()
@@ -51,7 +63,8 @@ class ProductController extends Controller
         DB::transaction(function () use ($request) {
             $inputs = $request->all();
             $inputs['price'] = moneyToFloat($inputs['price']);
-            $inputs['store_id'] = session('store')['id'];
+            $inputs['promotion_price'] = moneyToFloat($inputs['promotion_price']);
+            $inputs['store_id'] = session()->has('store') ? session('store')['id'] : null;
 
             if ($request->hasFile('image') && $request->file('image')->isValid()) {
                 $upload = $request->file('image')->store('products', 'public');
@@ -92,6 +105,7 @@ class ProductController extends Controller
         DB::transaction(function () use ($item, $request) {
             $inputs = $request->all();
             $inputs['price'] = moneyToFloat($inputs['price']);
+            $inputs['promotion_price'] = moneyToFloat($inputs['promotion_price']);
 
             if ($request->hasFile('image') && $request->file('image')->isValid()) {
                 $upload = $request->file('image')->store('products', 'public');
@@ -136,6 +150,8 @@ class ProductController extends Controller
             'nutritional_classification' => ['required', new Enum(NutritionalClassification::class)],
             'status' => ['required', new Enum(Status::class)],
             'price' => ['required'],
+            'promotion_price' => ['required'],
+            'note' => ['nullable', 'max:200']
         ];
 
         $messages = [];

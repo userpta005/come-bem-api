@@ -13,7 +13,7 @@
   <img src="{{ $value }}"
     class="d-block"
     id="preview-{{ $name }}"
-    style="max-width: 100%; max-height: 100%; border: 1px solid {{ $errors->has($name) ? 'red' : 'black' }}">
+    style="max-width: 200px; max-height: 100%; border: 1px solid {{ $errors->has($name) ? 'red' : 'black' }}">
   <input type="file"
     id="inp-{{ $name }}"
     name="{{ $name }}"
