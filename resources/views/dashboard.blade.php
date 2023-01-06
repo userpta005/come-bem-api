@@ -42,8 +42,7 @@
                             </thead>
                             <tbody>
                                 @forelse ($data as $item)
-                                    <tr @if ($item->status->value == 1) style="background: @if ($item->created_at->addMinutes(5) > now()) #692e9a81 @else #f5365c93 @endif"
-                                        @endif>
+                                    <tr>
                                         <td>
                                             <i class="fa fa-square" aria-hidden="true"
                                                 style="color: {{ \App\Enums\OrderStatus::colors()[$item->status->value] }}"></i>
