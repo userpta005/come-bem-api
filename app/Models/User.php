@@ -63,12 +63,14 @@ class User extends Authenticatable
             'people.client.dependents.accounts.cards.account',
             'people.client.dependents.accounts.limitedProducts',
             'people.client.dependents.accounts.orders.orderItems.product.um',
+            'people.client.dependents.accounts.orders.orderItems.product.stock',
             'people.client.dependents.people.user',
             'people.dependent.accounts.store',
             'people.dependent.accounts.accountEntries',
             'people.dependent.accounts.cards.account',
             'people.dependent.accounts.limitedProducts',
-            'people.dependent.accounts.orders.orderItems.product.um'
+            'people.dependent.accounts.orders.orderItems.product.um',
+            'people.dependent.accounts.orders.orderItems.product.stock'
         ]);
 
         return $user;

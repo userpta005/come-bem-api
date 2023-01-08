@@ -5,7 +5,6 @@ namespace App\Http\Controllers\API;
 use App\Enums\AccountTurn;
 use App\Models\Account;
 use App\Models\Order;
-use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -54,14 +53,15 @@ class OrderController extends BaseController
 
             $inputs['account_id'] = $account->id;
             $inputs['amount'] = 0;
+            $productValues = [];
 
-            foreach ($inputs['products'] as $value) {
+            foreach ($inputs['products'] as $index => $value) {
                 $product = Product::query()->findOrFail($value['id']);
-                $productValues['product_id'] = $product->id;
-                $productValues['price'] = $product->price;
-                $productValues['quantity'] = $value['quantity'];
-                $productValues['total'] = $value['quantity'] * $product->price;
-                $inputs['amount'] += $productValues['total'];
+                $productValues[$index]['product_id'] = $product->id;
+                $productValues[$index]['price'] = $product->price;
+                $productValues[$index]['quantity'] = $value['quantity'];
+                $productValues[$index]['total'] = $value['quantity'] * $product->price;
+                $inputs['amount'] += $productValues[$index]['total'];
             }
 
             if ($account->day_balance < $inputs['amount']) {
@@ -74,7 +74,9 @@ class OrderController extends BaseController
 
             $order = Order::query()->create($inputs);
 
-            $order->orderItems()->create($productValues);
+            foreach ($productValues as $item) {
+                $order->orderItems()->create($item);
+            }
 
             $account->decrement('balance', $inputs['amount']);
 
@@ -82,6 +84,83 @@ class OrderController extends BaseController
 
             DB::commit();
             return $this->sendResponse($user, 'Pedido realizado com sucesso!', 201);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return $this->sendError($th->getMessage());
+        }
+    }
+
+    public function update(Request $request, $id)
+    {
+        $order = Order::query()->findOrFail($id);
+
+        $validator = Validator::make(
+            $request->all(),
+            $this->rules($request, $order->id)
+        );
+
+        if ($validator->fails()) {
+            return $this->sendError('Erro de validação', $validator->errors(), 422);
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $inputs = $request->all();
+
+            $storeId = $request->get('store')['id'];
+
+            if ($order->account->store->id != $storeId) {
+                return $this->sendError('Conta não cadastrada nessa loja.', [], 403);
+            }
+
+            $orderExists = Order::query()
+                ->where([
+                    ['id', '!=', $order->id],
+                    ['account_id', '=', $order->account->id],
+                    ['turn', '=', $inputs['turn']]
+                ])
+                ->whereDate('date', $inputs['date'])
+                ->first();
+
+            if ($orderExists) {
+                return $this->sendError('Já existe um pedido para este período', [], 403);
+            }
+
+            $order->account->increment('balance', $order->amount);
+            $order->orderItems()->delete();
+            $inputs['amount'] = 0;
+            $productValues = [];
+
+            foreach ($inputs['products'] as $index => $value) {
+                $product = Product::query()->findOrFail($value['id']);
+                $productValues[$index]['product_id'] = $product->id;
+                $productValues[$index]['price'] = $product->price;
+                $productValues[$index]['quantity'] = $value['quantity'];
+                $productValues[$index]['total'] = $value['quantity'] * $product->price;
+                $inputs['amount'] += $productValues[$index]['total'];
+            }
+
+            if ($order->account->day_balance < $inputs['amount']) {
+                return $this->sendError('Saldo do dia insuficiente.', [], 403);
+            }
+
+            if ($order->account->balance < $inputs['amount']) {
+                return $this->sendError('Você não tem saldo suficiente.', [], 403);
+            }
+
+            $order->fill($inputs)->save();
+
+            foreach ($productValues as $item) {
+                $order->orderItems()->create($item);
+            }
+
+            $order->account->decrement('balance', $inputs['amount']);
+
+            $user = User::getAllDataUser();
+
+            DB::commit();
+            return $this->sendResponse($user, 'Pedido atualizado com sucesso!', 200);
         } catch (\Throwable $th) {
             DB::rollBack();
             return $this->sendError($th->getMessage());

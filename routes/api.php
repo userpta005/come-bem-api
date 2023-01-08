@@ -48,6 +48,7 @@ Route::prefix('v1')->group(function () {
             Route::put('accounts/{id}/limited-products', [App\Http\Controllers\API\LimitedProductController::class, 'update']);
             //realiza pedido de compra - ok
             Route::post('accounts/{id}/orders', [App\Http\Controllers\API\OrderController::class, 'store']);
+            Route::put('orders/{id}', [App\Http\Controllers\API\OrderController::class, 'update']);
             Route::delete('orders/{id}', [App\Http\Controllers\API\OrderController::class, 'destroy']);
         });
 
