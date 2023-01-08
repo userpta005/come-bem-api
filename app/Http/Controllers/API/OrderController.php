@@ -93,9 +93,12 @@ class OrderController extends BaseController
         $item = Order::query()->findOrFail($id);
 
         try {
+            DB::beginTransaction();
+            $item->account->increment('balance', $item->amount);
             $item->orderItems()->delete();
             $item->delete();
             $user = User::getAllDataUser();
+            DB::commit();
             return $this->sendResponse($user, 'Registro deletado com sucesso.');
         } catch (\Throwable $th) {
             return $this->sendError('Registro vinculado á outra tabela, somente poderá ser excluído se retirar o vinculo.');

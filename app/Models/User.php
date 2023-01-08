@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
@@ -52,22 +53,25 @@ class User extends Authenticatable
 
     public static function getAllDataUser()
     {
-        return User::person()
-            ->with(
-                'people.city.state',
-                'people.client.dependents.accounts.store',
-                'people.client.dependents.accounts.accountEntries',
-                'people.client.dependents.accounts.cards.account',
-                'people.client.dependents.accounts.limitedProducts',
-                'people.client.dependents.accounts.orders.orderItems.product.um',
-                'people.client.dependents.people.user',
-                'people.dependent.accounts.store',
-                'people.dependent.accounts.accountEntries',
-                'people.dependent.accounts.cards.account',
-                'people.dependent.accounts.limitedProducts',
-                'people.dependent.accounts.orders.orderItems.product.um'
-            )
-            ->findOrFail(auth()->user()->id);
+        /**
+         * @var \App\Models\User
+         */
+        $user = Auth::user();
+        $user->loadMissing([
+            'people.client.dependents.accounts.store',
+            'people.client.dependents.accounts.accountEntries',
+            'people.client.dependents.accounts.cards.account',
+            'people.client.dependents.accounts.limitedProducts',
+            'people.client.dependents.accounts.orders.orderItems.product.um',
+            'people.client.dependents.people.user',
+            'people.dependent.accounts.store',
+            'people.dependent.accounts.accountEntries',
+            'people.dependent.accounts.cards.account',
+            'people.dependent.accounts.limitedProducts',
+            'people.dependent.accounts.orders.orderItems.product.um'
+        ]);
+
+        return $user;
     }
 
     /**
