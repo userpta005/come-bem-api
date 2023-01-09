@@ -64,7 +64,7 @@ class OrderController extends BaseController
                 $inputs['amount'] += $productValues[$index]['total'];
             }
 
-            if ($account->day_balance < $inputs['amount']) {
+            if ($account->dayBalanceByDate($inputs['date']) < $inputs['amount']) {
                 return $this->sendError('Saldo do dia insuficiente.', [], 403);
             }
 
@@ -129,6 +129,9 @@ class OrderController extends BaseController
 
             $order->account->increment('balance', $order->amount);
             $order->orderItems()->delete();
+            $order->amount = 0;
+            $order->save();
+            $order->account->load('orders');
             $inputs['amount'] = 0;
             $productValues = [];
 
@@ -141,7 +144,7 @@ class OrderController extends BaseController
                 $inputs['amount'] += $productValues[$index]['total'];
             }
 
-            if ($order->account->day_balance < $inputs['amount']) {
+            if ($order->account->dayBalanceByDate($inputs['date']) < $inputs['amount']) {
                 return $this->sendError('Saldo do dia insuficiente.', [], 403);
             }
 

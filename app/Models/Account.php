@@ -114,6 +114,15 @@ class Account extends CommonModel
         });
     }
 
+    public function dayBalanceByDate($date)
+    {
+        if ($this->orders && $this->orders->isEmpty()) {
+            return 0;
+        }
+        $sum = $this->orders->filter(fn ($item) => $item->date == carbon($date)->format('Y-m-d'))->sum('amount');
+        return $this->daily_limit - $sum;
+    }
+
     /**
      * Get the dependent that owns the Account
      *
