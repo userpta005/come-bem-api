@@ -48,9 +48,7 @@ class AccountController extends BaseController
 
         $item->fill($inputs)->save();
 
-        $user = User::getAllDataUser();
-
-        return $this->sendResponse($user, "Atualização realizada com sucesso", 200);
+        return $this->sendResponse($item, "Atualização realizada com sucesso", 200);
     }
 
     public function destroy($id)
@@ -87,9 +85,7 @@ class AccountController extends BaseController
         $item->status = $request->get('activate') ? Status::ACTIVE : Status::INACTIVE;
         $item->save();
 
-        $user = User::getAllDataUser();
-
-        return $this->sendResponse($user, 'Atualização realizada com sucesso!', 200);
+        return $this->sendResponse([], 'Atualização realizada com sucesso!', 200);
     }
 
     private function rules(Request $request, $primaryKey = null, bool $changeMessages = false)

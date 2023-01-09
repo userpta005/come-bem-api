@@ -5,7 +5,6 @@ namespace App\Http\Controllers\API;
 use App\Enums\Common\Status;
 use App\Enums\PeopleGender;
 use App\Models\Account;
-use App\Models\Client;
 use App\Models\Dependent;
 use App\Models\Person;
 use App\Models\Role;
@@ -19,18 +18,18 @@ use Throwable;
 
 class DependentController extends BaseController
 {
-    public function index(Request $request, Client $client)
+    public function index(Request $request, $client)
     {
         $query = Dependent::query()
-            ->with(['people.city.state', 'accounts'])
-            ->where('client_id', $client->id);
+            ->with('people', 'accounts.store.people')
+            ->where('client_id', $client);
 
         $data = $request->filled('page') ? $query->paginate(10) : $query->get();
 
         return $this->sendResponse($data);
     }
 
-    public function store(Request $request, Client $client)
+    public function store(Request $request, $client)
     {
         $validator = Validator::make(
             $request->all(),
@@ -50,34 +49,40 @@ class DependentController extends BaseController
             $person = Person::query()->create($inputs);
 
             $inputs['person_id'] = $person->id;
-            $inputs['client_id'] = $client->id;
+            $inputs['client_id'] = $client;
             $dependent = Dependent::query()->create($inputs);
 
             $inputs['dependent_id'] = $dependent->id;
             Account::query()->create($inputs);
 
-            $user = User::getAllDataUser();
-
             DB::commit();
 
-            return $this->sendResponse($user, "Registro criado com sucesso", 201);
+            return $this->sendResponse([], "Registro criado com sucesso", 201);
         } catch (Throwable $th) {
             DB::rollBack();
             return $this->sendError($th->getMessage());
         }
     }
 
-    public function show(Request $request, Client $client, $id)
+    public function show($id)
     {
         $item = Dependent::query()
-            ->with('people.city.state', 'accounts')
-            ->where('status', Status::ACTIVE)
+            ->with([
+                'people',
+                'accounts' => [
+                    'store.people',
+                    'orders.orderItems' => function ($query) {
+                        $query->with(['product' => ['um', 'stock']])
+                            ->whereDate('date', '>=', today());
+                    }
+                ]
+            ])
             ->findOrFail($id);
 
         return $this->sendResponse($item);
     }
 
-    public function update(Request $request, Client $client, $id)
+    public function update(Request $request, $client, $id)
     {
         $item = Dependent::query()
             ->with('people', 'accounts')
@@ -153,10 +158,8 @@ class DependentController extends BaseController
             );
             $user->assignRole('dependent');
 
-            $user = User::getAllDataUser();
-
             DB::commit();
-            return $this->sendResponse($user, 'Dependente habilitado com sucesso!', 201);
+            return $this->sendResponse([], 'Dependente habilitado com sucesso!', 201);
         } catch (\Throwable $th) {
             DB::rollBack();
             return $this->sendError($th->getMessage());

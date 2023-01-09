@@ -96,13 +96,6 @@ class UserController extends BaseController
         }
     }
 
-    public function show()
-    {
-        $user = User::getAllDataUser();
-
-        return $this->sendResponse($user);
-    }
-
     private function rules(Request $request, $primaryKey = null, bool $changeMessages = false)
     {
         $rules = [

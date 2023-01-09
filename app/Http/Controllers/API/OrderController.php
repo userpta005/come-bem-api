@@ -6,7 +6,6 @@ use App\Enums\AccountTurn;
 use App\Models\Account;
 use App\Models\Order;
 use App\Models\Product;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -15,6 +14,30 @@ use Illuminate\Validation\Rules\Enum;
 
 class OrderController extends BaseController
 {
+    public function index(Request $request, $id)
+    {
+        $account = Account::query()
+            ->with('orders')
+            ->findOrFail($id);
+
+        $storeId = $request->get('store')['id'];
+
+        if ($account->store->id != $storeId) {
+            return $this->sendError('Conta não cadastrada nessa loja.', [], 403);
+        }
+
+        $query = Order::query()
+            ->with(['orderItems' => function ($query) {
+                $query->with(['product' => ['um', 'stock']])
+                    ->whereDate('date', '>=', today());
+            }])
+            ->where('account_id', $account->id);
+
+        $data = $request->filled('page') ? $query->paginate(10) : $query->get();
+
+        return $this->sendResponse($data);
+    }
+
     public function store(Request $request, $id)
     {
         $validator = Validator::make(
@@ -31,7 +54,9 @@ class OrderController extends BaseController
 
             $inputs = $request->all();
 
-            $account = Account::query()->findOrFail($id);
+            $account = Account::query()
+                ->with('orders')
+                ->findOrFail($id);
 
             $storeId = $request->get('store')['id'];
 
@@ -39,12 +64,10 @@ class OrderController extends BaseController
                 return $this->sendError('Conta não cadastrada nessa loja.', [], 403);
             }
 
-            $orderExists = Order::query()
-                ->where([
-                    ['account_id', '=', $account->id],
-                    ['turn', '=', $inputs['turn']]
-                ])
-                ->whereDate('date', $inputs['date'])
+            $orderExists = $account->orders
+                ->where('account_id', $account->id)
+                ->where('turn', $inputs['turn'])
+                ->where('date', $inputs['date'])
                 ->first();
 
             if ($orderExists) {
@@ -57,6 +80,7 @@ class OrderController extends BaseController
 
             foreach ($inputs['products'] as $index => $value) {
                 $product = Product::query()->findOrFail($value['id']);
+                $productValues[$index]['date'] = $inputs['date'];
                 $productValues[$index]['product_id'] = $product->id;
                 $productValues[$index]['price'] = $product->price;
                 $productValues[$index]['quantity'] = $value['quantity'];
@@ -80,10 +104,16 @@ class OrderController extends BaseController
 
             $account->decrement('balance', $inputs['amount']);
 
-            $user = User::getAllDataUser();
+            $account->load([
+                'store.people',
+                'orders.orderItems' => function ($query) {
+                    $query->with(['product' => ['um', 'stock']])
+                        ->whereDate('date', '>=', today());
+                }
+            ]);
 
             DB::commit();
-            return $this->sendResponse($user, 'Pedido realizado com sucesso!', 201);
+            return $this->sendResponse($account, 'Pedido realizado com sucesso!', 201);
         } catch (\Throwable $th) {
             DB::rollBack();
             return $this->sendError($th->getMessage());
@@ -92,7 +122,9 @@ class OrderController extends BaseController
 
     public function update(Request $request, $id)
     {
-        $order = Order::query()->findOrFail($id);
+        $order = Order::query()
+            ->with('account.orders')
+            ->findOrFail($id);
 
         $validator = Validator::make(
             $request->all(),
@@ -114,21 +146,19 @@ class OrderController extends BaseController
                 return $this->sendError('Conta não cadastrada nessa loja.', [], 403);
             }
 
-            $orderExists = Order::query()
-                ->where([
-                    ['id', '!=', $order->id],
-                    ['account_id', '=', $order->account->id],
-                    ['turn', '=', $inputs['turn']]
-                ])
-                ->whereDate('date', $inputs['date'])
+            $orderExists = $order->account->orders
+                ->where('id', '!=', $order->id)
+                ->where('account_id', $order->account->id)
+                ->where('turn', $inputs['turn'])
+                ->where('date', $inputs['date'])
                 ->first();
 
             if ($orderExists) {
                 return $this->sendError('Já existe um pedido para este período', [], 403);
             }
 
-            $order->account->increment('balance', $order->amount);
             $order->orderItems()->delete();
+            $order->account->increment('balance', $order->amount);
             $order->amount = 0;
             $order->save();
             $order->account->load('orders');
@@ -137,6 +167,7 @@ class OrderController extends BaseController
 
             foreach ($inputs['products'] as $index => $value) {
                 $product = Product::query()->findOrFail($value['id']);
+                $productValues[$index]['date'] = $inputs['date'];
                 $productValues[$index]['product_id'] = $product->id;
                 $productValues[$index]['price'] = $product->price;
                 $productValues[$index]['quantity'] = $value['quantity'];
@@ -160,10 +191,16 @@ class OrderController extends BaseController
 
             $order->account->decrement('balance', $inputs['amount']);
 
-            $user = User::getAllDataUser();
+            $order->account->load([
+                'store.people',
+                'orders.orderItems' => function ($query) {
+                    $query->with(['product' => ['um', 'stock']])
+                        ->whereDate('date', '>=', today());
+                }
+            ]);
 
             DB::commit();
-            return $this->sendResponse($user, 'Pedido atualizado com sucesso!', 200);
+            return $this->sendResponse($order->account, 'Pedido atualizado com sucesso!', 200);
         } catch (\Throwable $th) {
             DB::rollBack();
             return $this->sendError($th->getMessage());
@@ -172,16 +209,25 @@ class OrderController extends BaseController
 
     public function destroy($id)
     {
-        $item = Order::query()->findOrFail($id);
+        $item = Order::query()
+            ->findOrFail($id);
 
         try {
             DB::beginTransaction();
             $item->account->increment('balance', $item->amount);
             $item->orderItems()->delete();
             $item->delete();
-            $user = User::getAllDataUser();
+            $item->load([
+                'account' => [
+                    'store.people',
+                    'orders.orderItems' => function ($query) {
+                        $query->with(['product' => ['um', 'stock']])
+                            ->whereDate('date', '>=', today());
+                    }
+                ]
+            ]);
             DB::commit();
-            return $this->sendResponse($user, 'Registro deletado com sucesso.');
+            return $this->sendResponse($item->account, 'Registro deletado com sucesso.');
         } catch (\Throwable $th) {
             return $this->sendError('Registro vinculado á outra tabela, somente poderá ser excluído se retirar o vinculo.');
         }

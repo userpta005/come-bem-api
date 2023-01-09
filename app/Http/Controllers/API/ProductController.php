@@ -14,9 +14,10 @@ class ProductController extends BaseController
         $account = Account::query()->findOrFail($id);
 
         $query = Product::query()
-            ->with(['limitedProducts' => function ($query) use ($account) {
-                $query->where('account_id', $account->id);
-            }, 'stock'])
+            ->with([
+                'limitedProducts' => fn ($query) => $query->where('account_id', $account->id),
+                'stock'
+            ])
             ->where('status', Status::ACTIVE)
             ->where('store_id', $request->get('store')['id']);
 

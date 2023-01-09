@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Enums\Common\Status;
+use App\Models\Account;
 use App\Models\Card;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -12,6 +13,25 @@ use Illuminate\Validation\Rules\Enum;
 
 class CardController extends BaseController
 {
+    public function index(Request $request, $id)
+    {
+        $account = Account::query()->findOrFail($id);
+
+        $storeId = $request->get('store')['id'];
+
+        if ($account->store->id != $storeId) {
+            return $this->sendError('Conta não cadastrada nessa loja.', [], 403);
+        }
+
+        $query = Card::query()
+            ->with(['account'])
+            ->where('account_id', $account->id);
+
+        $data = $request->filled('page') ? $query->paginate(10) : $query->get();
+
+        return $this->sendResponse($data);
+    }
+
     public function destroy($id)
     {
         $item = Card::query()->findOrFail($id);
@@ -53,8 +73,6 @@ class CardController extends BaseController
             $item->save();
         }
 
-        $user = User::getAllDataUser();
-
-        return $this->sendResponse($user, 'Atualização realizada com sucesso!', 200);
+        return $this->sendResponse([], 'Atualização realizada com sucesso!', 200);
     }
 }

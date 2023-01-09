@@ -24,6 +24,7 @@ class OrderConfirmController extends Controller
                 ->withError( "Pedido já retirado");
         }
 
+        $order->delivery_date = now();
         $order->status = OrderStatus::RETIRED;
         $order->save();
 

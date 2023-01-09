@@ -15,6 +15,21 @@ use Ramsey\Uuid\Uuid;
 
 class CreditPurchasesController extends BaseController
 {
+    public function index(Request $request, $id)
+    {
+        $account = Account::query()->findOrFail($id);
+
+        $storeId = $request->get('store')['id'];
+
+        if ($account->store->id != $storeId) {
+            return $this->sendError('Conta não cadastrada nessa loja.', [], 403);
+        }
+
+        $account->load(['accountEntries' => fn ($query) => $query->whereDate('created_at', '>=', today()->subDays(30))]);
+
+        return $this->sendResponse($account->accountEntries);
+    }
+
     public function store(Request $request, $id)
     {
         $validator = Validator::make(
@@ -50,10 +65,8 @@ class CreditPurchasesController extends BaseController
 
             AccountEntry::query()->create($inputs);
 
-            $user = User::getAllDataUser();
-
             DB::commit();
-            return $this->sendResponse($user, 'Recarga realizada com sucesso!', 201);
+            return $this->sendResponse([], 'Recarga realizada com sucesso!', 201);
         } catch (\Throwable $th) {
             DB::rollBack();
             return $this->sendError($th->getMessage());
