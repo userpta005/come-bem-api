@@ -159,7 +159,7 @@ class DependentController extends Controller
             'status' => ['required', new Enum(Status::class)],
             'gender' => ['required', new Enum(PeopleGender::class)],
             'email' => ['nullable', 'max:100', Rule::unique('people')->ignore($primaryKey)],
-            'phone' => ['required', 'max:11'],
+            'phone' => ['nullable', 'max:11'],
             'city_id' => ['required', Rule::exists('cities', 'id')],
             'zip_code' => ['nullable', 'max:8'],
             'address' => ['nullable', 'max:50'],

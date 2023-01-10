@@ -21,7 +21,7 @@
     {!! Form::select('gender', 'Genêro')->options(\App\Enums\PeopleGender::all()->prepend('Selecione...', ''))->attrs(['class' => 'select2'])->required() !!}
   </div>
   <div class="col-md-3">
-    {!! Form::text('phone', 'Telefone')->attrs(['class' => 'phone'])->required() !!}
+    {!! Form::text('phone', 'Telefone')->attrs(['class' => 'phone']) !!}
   </div>
   <div class="col-md-4">
     {!! Form::select('city_id', 'Cidade')->options(isset($item) ? [$item->city_id => $item->city] : [])->required() !!}
