@@ -86,4 +86,8 @@ Route::prefix('v1')->group(function () {
     Route::apiResource('parameters', App\Http\Controllers\API\ParameterController::class)->only(['index', 'show']);
     Route::apiResource('faqs', App\Http\Controllers\API\FaqController::class)->only(['index', 'show']);
     Route::apiResource('banners', App\Http\Controllers\API\BannerController::class)->only(['index', 'show']);
+
+
+    Route::post('stores/{id}/pagseguro/notification',  App\Http\Controllers\API\NotificationPagseguroController::class);
+
 });

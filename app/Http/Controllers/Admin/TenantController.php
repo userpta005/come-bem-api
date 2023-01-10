@@ -207,6 +207,8 @@ class TenantController extends Controller
             'address' => ['required', 'max:50'],
             'district' => ['nullable', 'max:50'],
             'number' => ['nullable', 'max:4'],
+            'pagseguro_token' => ['nullable', 'string'],
+            'email' => ['nullable', 'email']
         ];
 
         $messages = [];
