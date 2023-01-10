@@ -15,7 +15,7 @@ enum ClientType: int
     {
         return match ($this) {
             static::RESPONSIBLE => 'Responsável',
-            static::RESPONSIBLE_DEPENDENT => 'Dependente Responsável',
+            static::RESPONSIBLE_DEPENDENT => 'Consumidor Responsável',
         };
     }
 }

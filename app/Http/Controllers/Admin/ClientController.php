@@ -34,6 +34,11 @@ class ClientController extends Controller
                     $query->where('store_id', session('store')['id']);
                 });
             }])
+            ->when(session()->has('store'), function ($query) {
+                $query->whereHas('dependents.accounts', function ($query) {
+                    $query->where('store_id', session('store')['id']);
+                });
+            })
             ->when(!empty($request->search), function ($query) use ($request) {
                 $query->whereHas('people', function ($query) use ($request) {
                     $query->where('id', $request->search);
@@ -50,9 +55,7 @@ class ClientController extends Controller
             })
             ->paginate(10);
 
-        $clients = Client::person()->get();
-
-        return view('clients.index', compact('data', 'clients'));
+        return view('clients.index', compact('data'));
     }
 
     public function create()

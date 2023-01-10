@@ -26,7 +26,7 @@
           <div class="table-responsive-md">
             <table class="table tablesorter table-striped">
               <thead class=" text-primary">
-                <th scope="col">Dependente</th>
+                <th scope="col">Consumidor</th>
                 <th scope="col">Saldo</th>
                 <th scope="col">Limite Diário</th>
                 <th scope="col">Turma</th>

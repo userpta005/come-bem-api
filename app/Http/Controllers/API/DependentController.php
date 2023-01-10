@@ -73,7 +73,7 @@ class DependentController extends BaseController
             $user = User::query()->create($inputs);
             Role::updateOrCreate(
                 ['name' => 'dependent', 'guard_name' => 'web'],
-                ['description' => 'Dependente']
+                ['description' => 'Consumidor']
             );
             $user->assignRole('dependent');
 

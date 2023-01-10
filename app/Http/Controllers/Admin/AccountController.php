@@ -43,7 +43,7 @@ class AccountController extends Controller
 
         if ($account instanceof Account) {
             return redirect()->route('clients.index')
-                ->withError('Já existe uma conta para este dependente nesta escola');
+                ->withError('Já existe uma conta para este consumidor nesta escola');
         }
 
         $stores = Store::person()
@@ -62,7 +62,7 @@ class AccountController extends Controller
 
         if ($account instanceof Account) {
             return redirect()->route('clients.index')
-                ->withError('Já existe uma conta para este dependente nesta escola');
+                ->withError('Já existe uma conta para este consumidor nesta escola');
         }
 
         Validator::make(

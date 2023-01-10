@@ -68,7 +68,7 @@ class Permission extends \Spatie\Permission\Models\Permission
                                     array('name' => 'clients_edit', 'description' => 'Editar'),
                                     array('name' => 'clients_delete', 'description' => 'Deletar'),
                                     [
-                                        'title' => 'Dependentes',
+                                        'title' => 'Consumidors',
                                         'items' => [
                                             array('name' => 'dependents_view', 'description' => 'Visualizar'),
                                             array('name' => 'dependents_create', 'description' => 'Criar'),
@@ -231,7 +231,7 @@ class Permission extends \Spatie\Permission\Models\Permission
                 'title' => 'Relatórios',
                 'items' => [
                     [
-                        'title' => 'Dependentes',
+                        'title' => 'Consumidors',
                         'items' => [
                             array('name' => 'client-dependents-report_view', 'description' => 'Visualizar'),
                         ]

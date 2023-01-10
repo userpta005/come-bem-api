@@ -16,7 +16,7 @@
           :destroy="`/api/v1/clients/${scope.row.id}`">
           <el-dropdown-item>
             <el-link type="info" :href="`${url}/clients/${scope.row.id}/dependents/create`" :underline="false">
-              Criar Dependente
+              Criar Consumidor
             </el-link>
           </el-dropdown-item>
         </DropDown>
@@ -31,4 +31,3 @@ import DropDown from './dropdown.vue'
 const tableData = window.clients
 const url = getUrl();
 </script>
-  

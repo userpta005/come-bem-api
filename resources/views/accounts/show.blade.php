@@ -20,7 +20,7 @@
             <div class="card-deck">
               <div class="card m-2 shadow-sm">
                 <div class="card-body">
-                  <p><strong>Dependente: </strong></p>
+                  <p><strong>Consumidor: </strong></p>
                   <p class="card-text">
                     {{ $item->dependent->info }}
                   </p>
