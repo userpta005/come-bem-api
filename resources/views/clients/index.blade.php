@@ -69,7 +69,22 @@
             </div>
           </div>
           {!! Form::close() !!}
-
+          <div class="row">
+            <div class="col-md-12 text-left">
+              <p style="font-size:15px;"><b>Legenda:</b>
+                <span style="margin-right: 10px;">
+                  <span class="dot"
+                    style="background-color:green;"></span>
+                  Ativo
+                </span>
+                <span style="margin-right: 10px;">
+                  <span class="dot"
+                    style="background-color:red;"></span>
+                  Inativo
+                </span>
+              </p>
+            </div>
+          </div>
           @push('js')
             <script>
               window.clients = {{ Illuminate\Support\Js::from($data->getCollection()->toArray()) }}

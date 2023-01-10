@@ -60,8 +60,9 @@ class DependentController extends BaseController
                 }
             }
 
-            $inputs['user'] = $inputs['email'] = strtolower($consoantes);
-            $inputs['password'] = implode('', [mt_rand(0, 9), mt_rand(0, 9), mt_rand(0, 9), mt_rand(0, 9)]);
+            $email = strtolower($consoantes);
+            $password = implode('', [mt_rand(0, 9), mt_rand(0, 9), mt_rand(0, 9), mt_rand(0, 9)]);
+            $inputs['access_key'] = $email . $password;
             $inputs['person_id'] = $person->id;
             $inputs['client_id'] = $client;
             $dependent = Dependent::query()->create($inputs);
@@ -69,7 +70,8 @@ class DependentController extends BaseController
             $inputs['dependent_id'] = $dependent->id;
             Account::query()->create($inputs);
 
-            $inputs['password'] = bcrypt($inputs['password']);
+            $inputs['email'] = $email;
+            $inputs['password'] = bcrypt($password);
             $user = User::query()->create($inputs);
             Role::updateOrCreate(
                 ['name' => 'dependent', 'guard_name' => 'web'],

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\StoreStatus;
+use App\Enums\StoreType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -25,6 +26,7 @@ class Store extends PersonModel
      */
     protected $casts = [
         'status' => StoreStatus::class,
+        'type' => StoreType::class
     ];
 
     /**

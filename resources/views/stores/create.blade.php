@@ -26,3 +26,20 @@
     </div>
   </div>
 @endsection
+
+@push('js')
+  <script>
+    swal({
+      title: "Produtos !",
+      text: "Para agilizar o cadastro de produtos das lojas/cantinas, confirme a replicação dos produtos?",
+      icon: "warning",
+      buttons: true,
+      buttons: ["Cancelar", "Confirmar"]
+    }).then((isConfirm) => {
+      if (isConfirm) {
+        const replicateProducts = document.querySelector('input[name=replicate_products]')
+        replicateProducts.value = true
+      }
+    });
+  </script>
+@endpush

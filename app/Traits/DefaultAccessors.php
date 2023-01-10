@@ -46,7 +46,7 @@ trait DefaultAccessors
     public function nif(): Attribute
     {
         return new Attribute(
-            get: fn ($value) => !empty($value) ? nifMask($value) : (!empty($this->people->nif) ? $this->people->nif : null)
+            get: fn ($value) => !empty($value) ? nifMask($value) : (!empty($this->people->nif) ? nifMask($this->people->nif) : null)
         );
     }
 
@@ -58,7 +58,19 @@ trait DefaultAccessors
     public function phone(): Attribute
     {
         return new Attribute(
-            get: fn ($value) => !empty($value) ? phoneMask($value) : (!empty($this->people->phone) ? $this->people->phone : null)
+            get: fn ($value) => !empty($value) ? phoneMask($value) : (!empty($this->people->phone) ? phoneMask($this->people->phone) : null)
+        );
+    }
+
+    /**
+     * Get the people whatsapp.
+     *
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    public function whatsapp(): Attribute
+    {
+        return new Attribute(
+            get: fn ($value) => !empty($value) ? phoneMask($value) : null
         );
     }
 
@@ -70,7 +82,7 @@ trait DefaultAccessors
     public function zipCode(): Attribute
     {
         return new Attribute(
-            get: fn ($value) => !empty($value) ? zipCodeMask($value) : (!empty($this->people->zip_code) ? $this->people->zip_code : null)
+            get: fn ($value) => !empty($value) ? zipCodeMask($value) : (!empty($this->people->zip_code) ? zipCodeMask($this->people->zip_code) : null)
         );
     }
 }

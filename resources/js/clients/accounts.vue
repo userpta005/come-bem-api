@@ -7,6 +7,11 @@
         <Cards :table-data="scope.row.cards" v-if="scope.row.cards.length"></Cards>
       </template>
     </el-table-column>
+    <el-table-column label="#" :width="30">
+      <template #default="props">
+        <Status :status="props.row.status"></Status>
+      </template>
+    </el-table-column>
     <el-table-column label="Saldo" prop="attr_balance" sortable>
       <template #default="scope">
         <span><b>Saldo: </b>{{ scope.row.attr_balance }}</span>
@@ -27,7 +32,6 @@
         <span><b>Série: </b>{{ scope.row.school_year }}</span>
       </template>
     </el-table-column>
-    <el-table-column label="Status" prop="attr_status" sortable :width="90" />
     <el-table-column label="DT. CRIAC." prop="attr_created_at" sortable :width="110" />
     <el-table-column label="DT. ATUAL." prop="attr_updated_at" sortable :width="110" />
     <el-table-column align="right" :width="70">
@@ -54,6 +58,7 @@
 <script setup>
 import Cards from './cards.vue'
 import DropDown from './dropdown.vue'
+import Status from './status.vue'
 const props = defineProps(['tableData'])
 const url = getUrl();
 

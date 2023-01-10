@@ -21,14 +21,14 @@ class SectionController extends Controller
         $this->middleware('permission:sections_edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:sections_view', ['only' => ['show', 'index']]);
         $this->middleware('permission:sections_delete', ['only' => ['destroy']]);
-        $this->middleware('store');
     }
 
     public function index()
     {
         $data = Section::withDepth()
             ->withCount('descendants')
-            ->where('store_id', session('store')['id'])
+            ->when(session()->has('store'), fn ($query) => $query->where('store_id', session('store')['id']))
+            ->when(!session()->has('store'), fn ($query) => $query->whereNull('store_id'))
             ->get()
             ->toFlatTree();
 
@@ -63,12 +63,13 @@ class SectionController extends Controller
         )->validate();
 
         $inputs = $request->all();
-        $inputs['store_id'] = session('store')['id'];
+        $inputs['store_id'] = session()->has('store') ? session('store')['id'] : null;
         $inputs['use'] = 1;
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
             $upload = $request->file('image')->store('sections', 'public');
             $inputs['image'] = $upload;
         }
+
         Section::create($inputs);
 
         return redirect()->route('sections.index')
@@ -148,7 +149,7 @@ class SectionController extends Controller
     {
         $rules = [
             'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
-            'name' => ['required', 'string', 'max:40', Rule::unique('sections', 'name')->ignore($primaryKey)],
+            'name' => ['required', 'string', 'max:40'],
             'type' => ['required', new Enum(SectionType::class)],
             'status' => ['required', new Enum(Status::class)],
             'description' => ['nullable', 'max:120'],

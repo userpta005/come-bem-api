@@ -1,11 +1,6 @@
 <template>
-  <span class="dot" style="background-color: #008b51;" v-if="status == 'A'"></span>
-  <span class="dot" style="background-color: #df0000;" v-if="status == 'B'"></span>
-  <span class="dot" style="background-color: #000000;" v-if="status == 'C'"></span>
-  <span class="dot" style="background-color: #5b5b5b;" v-if="status == 'E'"></span>
-  <span class="dot" style="background-color: #009dda;" v-if="status == 'P'"></span>
-  <span class="dot" style="background-color: #000287;" v-if="status == 'R'"></span>
-  <span class="dot" style="background-color: #410079;" v-if="status == 'S'"></span>
+  <span class="dot" style="background-color: green;" v-if="status == 1"></span>
+  <span class="dot" style="background-color: red;" v-if="status == 2"></span>
 </template>
 
 <script setup>

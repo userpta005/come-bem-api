@@ -52,6 +52,7 @@ class RemoveMask
                 case 'cellphone':
                 case 'contact':
                 case 'contact_phone':
+                case 'whatsapp':
                     return removeMask($value);
                     break;
 

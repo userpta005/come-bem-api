@@ -47,8 +47,15 @@ class ProductController extends Controller
 
     public function create()
     {
-        $sections = Section::where('status', Status::ACTIVE)->get();
-        $ums = MeasurementUnit::where('status', Status::ACTIVE)->get();
+        $sections = Section::query()
+            ->where('status', Status::ACTIVE)
+            ->when(session()->has('store'), fn ($query) => $query->where('store_id', session('store')['id']))
+            ->when(!session()->has('store'), fn ($query) => $query->whereNull('store_id'))
+            ->get();
+
+        $ums = MeasurementUnit::query()
+            ->where('status', Status::ACTIVE)
+            ->get();
 
         return view('products.create', compact('sections', 'ums'));
     }
@@ -143,7 +150,7 @@ class ProductController extends Controller
     {
         $rules = [
             'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
-            'name' => ['required', 'max:40', Rule::unique('products')->ignore($primaryKey)],
+            'name' => ['required', 'max:40'],
             'section_id' => ['required', Rule::exists('sections', 'id')],
             'ncm_id' => ['required', Rule::exists('ncms', 'id')],
             'um_id' => ['required', Rule::exists('measurement_units', 'id')],

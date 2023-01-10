@@ -3,15 +3,20 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Enums\StoreStatus;
+use App\Enums\StoreType;
+use App\Enums\TenantDueDays;
+use App\Enums\TenantSignature;
+use App\Enums\TenantStatus;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Person;
+use App\Models\Product;
+use App\Models\Section;
 use App\Models\Store;
-use App\Models\User;
+use App\Models\Tenant;
 use App\Rules\CpfCnpj;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use App\Traits\PersonRules;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 
@@ -23,7 +28,6 @@ class StoreController extends Controller
         $this->middleware('permission:stores_edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:stores_view', ['only' => ['show', 'index']]);
         $this->middleware('permission:stores_delete', ['only' => ['destroy']]);
-        $this->middleware('tenant', ['only' => ['create', 'store', 'edit', 'update']]);
     }
 
     public function index(Request $request)
@@ -58,7 +62,11 @@ class StoreController extends Controller
 
     public function create()
     {
-        return view('stores.create');
+        $tenants = Tenant::person()
+            ->where('tenants.status', TenantStatus::ENABLED)
+            ->get();
+
+        return view('stores.create', compact('tenants'));
     }
 
     public function store(Request $request)
@@ -72,13 +80,19 @@ class StoreController extends Controller
 
         DB::transaction(function () use ($request) {
             $inputs = $request->all();
+            $inputs['lending_value'] = moneyToFloat($inputs['lending_value']);
+            $inputs['pix_rate'] = moneyToFloat($inputs['pix_rate']);
+            $inputs['card_rate'] = moneyToFloat($inputs['card_rate']);
+
+            $tenant = Tenant::query()
+                ->with(['people.user'])
+                ->findOrFail($inputs['tenant_id']);
 
             $person = Person::updateOrCreate(
                 ['nif' => $inputs['nif']],
                 $inputs
             );
 
-            $inputs['tenant_id'] = session('tenant')['id'];
             $inputs['person_id'] = $person->id;
             $inputs['app_token'] = uniqid();
             $store = Store::updateOrCreate(
@@ -86,18 +100,37 @@ class StoreController extends Controller
                 $inputs
             );
 
-            $user = User::find(auth()->id());
+            $user = $tenant->people->user;
 
             $user->stores()->attach($store->id);
 
-            $user->load(['stores' => function ($query) {
-                $query->person();
-            }]);
+            if (!empty($inputs['replicate_products'])) {
+                $sections = Section::query()->whereNull('store_id')->get();
+                $products = Product::query()->wherenull('store_id')->get();
+                $now = now()->format('Y-m-d H:m:s');
 
-            session(['stores' => $user->stores->toArray()]);
+                $sections = $sections->map(function ($section) use ($store, $now) {
+                    $section = $section->toArray();
+                    $section['store_id'] = $store->id;
+                    $section['created_at'] = $now;
+                    $section['updated_at'] = $now;
+                    unset($section['id']);
+                    unset($section['image_url']);
+                    return $section;
+                });
 
-            if (!session()->exists('store')) {
-                session(['store' => $user->stores[0]->toArray()]);
+                $products = $products->map(function ($product) use ($store, $now) {
+                    $product = $product->toArray();
+                    $product['store_id'] = $store->id;
+                    $product['created_at'] = $now;
+                    $product['updated_at'] = $now;
+                    unset($product['id']);
+                    unset($product['image_url']);
+                    return $product;
+                });
+
+                DB::table('sections')->insert($sections->toArray());
+                DB::table('products')->insert($products->toArray());
             }
         });
 
@@ -116,7 +149,11 @@ class StoreController extends Controller
     {
         $item = Store::person()->findOrFail($id);
 
-        return view('stores.edit', compact('item'));
+        $tenants = Tenant::person()
+            ->where('tenants.status', TenantStatus::ENABLED)
+            ->get();
+
+        return view('stores.edit', compact('item', 'tenants'));
     }
 
     public function update(Request $request, $id)
@@ -158,6 +195,7 @@ class StoreController extends Controller
     public function rules(Request $request, $primaryKey = null, bool $changeMessages = false)
     {
         $rules = [
+            'tenant_id' => ['required', Rule::exists('tenants', 'id')],
             'status' => ['required', new Enum(StoreStatus::class)],
             'nif' => ['required', 'max:14', new CpfCnpj, Rule::unique('people')->ignore($primaryKey)],
             'name' => ['required', 'max:100'],
@@ -172,6 +210,26 @@ class StoreController extends Controller
             'address' => ['required', 'max:50'],
             'district' => ['nullable', 'max:50'],
             'number' => ['nullable', 'max:4'],
+
+
+            'latitude' => ['required', 'max:60'],
+            'longitude' => ['required', 'max:60'],
+            'pix_key' => ['required', 'max:60'],
+            'bank' => ['required', 'max:20'],
+            'agency' => ['required', 'max:20'],
+            'account' => ['required', 'max:20'],
+            'whatsapp' => ['required', 'max:11'],
+            'type' => ['required', new Enum(StoreType::class)],
+            'email_digital' => ['required', 'max:100'],
+            'signature' => ['required', new Enum(TenantSignature::class)],
+            'dt_accession' => ['required', 'date'],
+            'due_date' => ['required', 'date'],
+            'due_day' => ['required', new Enum(TenantDueDays::class)],
+            'number_equipment' => ['required', 'max:100'],
+            'lending_value' => ['required'],
+            'pix_rate' => ['required'],
+            'card_rate' => ['required'],
+            'observation' => ['required', 'max:100'],
         ];
 
         $messages = [];
