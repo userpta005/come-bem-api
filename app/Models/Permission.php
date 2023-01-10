@@ -49,15 +49,7 @@ class Permission extends \Spatie\Permission\Models\Permission
                                     array('name' => 'stores_create', 'description' => 'Criar'),
                                     array('name' => 'stores_edit', 'description' => 'Editar'),
                                     array('name' => 'stores_delete', 'description' => 'Deletar'),
-                                    [
-                                        'title' => 'Totens',
-                                        'items' => [
-                                            array('name' => 'totens_view', 'description' => 'Visualizar'),
-                                            array('name' => 'totens_create', 'description' => 'Criar'),
-                                            array('name' => 'totens_edit', 'description' => 'Editar'),
-                                            array('name' => 'totens_delete', 'description' => 'Deletar'),
-                                        ]
-                                    ]
+
                                 ]
                             ],
                             [
@@ -127,6 +119,15 @@ class Permission extends \Spatie\Permission\Models\Permission
                                     array('name' => 'sections_delete', 'description' => 'Deletar'),
                                 ]
                             ],
+                            [
+                                'title' => 'Totens',
+                                'items' => [
+                                    array('name' => 'totens_view', 'description' => 'Visualizar'),
+                                    array('name' => 'totens_create', 'description' => 'Criar'),
+                                    array('name' => 'totens_edit', 'description' => 'Editar'),
+                                    array('name' => 'totens_delete', 'description' => 'Deletar'),
+                                ]
+                                ],
                             [
                                 'title' => 'Formas de Pagamento',
                                 'items' => [

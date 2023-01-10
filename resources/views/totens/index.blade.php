@@ -11,9 +11,7 @@
             </div>
             @can('totens_create')
               <div class="col-4 text-right">
-                <a href="{{ route('stores.index') }}"
-                  class="btn btn-sm btn-primary">Voltar</a>
-                <a href="{{ route('stores.totens.create', [$store]) }}"
+                <a href="{{ route('totens.create', [$store]) }}"
                   class="btn btn-sm btn-primary">Adicionar Novo</a>
               </div>
             @endcan
@@ -53,18 +51,18 @@
                           <i class="fas fa-ellipsis-v"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                          <form action="{{ route('stores.totens.destroy', [$store, $item]) }}"
+                          <form action="{{ route('totens.destroy', $item) }}"
                             method="post"
                             id="form-{{ $item->id }}">
                             @csrf
                             @method('delete')
                             @can('totens_view')
                               <a class="dropdown-item"
-                                href="{{ route('stores.totens.show', [$store, $item]) }}">Visualizar</a>
+                                href="{{ route('totens.show', $item) }}">Visualizar</a>
                             @endcan
                             @can('totens_edit')
                               <a class="dropdown-item"
-                                href="{{ route('stores.totens.edit', [$store, $item]) }}">Editar</a>
+                                href="{{ route('totens.edit', $item) }}">Editar</a>
                             @endcan
                             @can('totens_delete')
                               <button type="button"

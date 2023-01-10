@@ -86,7 +86,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('leads', LeadController::class);
     Route::resource('tenants', TenantController::class);
     Route::resource('stores', StoreController::class);
-    Route::resource('stores.totens', TotenController::class);
+    Route::resource('totens', TotenController::class);
     Route::resource('clients', ClientController::class);
     Route::resource('clients.dependents', DependentController::class);
     Route::resource('dependents.accounts', AccountController::class);

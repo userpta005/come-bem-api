@@ -11,13 +11,13 @@
                 <h4 class="card-title">Totens</h4>
               </div>
               <div class="col-4 text-right">
-                <a href="{{ route('stores.totens.index', [$store, $item]) }}"
+                <a href="{{ route('totens.index') }}"
                   class="btn btn-sm btn-primary">Voltar</a>
               </div>
             </div>
           </div>
           <div class="card-body">
-            {!! Form::open()->fill($item)->put()->route('stores.totens.update', [$store, $item])->multipart() !!}
+            {!! Form::open()->fill($item)->put()->route('totens.update', [$item])->multipart() !!}
             @include('totens._forms')
             {!! Form::close() !!}
           </div>
