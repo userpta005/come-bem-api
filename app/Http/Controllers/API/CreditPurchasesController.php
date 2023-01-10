@@ -62,7 +62,7 @@ class CreditPurchasesController extends BaseController
             $inputs['amount'] = moneyToFloat($inputs['amount']);
 
             if ($paymentMethod->code == PaymentMethod::PIX) {
-                $token = $request->get('store')['tenant']['token_pagseguro'];
+                $token = $request->get('store')['tenant']['pagseguro_token'];
 
                 if (!$token) {
                     return $this->sendError("Pix não configurado para esse contratante.", [], 403);
