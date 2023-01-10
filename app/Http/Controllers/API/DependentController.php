@@ -48,12 +48,34 @@ class DependentController extends BaseController
 
             $person = Person::query()->create($inputs);
 
+            $consoantes = "";
+            $contador = 0;
+            for ($i = 0; $i < strlen($inputs['name']); $i++) {
+                if (preg_match("/[bcdfghjklmnpqrstvwxyz]/i", $inputs['name'][$i])) {
+                    $consoantes .= $inputs['name'][$i];
+                    $contador++;
+                }
+                if ($contador == 3) {
+                    break;
+                }
+            }
+
+            $inputs['user'] = $inputs['email'] = strtolower($consoantes);
+            $inputs['password'] = implode('', [mt_rand(0, 9), mt_rand(0, 9), mt_rand(0, 9), mt_rand(0, 9)]);
             $inputs['person_id'] = $person->id;
             $inputs['client_id'] = $client;
             $dependent = Dependent::query()->create($inputs);
 
             $inputs['dependent_id'] = $dependent->id;
             Account::query()->create($inputs);
+
+            $inputs['password'] = bcrypt($inputs['password']);
+            $user = User::query()->create($inputs);
+            Role::updateOrCreate(
+                ['name' => 'dependent', 'guard_name' => 'web'],
+                ['description' => 'Dependente']
+            );
+            $user->assignRole('dependent');
 
             DB::commit();
 
@@ -126,50 +148,11 @@ class DependentController extends BaseController
         }
     }
 
-    public function createUser(Request $request, $id)
-    {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'email' => ['required', 'max:100', Rule::unique('people')],
-                'password' => ['required', 'confirmed', 'min:8']
-            ]
-        );
-
-        if ($validator->fails()) {
-            return $this->sendError('Erro de validação', $validator->errors(), 422);
-        }
-
-        try {
-            DB::beginTransaction();
-
-            $dependent = Dependent::query()->findOrFail($id);
-
-            $inputs = $request->all();
-            $dependent->people->fill($inputs)->save();
-            $inputs['name'] = $dependent->people->name;
-            $inputs['status'] = Status::ACTIVE;
-            $inputs['password'] = bcrypt($inputs['password']);
-            $inputs['person_id'] = $dependent->person_id;
-            $user = User::query()->create($inputs);
-            Role::updateOrCreate(
-                ['name' => 'dependent', 'guard_name' => 'web'],
-                ['description' => 'Dependente']
-            );
-            $user->assignRole('dependent');
-
-            DB::commit();
-            return $this->sendResponse([], 'Dependente habilitado com sucesso!', 201);
-        } catch (\Throwable $th) {
-            DB::rollBack();
-            return $this->sendError($th->getMessage());
-        }
-    }
-
     private function rules(Request $request, $primaryKey = null, bool $changeMessages = false)
     {
         $rules = [
             'name' => ['required', 'max:100'],
+            'full_name' => ['required', 'max:30'],
             'gender' => ['required', new Enum(PeopleGender::class)],
             'birthdate' => ['required', 'date'],
             'store_id' => ['required', Rule::exists('stores', 'id')],

@@ -40,7 +40,7 @@ class UserController extends BaseController
 
             $inputs = $request->all();
             $clientType =  ClientType::from($inputs['type']);
-            $inputs['password'] = bcrypt(preg_replace("/\D+/", "", $inputs['phone']));
+            $inputs['password'] = bcrypt($inputs['password']);
             $inputs['status'] = Status::INACTIVE;
 
             $person = Person::query()
@@ -101,6 +101,7 @@ class UserController extends BaseController
         $rules = [
             'name' => ['required', 'max:100'],
             'email' => ['required', 'max:100', Rule::unique('people')->ignore($primaryKey)],
+            'password' => ['required', 'confirmed', 'min:8'],
             'phone' => ['required', 'max:15'],
             'birthdate' => ['required', 'date'],
             'city_id' => ['required', Rule::exists('cities', 'id')],
