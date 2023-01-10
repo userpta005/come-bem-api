@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\Common\Status;
 use Illuminate\Http\Request;
 use App\Models\Totem;
 use Illuminate\Validation\Rule;
@@ -22,54 +23,61 @@ class TotenController extends Controller
         $this->middleware('permission:totens_delete', ['only' => ['destroy']]);
     }
 
-    public function index(Request $request, Store $store)
+    public function index(Request $request)
     {
         $data =  Totem::query()
-            ->where('store_id', $store->id)
-            ->orderBy('name')->paginate(10);
+            ->orderBy('name')
+            ->paginate(10);
 
         return view('totens.index', compact('data', 'store'));
     }
 
-    public function create(Store $store)
+    public function create()
     {
-        return view('totens.create', compact('store'));
+        $stores = Store::person()
+            ->where('stores.status', Status::ACTIVE)
+            ->get();
+
+        return view('totens.create', compact('store', 'stores'));
     }
 
-    public function store(Request $request, Store $store)
+    public function store(Request $request)
     {
         Validator::make(
             $request->all(),
             $this->rules($request)
         )->validate();
 
-        DB::transaction(function () use ($request, $store) {
+        DB::transaction(function () use ($request) {
             $inputs = $request->all();
-            $inputs['store_id'] = $store->id;
             $inputs['token'] = (string) Uuid::uuid4();
 
             Totem::create($inputs);
         });
 
-        return redirect()->route('stores.totens.index', [$store])
+        return redirect()->route('totens.index')
             ->withStatus('Registro adicionado com sucesso.');
     }
 
-    public function show(Store $store, $id)
+    public function show($id)
     {
-        $item = Totem::findOrFail($id);
+        $item = Totem::with('store.people')->findOrFail($id);
 
         return view('totens.show', compact('item', 'store'));
     }
 
-    public function edit(Store $store, $id)
+    public function edit($id)
     {
         $item = Totem::findOrFail($id);
 
-        return view('totens.edit', compact('item', 'store'));
+        $stores = Store::person()
+            ->where('stores.status', Status::ACTIVE)
+            ->get();
+
+        return view('totens.edit', compact('item', 'stores'));
     }
 
-    public function update(Request $request, Store $store, $id)
+    public function update(Request $request, $id)
     {
         $item = Totem::findOrFail($id);
 
@@ -80,20 +88,20 @@ class TotenController extends Controller
 
         $item->fill($request->all())->save();
 
-        return redirect()->route('stores.totens.index', [$store])
+        return redirect()->route('totens.index')
             ->withStatus('Registro atualizado com sucesso.');
     }
 
-    public function destroy(Store $store, $id)
+    public function destroy($id)
     {
         $item = Totem::findOrFail($id);
 
         try {
             $item->delete();
-            return redirect()->route('stores.totens.index', [$store])
+            return redirect()->route('totens.index')
                 ->withStatus('Registro deletado com sucesso.');
         } catch (\Exception $e) {
-            return redirect()->route('stores.totens.index', [$store])
+            return redirect()->route('totens.index')
                 ->withError('Registro vinculado á outra tabela, somente poderá ser excluído se retirar o vinculo.');
         }
     }

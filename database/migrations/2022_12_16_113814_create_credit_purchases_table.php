@@ -20,7 +20,7 @@ return new class extends Migration
             $table->decimal('amount', 12, 2);
             $table->foreignId('payment_method_id')->constrained();
             $table->foreignId('account_id')->constrained();
-            $table->tinyInteger('status')->default(Status::ACTIVE->value);
+            $table->tinyInteger('status');
             $table->timestamps();
         });
     }

@@ -44,14 +44,20 @@
         <div class="col-md-2">
           {!! Form::text('number', 'Número')->attrs(['class' => 'number']) !!}
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
           {!! Form::text('cellphone', 'Celular')->attrs(['class' => 'phone'])->required(false) !!}
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
           {!! Form::text('contact', 'Contato')->attrs(['class' => 'phone'])->required(false) !!}
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
           {!! Form::text('contact_phone', 'Tel. do contato')->attrs(['class' => 'phone'])->required(false) !!}
+        </div>
+        <div class="col-md-8">
+          {!! Form::text('pagseguro_token', 'Token Pagseguro') !!}
+        </div>
+        <div class="col-md-4">
+          {!! Form::text('pagseguro_email', 'Email Pagseguro') !!}
         </div>
       </div>
     </div>

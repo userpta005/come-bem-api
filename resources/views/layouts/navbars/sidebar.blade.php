@@ -97,6 +97,14 @@
                                                     </a>
                                                 </li>
                                             @endcan
+                                            @can('totens_view')
+                                                <li>
+                                                    <a href="{{ route('totens.index') }}">
+                                                        <i class="fas fa-desktop"></i>
+                                                        <p>Totens</p>
+                                                    </a>
+                                                </li>
+                                            @endcan
                                             @can('measurement-units_view')
                                                 <li>
                                                     <a href="{{ route('measurement-units.index') }}">
@@ -256,7 +264,7 @@
                                 <li>
                                     <a href="{{ route('reports.client-dependents') }}">
                                         <i class="fas fa-child"></i>
-                                        <p>Dependentes</p>
+                                        <p>Consumidors</p>
                                     </a>
                                 </li>
                             @endcan

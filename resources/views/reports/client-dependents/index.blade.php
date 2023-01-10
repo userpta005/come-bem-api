@@ -1,4 +1,4 @@
-@extends('layouts.app', ['page' => 'Dependentes', 'pageSlug' => 'reports.client-dependents'])
+@extends('layouts.app', ['page' => 'Consumidors', 'pageSlug' => 'reports.client-dependents'])
 
 @section('content')
   <div class="row">
@@ -7,7 +7,7 @@
         <div class="card-header">
           <div class="row">
             <div class="col-12">
-              <h4 class="card-title">Dependentes</h4>
+              <h4 class="card-title">Consumidors</h4>
             </div>
           </div>
         </div>

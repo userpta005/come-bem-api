@@ -11,7 +11,7 @@
                 <h4 class="mb-card-title">Totens</h4>
               </div>
               <div class="col-4 text-right">
-                <a href="{{ route('stores.totens.index', [$store]) }}"
+                <a href="{{ route('totens.index', [$store]) }}"
                   class="btn btn-sm btn-primary">Voltar</a>
               </div>
             </div>
@@ -41,6 +41,14 @@
                   <p><strong>Token: </strong></p>
                   <p class="card-text">
                     {{ $item->token }}
+                  </p>
+                </div>
+              </div>
+              <div class="card m-2 shadow-sm">
+                <div class="card-body">
+                  <p><strong>Loja: </strong></p>
+                  <p class="card-text">
+                    {{ $item->store ? $item->store->people->name : "" }}
                   </p>
                 </div>
               </div>

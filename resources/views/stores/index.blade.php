@@ -106,10 +106,6 @@
                             id="form-{{ $item->id }}">
                             @csrf
                             @method('delete')
-                            @can('totens_view')
-                              <a class="dropdown-item"
-                                href="{{ route('stores.totens.index', [$item]) }}">Totens</a>
-                            @endcan
                             @can('stores_view')
                               <a class="dropdown-item"
                                 href="{{ route('stores.show', $item) }}">Visualizar</a>

@@ -24,6 +24,7 @@ class CheckAppHeader
         }
 
         $store = Store::person()
+            ->with('tenant')
             ->where('app_token', $request->header('app'))
             ->first();
 

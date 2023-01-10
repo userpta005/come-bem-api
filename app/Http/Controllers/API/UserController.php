@@ -60,7 +60,7 @@ class UserController extends BaseController
             Role::updateOrCreate(
                 ['name' => $clientType->isResponsible() ? 'responsible' : 'responsible_dependent'],
                 [
-                    'description' => $clientType->isResponsible() ? 'Responsável' : 'Dependente Responsável'
+                    'description' => $clientType->isResponsible() ? 'Responsável' : 'Consumidor Responsável'
                 ]
             );
 
