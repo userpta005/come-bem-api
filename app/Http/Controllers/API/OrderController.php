@@ -146,6 +146,10 @@ class OrderController extends BaseController
                 return $this->sendError('Conta não cadastrada nessa loja.', [], 403);
             }
 
+            if ($order->status->isRetired()) {
+                return $this->sendError('Não é possível editar o pedido, pois o mesmo já foi consumido !', [], 403);
+            }
+
             $orderExists = $order->account->orders
                 ->where('id', '!=', $order->id)
                 ->where('account_id', $order->account->id)
@@ -214,6 +218,11 @@ class OrderController extends BaseController
 
         try {
             DB::beginTransaction();
+
+            if ($item->status->isRetired()) {
+                return $this->sendError('Não é possível remover o pedido, pois o mesmo já foi consumido !', [], 403);
+            }
+
             $item->account->increment('balance', $item->amount);
             $item->orderItems()->delete();
             $item->delete();
