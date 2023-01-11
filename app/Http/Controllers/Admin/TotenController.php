@@ -29,7 +29,7 @@ class TotenController extends Controller
             ->orderBy('name')
             ->paginate(10);
 
-        return view('totens.index', compact('data', 'store'));
+        return view('totens.index', compact('data'));
     }
 
     public function create()
@@ -38,7 +38,7 @@ class TotenController extends Controller
             ->where('stores.status', Status::ACTIVE)
             ->get();
 
-        return view('totens.create', compact('store', 'stores'));
+        return view('totens.create', compact('stores'));
     }
 
     public function store(Request $request)
@@ -63,7 +63,7 @@ class TotenController extends Controller
     {
         $item = Totem::with('store.people')->findOrFail($id);
 
-        return view('totens.show', compact('item', 'store'));
+        return view('totens.show', compact('item'));
     }
 
     public function edit($id)

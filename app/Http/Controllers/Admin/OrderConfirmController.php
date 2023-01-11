@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\AccountEntryType;
 use App\Enums\OrderStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
@@ -19,7 +20,7 @@ class OrderConfirmController extends Controller
      */
     public function __invoke(Request $request, $id)
     {
-        $order = Order::with('orderItems.product.stock')->findOrFail($id);
+        $order = Order::with('account', 'orderItems.product.stock')->findOrFail($id);
 
         if ($order->status == OrderStatus::RETIRED) {
             return redirect()->to('home')
@@ -43,6 +44,14 @@ class OrderConfirmController extends Controller
                     ->decrement('quantity', $item->quantity);
             }
         }
+
+        $entry = [
+            'description' => AccountEntryType::CONSUMPTION->name(),
+            'amount' => $order->amount,
+            'type' => AccountEntryType::CONSUMPTION
+        ];
+        $order->account->accountEntries()->create($entry);
+
         DB::commit();
 
         return redirect()->to('home')

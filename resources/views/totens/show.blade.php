@@ -11,7 +11,7 @@
                 <h4 class="mb-card-title">Totens</h4>
               </div>
               <div class="col-4 text-right">
-                <a href="{{ route('totens.index', [$store]) }}"
+                <a href="{{ route('totens.index') }}"
                   class="btn btn-sm btn-primary">Voltar</a>
               </div>
             </div>

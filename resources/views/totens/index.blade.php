@@ -11,7 +11,7 @@
             </div>
             @can('totens_create')
               <div class="col-4 text-right">
-                <a href="{{ route('totens.create', [$store]) }}"
+                <a href="{{ route('totens.create') }}"
                   class="btn btn-sm btn-primary">Adicionar Novo</a>
               </div>
             @endcan
