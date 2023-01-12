@@ -27,12 +27,13 @@ class NotificationPagseguroController extends Controller
     {
 
         $creditPurchase = CreditPurchase::where('uuid', $request->reference_id)->first();
+
         DB::beginTransaction();
         $inputs = [];
         if ($creditPurchase) {
             $inputs['status'] = CreditPurchaseStatus::PENDING;
 
-            if ($request->charges[0]->status == "PAID") {
+            if ($request->charges[0]['status'] == "PAID") {
                 $inputs['status'] = CreditPurchaseStatus::PAYED;
 
                 $data = [];
@@ -45,7 +46,7 @@ class NotificationPagseguroController extends Controller
                 AccountEntry::query()->create($data);
 
                 Account::where('id', $creditPurchase->account_id)->increment('balance', $creditPurchase->amount);
-            } elseif ($request->charges[0]->status == "CANCELED") {
+            } elseif ($request->charges[0]['status'] == "CANCELED") {
                 $inputs['status'] = CreditPurchaseStatus::CANCELED;
             }
 
