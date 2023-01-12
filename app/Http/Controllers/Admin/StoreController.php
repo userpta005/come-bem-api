@@ -128,7 +128,8 @@ class StoreController extends Controller
 
                 $products = $products->map(function ($product) use ($store, $now, $sections) {
                     $product = $product->toArray();
-                    $product['section_id'] = $sections->where('old_id', $product['section_id'])->first()->id;
+                    $section = $sections->where('old_id', $product['section_id'])->first();
+                    $product['section_id'] = !empty($section) ? $section->id : null;
                     $product['store_id'] = $store->id;
                     $product['created_at'] = $now;
                     $product['updated_at'] = $now;
