@@ -39,10 +39,7 @@ class OrderConfirmController extends Controller
         $order->status = OrderStatus::RETIRED;
         $order->save();
         foreach ($order->orderItems as $item) {
-            if ($item->quantity > $item->product->stock->quantity) {
-                Stock::where('id', $item->product->stock->id)
-                    ->decrement('quantity', $item->quantity);
-            }
+            $item->product->stock()->decrement('quantity', $item->quantity);
         }
 
         $entry = [

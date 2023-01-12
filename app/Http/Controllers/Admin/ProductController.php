@@ -27,7 +27,11 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
-        $sections = Section::where('status', Status::ACTIVE)->get();
+        $sections = Section::query()
+            ->where('status', Status::ACTIVE)
+            ->when(session()->has('store'), fn ($query) => $query->where('store_id', session('store')['id']))
+            ->when(!session()->has('store'), fn ($query) => $query->whereNull('store_id'))
+            ->get();
 
         $classifications = NutritionalClassification::all();
 
@@ -94,7 +98,11 @@ class ProductController extends Controller
     public function edit($id)
     {
         $item = Product::findOrFail($id);
-        $sections = Section::where('status', Status::ACTIVE)->get();
+        $sections = Section::query()
+            ->where('status', Status::ACTIVE)
+            ->when(session()->has('store'), fn ($query) => $query->where('store_id', session('store')['id']))
+            ->when(!session()->has('store'), fn ($query) => $query->whereNull('store_id'))
+            ->get();
         $ums = MeasurementUnit::where('status', Status::ACTIVE)->get();
 
         return view('products.edit', compact('item', 'sections', 'ums'));

@@ -29,11 +29,15 @@ class ClientController extends Controller
     {
         $data = Client::query()
             ->person()
-            ->with(['dependents.accounts.cards', 'dependents.accounts' => function ($query) {
-                $query->when(session()->exists('store'), function ($query) {
-                    $query->where('store_id', session('store')['id']);
-                });
-            }])
+            ->with([
+                'dependents.accounts.store.people',
+                'dependents.accounts.cards',
+                'dependents.accounts' => function ($query) {
+                    $query->when(session()->exists('store'), function ($query) {
+                        $query->where('store_id', session('store')['id']);
+                    });
+                }
+            ])
             ->when(session()->has('store'), function ($query) {
                 $query->whereHas('dependents.accounts', function ($query) {
                     $query->where('store_id', session('store')['id']);

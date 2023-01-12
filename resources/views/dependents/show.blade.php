@@ -48,7 +48,7 @@
                 <div class="card-body">
                   <p><strong>Genêro: </strong></p>
                   <p class="card-text">
-                    {{ $item->people->gender->name() }}
+                    {{ !empty($item->people->gender) ? $item->people->gender->name() : 'Não informado' }}
                   </p>
                 </div>
               </div>

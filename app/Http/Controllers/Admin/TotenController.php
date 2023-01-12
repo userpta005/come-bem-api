@@ -26,6 +26,7 @@ class TotenController extends Controller
     public function index(Request $request)
     {
         $data =  Totem::query()
+            ->with(['store.people'])
             ->orderBy('name')
             ->paginate(10);
 

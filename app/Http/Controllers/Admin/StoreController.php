@@ -111,6 +111,7 @@ class StoreController extends Controller
 
                 $sections = $sections->map(function ($section) use ($store, $now) {
                     $section = $section->toArray();
+                    $section['old_id'] = $section['id'];
                     $section['store_id'] = $store->id;
                     $section['created_at'] = $now;
                     $section['updated_at'] = $now;
@@ -119,8 +120,15 @@ class StoreController extends Controller
                     return $section;
                 });
 
-                $products = $products->map(function ($product) use ($store, $now) {
+                DB::table('sections')->insert($sections->toArray());
+
+                $sections = Section::query()
+                    ->where('store_id', $store->id)
+                    ->get();
+
+                $products = $products->map(function ($product) use ($store, $now, $sections) {
                     $product = $product->toArray();
+                    $product['section_id'] = $sections->where('old_id', $product['section_id'])->first()->id;
                     $product['store_id'] = $store->id;
                     $product['created_at'] = $now;
                     $product['updated_at'] = $now;
@@ -129,7 +137,7 @@ class StoreController extends Controller
                     return $product;
                 });
 
-                DB::table('sections')->insert($sections->toArray());
+
                 DB::table('products')->insert($products->toArray());
             }
         });
@@ -167,6 +175,9 @@ class StoreController extends Controller
 
         DB::transaction(function () use ($request, $item) {
             $inputs = $request->all();
+            $inputs['lending_value'] = moneyToFloat($inputs['lending_value']);
+            $inputs['pix_rate'] = moneyToFloat($inputs['pix_rate']);
+            $inputs['card_rate'] = moneyToFloat($inputs['card_rate']);
             $person = Person::find($item->person_id);
             $person->fill($inputs)->save();
             $item->fill($inputs)->save();

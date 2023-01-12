@@ -30,7 +30,7 @@
                 <div class="card-body">
                   <p><strong>Usuário: </strong></p>
                   <p class="card-text">
-                    {{ $item->user->info }}
+                    {{ $item->user->people->info }}
                   </p>
                 </div>
               </div>

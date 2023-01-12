@@ -9,7 +9,7 @@
           <input type="hidden"
             name="user_id"
             value="{{ auth()->id() }}">
-          {!! Form::text('user', 'Usuário')->required()->readonly()->value(auth()->user()->info) !!}
+          {!! Form::text('user', 'Usuário')->required()->readonly()->value(auth()->user()->people->info) !!}
         </div>
         <div class="col-md-4">
           {!! Form::text('created', 'Dt. Criação:')->required()->value(today()->format('d/m/Y'))->readonly() !!}

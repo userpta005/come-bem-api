@@ -25,6 +25,7 @@
             <table class="table tablesorter table-striped">
               <thead class=" text-primary">
                 <th scope="col">Nome</th>
+                <th scope="col">Escola</th>
                 <th scope="col">Token</th>
                 <th scope="col">Dt. Criac.</th>
                 <th scope="col">Dt. Atualiz.</th>
@@ -36,6 +37,7 @@
                 @forelse ($data as $item)
                   <tr style="font-size: 12px;">
                     <td>{{ $item->name }}</td>
+                    <td>{{ $item->store->people->full_name }}</td>
                     <td>{{ $item->token }}</td>
                     <td>{{ $item->created_at->format('d/m/Y') }}</td>
                     <td>{{ $item->updated_at->format('d/m/Y') }}</td>

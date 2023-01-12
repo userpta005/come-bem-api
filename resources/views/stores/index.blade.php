@@ -10,10 +10,10 @@
               <h4 class="card-title">Lojas</h4>
             </div>
             <div class="col-md-6 text-right">
-              @if (!session()->has('tenant'))
+              @can('stores_create')
                 <a href="{{ route('stores.create') }}"
                   class="btn btn-sm btn-primary">Adicionar Novo</a>
-              @endif
+              @endcan
             </div>
           </div>
         </div>

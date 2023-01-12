@@ -82,7 +82,7 @@
                 @forelse ($data as $item)
                   <tr style="font-size: 12px;">
                     <td>{{ $item->code }}</td>
-                    <td>{{ $item->user->info }}</td>
+                    <td>{{ $item->user->people->info }}</td>
                     <td>{{ $item->stock->info }}</td>
                     <td> {{ floatToMoney($item->quantity) }}</td>
                     <td>{{ $item->stock->product->um->name }}</td>

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\PeopleGender;
 use App\Traits\DefaultAccessors;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -25,6 +26,15 @@ class Person extends CommonModel
      */
     protected $appends = [
         'info'
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'gender' => PeopleGender::class
     ];
 
     /**
