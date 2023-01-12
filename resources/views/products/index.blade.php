@@ -103,7 +103,7 @@
                                             @endif
                                         </td>
                                         <td>{{ $item->name }}</td>
-                                        <td>{{ $item->section->name }}</td>
+                                        <td>{{ !empty($item->section) ? $item->section->name : 'Sem vinculo' }}</td>
                                         <td>{{ $item->nutritional_classification->name() }}</td>
                                         <td>{{ $item->status->name() }}</td>
                                         <td class="text-right">
