@@ -13,6 +13,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class NotificationPagseguroController extends Controller
 {
@@ -24,6 +25,7 @@ class NotificationPagseguroController extends Controller
      */
     public function __invoke(Request $request, $id)
     {
+        Log::info("NOTIFICACAO: ".json_encode($request->all()));
         $code = $request->input('notificationCode');
         $type = $request->input('notificationType');
 
