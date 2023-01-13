@@ -92,7 +92,7 @@ class DependentController extends BaseController
 
             DB::commit();
 
-            return $this->sendResponse([], "Registro criado com sucesso", 201);
+            return $this->sendResponse($dependent, "Registro criado com sucesso", 201);
         } catch (Throwable $th) {
             DB::rollBack();
             return $this->sendError($th->getMessage());
