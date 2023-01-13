@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Enums\Common\Status;
 use App\Enums\PeopleGender;
 use App\Models\Account;
+use App\Models\Client;
 use App\Models\Dependent;
 use App\Models\Person;
 use App\Models\Role;
@@ -44,6 +45,16 @@ class DependentController extends BaseController
             DB::beginTransaction();
 
             $inputs = $request->all();
+
+            $dependentExists = Dependent::query()
+                ->whereHas('people', fn ($query) => $query->where('full_name', 'like', '%' . $inputs['full_name'] . '%'))
+                ->where('client_id', $client)
+                ->first();
+
+            if ($dependentExists) {
+                return $this->sendError('Nome social já utilizado !', [], 403);
+            }
+
             $inputs['status'] = Status::ACTIVE;
 
             $person = Person::query()->create($inputs);
