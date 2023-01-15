@@ -59,8 +59,8 @@ Route::prefix('v1')->group(function () {
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('dependents', App\Http\Controllers\API\DependentController::class)->except(['store', 'index']);
-        Route::get('clients/{id}/dependents', [App\Http\Controllers\API\DependentController::class, 'index']);
-        Route::post('clients/{id}/dependents/{id}', [App\Http\Controllers\API\DependentController::class, 'store']);
+        Route::get('clients/{client}/dependents', [App\Http\Controllers\API\DependentController::class, 'index']);
+        Route::post('clients/{client}/dependents', [App\Http\Controllers\API\DependentController::class, 'store']);
     });
 
     Route::middleware('auth:sanctum')->group(function () {
