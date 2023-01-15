@@ -22,7 +22,7 @@ class DependentController extends BaseController
     public function index(Request $request, $client)
     {
         $query = Dependent::query()
-            ->with('people', 'accounts.store.people')
+            ->with('people.city', 'accounts.store.people')
             ->where('client_id', $client);
 
         $data = $request->filled('page') ? $query->paginate(10) : $query->get();
@@ -78,8 +78,12 @@ class DependentController extends BaseController
             $inputs['client_id'] = $client;
             $dependent = Dependent::query()->create($inputs);
 
-            $inputs['dependent_id'] = $dependent->id;
-            Account::query()->create($inputs);
+            foreach ($inputs['accounts'] as $values) {
+                $values['dependent_id'] = $dependent->id;
+                $values['daily_limit'] = moneyToFloat($inputs['daily_limit']);
+                $values['status'] = $inputs['status'];
+                Account::query()->create($values);
+            }
 
             $inputs['email'] = $email;
             $inputs['password'] = bcrypt($password);
@@ -117,7 +121,7 @@ class DependentController extends BaseController
         return $this->sendResponse($item);
     }
 
-    public function update(Request $request, $client, $id)
+    public function update(Request $request, $id)
     {
         $item = Dependent::query()
             ->with('people', 'accounts')
@@ -137,9 +141,19 @@ class DependentController extends BaseController
 
             $inputs = $request->all();
 
+            $item = Dependent::query()->findOrFail($id);
             $item->people->fill($inputs)->save();
-            $item->fill($inputs)->save();
-            $item->accounts->where('store_id', $inputs['store_id'])->first()->fill($inputs)->save();
+
+            foreach ($inputs['accounts'] as $values) {
+                $values['dependent_id'] = $item->id;
+                $values['daily_limit'] = moneyToFloat($inputs['daily_limit']);
+                $values['status'] = Status::ACTIVE;
+                if (!empty($values['id'])) {
+                    Account::query()->findOrFail($values['id'])->fill($values)->save();
+                } else {
+                    Account::query()->create($values);
+                }
+            }
 
             DB::commit();
             return $this->sendResponse([], "Registro atualizado com sucesso", 200);
@@ -165,13 +179,16 @@ class DependentController extends BaseController
     {
         $rules = [
             'name' => ['required', 'max:100'],
+            'birthdate' => ['required', 'date'],
             'full_name' => ['required', 'max:30'],
             'gender' => ['required', new Enum(PeopleGender::class)],
-            'birthdate' => ['required', 'date'],
-            'store_id' => ['required', Rule::exists('stores', 'id')],
-            'school_year' => ['required', 'max:10'],
-            'turn' => ['required', new Enum(\App\Enums\AccountTurn::class)],
-            'class' => ['required', 'max:10'],
+            'city_id' => ['required', Rule::exists('cities', 'id')],
+            'daily_limit' => ['required', 'max:14'],
+            'accounts' => ['required', 'array', 'min:1'],
+            'accounts.*.store_id' => ['required', Rule::exists('stores', 'id')],
+            'accounts.*.school_year' => ['required', 'max:10'],
+            'accounts.*.turn' => ['required', new Enum(\App\Enums\AccountTurn::class)],
+            'accounts.*.class' => ['required', 'max:10'],
         ];
 
         $messages = [];

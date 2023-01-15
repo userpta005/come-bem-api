@@ -58,9 +58,9 @@ Route::prefix('v1')->group(function () {
     });
 
     Route::middleware('auth:sanctum')->group(function () {
-        Route::post('dependents/{id}/create-user', [App\Http\Controllers\API\DependentController::class, 'createUser']);
-        Route::get('dependents/{id}', [App\Http\Controllers\API\DependentController::class, 'show']);
-        Route::apiResource('clients.dependents', App\Http\Controllers\API\DependentController::class)->except(['show', 'destroy']);
+        Route::apiResource('dependents', App\Http\Controllers\API\DependentController::class)->except(['store', 'index']);
+        Route::get('clients/{id}/dependents', [App\Http\Controllers\API\DependentController::class, 'index']);
+        Route::post('clients/{id}/dependents/{id}', [App\Http\Controllers\API\DependentController::class, 'store']);
     });
 
     Route::middleware('auth:sanctum')->group(function () {
