@@ -42,9 +42,16 @@ class HomeController extends Controller
                 $query->where('accounts.store_id', session('store')['id']);
             })
             ->with('orderItems.product')
+            ->when(!empty($request->date), function ($query) use ($request) {
+                $query->whereDate('orders.date', $request->date);
+            })
+            ->when(!empty($request->turn), function ($query) use ($request) {
+                $query->where('orders.turn', $request->turn);
+            })
             ->orderBy('orders.id', 'desc')
             ->paginate(25);
 
+        // dd($data->first()->turn->name());
 
         return view('dashboard', compact(
             'data',
