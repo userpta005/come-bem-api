@@ -68,6 +68,7 @@ Route::prefix('v1')->group(function () {
         Route::delete('dependents/{id}', [App\Http\Controllers\API\DependentController::class, 'destroy']);
         Route::delete('accounts/{id}', [App\Http\Controllers\API\AccountController::class, 'destroy']);
         Route::delete('cards/{id}', [App\Http\Controllers\API\CardController::class, 'destroy']);
+        Route::get('order-confirm/{id}', App\Http\Controllers\API\OrderConfirmController::class)->name('orders.confirm');
     });
 
     Route::get('get-person-by-nif', App\Http\Controllers\API\GetPersonByNifController::class);

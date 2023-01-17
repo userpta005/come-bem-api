@@ -27,6 +27,12 @@ class TotenController extends Controller
     {
         $data =  Totem::query()
             ->with(['store.people'])
+            ->when(!empty($request->search), function ($query) use ($request) {
+                $query->whereHas('store.people', function ($query) use ($request) {
+                    $query->where('name', 'like', '%' . $request->search . '%')
+                        ->orWhere('full_name', 'like', '%' . $request->search . '%');
+                });
+            })
             ->orderBy('name')
             ->paginate(10);
 

@@ -29,6 +29,8 @@ class HomeController extends Controller
 
         $filterStatus =  $request->status ?? $status->keys()->all();
 
+        $date = $request->date ?? today()->format('Y-m-d');
+
         $data = Order::select(
             'orders.*',
             'people.name as dependent',
@@ -42,21 +44,18 @@ class HomeController extends Controller
                 $query->where('accounts.store_id', session('store')['id']);
             })
             ->with('orderItems.product')
-            ->when(!empty($request->date), function ($query) use ($request) {
-                $query->whereDate('orders.date', $request->date);
-            })
+            ->whereDate('orders.date', $date)
             ->when(!empty($request->turn), function ($query) use ($request) {
                 $query->where('orders.turn', $request->turn);
             })
             ->orderBy('orders.id', 'desc')
             ->paginate(25);
 
-        // dd($data->first()->turn->name());
-
         return view('dashboard', compact(
             'data',
             'status',
-            'filterStatus'
+            'filterStatus',
+            'date'
         ));
     }
 }

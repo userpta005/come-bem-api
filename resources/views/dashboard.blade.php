@@ -21,7 +21,7 @@
                               {!! Form::select('turn', 'Turno', \App\Enums\AccountTurn::all()->prepend('Todos', ''))->attrs(['class' => 'select2']) !!}
                             </div>
                             <div class="col-md-3">
-                              {!! Form::date('date', 'Data') !!}
+                              {!! Form::date('date', 'Data')->value($date) !!}
                             </div>
                             <div class="col-md-12 d-flex justify-content-end align-items-center">
                               <button class="btn btn-sm btn-primary mr-1"
@@ -101,9 +101,11 @@
                                         <td>{{ !empty($item->turn) ? $item->turn->name() : 'Não informado' }}</td>
                                         <td class="text-right">{{ floatToMoney($item->amount) }}</td>
                                         <td class="text-right">
-                                            <a type="button" class="btn btn-sm btn-primary" href="{{ route('orders.confirm', $item) }}">
-                                              Entregue
-                                            </a>
+                                            @if ($item->status->isOpened())
+                                                <button type="button" data-item="{{$item}}" class="btn btn-sm btn-primary order-confirm">
+                                                    Confirmar Entrega
+                                                </button>
+                                            @endif
                                             {{-- <div class="dropdown">
                                                 <a class="btn btn-sm btn-icon-only text-light" href="#" role="button"
                                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -142,6 +144,30 @@
         <script>
             $(document).ready(function() {
                 setTimeout('window.location.reload();', 50000);
+
+                $('.order-confirm').on('click', function () {
+                    let item = $(this).data('item')
+                    $.get( `${getUrl()}/api/v1/order-confirm/${item.id}` )
+                    .done(function(response) {
+                        swal(
+                        "Sucesso !",
+                        response.message,
+                        "success"
+                        ).then((isConfirm) => {
+                            if (isConfirm) {
+                                window.location.reload()
+                            }
+                        })
+                    })
+                    .fail(function(response) {
+                        swal(
+                        "Erro !",
+                        response.responseJSON.message,
+                        "error"
+                        )
+                    })
+                })
+
             });
         </script>
     @endpush
