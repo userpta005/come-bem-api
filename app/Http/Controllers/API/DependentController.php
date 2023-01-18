@@ -155,7 +155,6 @@ class DependentController extends BaseController
 
             foreach ($inputs['accounts'] as $values) {
                 $values['dependent_id'] = $item->id;
-                $values['daily_limit'] = moneyToFloat($inputs['daily_limit']);
                 $values['status'] = Status::ACTIVE;
                 if (!empty($values['id'])) {
                     Account::query()->findOrFail($values['id'])->fill($values)->save();

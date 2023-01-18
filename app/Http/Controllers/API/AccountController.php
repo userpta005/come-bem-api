@@ -48,6 +48,14 @@ class AccountController extends BaseController
 
         $item->fill($inputs)->save();
 
+        $item->load([
+            'store.people',
+            'orders.orderItems' => function ($query) {
+                $query->with(['product' => ['um', 'stock']])
+                    ->whereDate('date', '>=', today());
+            }
+        ]);
+
         return $this->sendResponse($item, "Atualização realizada com sucesso", 200);
     }
 
