@@ -71,7 +71,7 @@
                 @forelse ($data as $item)
                   <tr style="font-size: 12px;">
                     <td>{{ $item->name }}</td>
-                    <td>{{ $item->store->people->full_name }}</td>
+                    <td>{{ !empty($item->store) ? $item->store->people->full_name : 'Não informado' }}</td>
                     <td>{{ $item->token }}</td>
                     <td>{{ $item->created_at->format('d/m/Y') }}</td>
                     <td>{{ $item->updated_at->format('d/m/Y') }}</td>
