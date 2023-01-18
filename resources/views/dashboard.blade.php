@@ -101,11 +101,13 @@
                                         <td>{{ !empty($item->turn) ? $item->turn->name() : 'Não informado' }}</td>
                                         <td class="text-right">{{ floatToMoney($item->amount) }}</td>
                                         <td class="text-right">
-                                            @if ($item->status->isOpened())
-                                                <button type="button" data-item="{{$item}}" class="btn btn-sm btn-primary order-confirm">
-                                                    Confirmar Entrega
-                                                </button>
-                                            @endif
+                                            <button type="button" data-item="{{$item}}" class="btn btn-sm btn-primary order-confirm">
+                                                @if ($item->status->isOpened())
+                                                Confirmar Entrega
+                                                @else
+                                                Entregue
+                                                @endif
+                                            </button>
                                             {{-- <div class="dropdown">
                                                 <a class="btn btn-sm btn-icon-only text-light" href="#" role="button"
                                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

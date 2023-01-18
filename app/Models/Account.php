@@ -106,7 +106,7 @@ class Account extends CommonModel
     public function dayBalance(): Attribute
     {
         return new Attribute(get: function () {
-            if ($this->orders && $this->orders->isEmpty()) {
+            if (empty(floatval($this->daily_limit)) || ($this->orders && $this->orders->isEmpty())) {
                 return $this->daily_limit;
             }
             $sum = $this->orders->filter(fn ($item) => $item->date == today()->format('Y-m-d'))->sum('amount');
@@ -116,7 +116,7 @@ class Account extends CommonModel
 
     public function dayBalanceByDate($date)
     {
-        if ($this->orders && $this->orders->isEmpty()) {
+        if (empty(floatval($this->daily_limit)) || ($this->orders && $this->orders->isEmpty())) {
             return $this->daily_limit;
         }
         $sum = $this->orders->filter(fn ($item) => $item->date == carbon($date)->format('Y-m-d'))->sum('amount');

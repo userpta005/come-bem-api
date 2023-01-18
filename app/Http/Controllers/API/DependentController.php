@@ -5,7 +5,6 @@ namespace App\Http\Controllers\API;
 use App\Enums\Common\Status;
 use App\Enums\PeopleGender;
 use App\Models\Account;
-use App\Models\Client;
 use App\Models\Dependent;
 use App\Models\Person;
 use App\Models\Role;
@@ -22,7 +21,7 @@ class DependentController extends BaseController
     public function index(Request $request, $client)
     {
         $query = Dependent::query()
-            ->with('people.city', 'accounts.store.people')
+            ->with('people.city', 'accounts.store.people', 'accounts.orders')
             ->where('client_id', $client);
 
         $data = $request->filled('page') ? $query->paginate(10) : $query->get();
@@ -96,6 +95,8 @@ class DependentController extends BaseController
 
             DB::commit();
 
+            $dependent->load(['people', 'accounts.store.people']);
+
             return $this->sendResponse($dependent, "Registro criado com sucesso", 201);
         } catch (Throwable $th) {
             DB::rollBack();
@@ -124,7 +125,7 @@ class DependentController extends BaseController
     public function update(Request $request, $id)
     {
         $item = Dependent::query()
-            ->with('people', 'accounts')
+            ->with('people.user', 'accounts')
             ->findOrFail($id);
 
         $validator = Validator::make(
@@ -141,8 +142,16 @@ class DependentController extends BaseController
 
             $inputs = $request->all();
 
-            $item = Dependent::query()->findOrFail($id);
             $item->people->fill($inputs)->save();
+
+            if (!empty($request['access_key'])) {
+                $inputs['access_key'] = $request['access_key']['email'] . $request['access_key']['password'];
+                $inputs['email'] = $request['access_key']['email'];
+                $inputs['password'] = bcrypt($request['access_key']['password']);
+            }
+
+            $item->fill($inputs)->save();
+            $item->people->user->fill($inputs)->save();
 
             foreach ($inputs['accounts'] as $values) {
                 $values['dependent_id'] = $item->id;
@@ -183,12 +192,15 @@ class DependentController extends BaseController
             'full_name' => ['required', 'max:30'],
             'gender' => ['required', new Enum(PeopleGender::class)],
             'city_id' => ['required', Rule::exists('cities', 'id')],
-            'daily_limit' => ['required', 'max:14'],
+            'daily_limit' => ['nullable', 'max:14'],
             'accounts' => ['required', 'array', 'min:1'],
             'accounts.*.store_id' => ['required', Rule::exists('stores', 'id')],
             'accounts.*.school_year' => ['required', 'max:10'],
             'accounts.*.turn' => ['required', new Enum(\App\Enums\AccountTurn::class)],
             'accounts.*.class' => ['required', 'max:10'],
+            'access_key' => ['nullable', 'array'],
+            'access_key.email' => ['nullable', 'min:3'],
+            'access_key.password' => ['nullable', 'confirmed', 'min:4']
         ];
 
         $messages = [];

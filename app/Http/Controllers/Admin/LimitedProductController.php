@@ -26,7 +26,7 @@ class LimitedProductController extends Controller
                 $query->where('account_id', $account->id);
             }])
             ->where('status', Status::ACTIVE)
-            ->where('store_id', session('store')['id'])
+            ->where('store_id', session()->exists('store') ? session('store')['id'] : $account->store_id)
             ->get();
 
         return view('limited_products.index', compact('data', 'account'));
