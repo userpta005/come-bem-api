@@ -25,34 +25,17 @@ class SectionController extends Controller
 
     public function index()
     {
-        $data = Section::withDepth()
-            ->withCount('descendants')
+        $data = Section::query()
             ->when(session()->has('store'), fn ($query) => $query->where('store_id', session('store')['id']))
             ->when(!session()->has('store'), fn ($query) => $query->whereNull('store_id'))
-            ->get()
-            ->toFlatTree();
+            ->get();
 
         return view('sections.index', compact('data'));
     }
 
     public function create(Request $request)
     {
-        $parentId = $request->parent_id;
-
-        $sections = $this->getPlanOptions();
-
-        $section = Section::withDepth()->find($parentId);
-
-        $types = SectionType::all();
-        if (!empty($section) && $section->depth == 1) {
-            $types = SectionType::only(['A']);
-        }
-
-        return view('sections.create', compact(
-            'parentId',
-            'sections',
-            'types'
-        ));
+        return view('sections.create');
     }
 
     public function store(Request $request)
@@ -64,7 +47,7 @@ class SectionController extends Controller
 
         $inputs = $request->all();
         $inputs['store_id'] = session()->has('store') ? session('store')['id'] : null;
-        $inputs['use'] = 1;
+
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
             $upload = $request->file('image')->store('sections', 'public');
             $inputs['image'] = $upload;
@@ -87,23 +70,7 @@ class SectionController extends Controller
     {
         $item = Section::findOrFail($id);
 
-        $parentId = $item->parent_id;
-
-        $sections = $this->getPlanOptions();
-
-        $section = Section::withDepth()->find($parentId);
-
-        $types = SectionType::all();
-        if (!empty($section) && $section->depth == 1) {
-            $types = SectionType::only(['A']);
-        }
-
-        return view('sections.edit', compact(
-            'item',
-            'sections',
-            'parentId',
-            'types'
-        ));
+        return view('sections.edit', compact('item'));
     }
 
     public function update(Request $request, $id)
@@ -150,36 +117,12 @@ class SectionController extends Controller
         $rules = [
             'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
             'name' => ['required', 'string', 'max:40'],
-            'type' => ['required', new Enum(SectionType::class)],
             'status' => ['required', new Enum(Status::class)],
             'description' => ['nullable', 'max:120'],
-            'order' => ['required'],
-            'parent_id' => ['nullable']
         ];
 
         $messages = [];
 
         return !$changeMessages ? $rules : $messages;
-    }
-
-    protected function makeOptions(Collection $items)
-    {
-        $options = ['' => 'Não Contém'];
-        foreach ($items as $item) {
-            $options[$item->getKey()] = $item->name;
-        }
-        return $options;
-    }
-
-    protected function getPlanOptions($except = null)
-    {
-        /** @var \Kalnoy\Nestedset\QueryBuilder $query */
-
-        $query = Section::select('id', 'name')->withDepth();
-
-        if ($except) {
-            $query->whereNotDescendantOf($except)->where('id', '<>', $except->id);
-        }
-        return $this->makeOptions($query->get());
     }
 }

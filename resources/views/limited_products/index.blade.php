@@ -88,7 +88,7 @@
               <div class="col-md-12">
                 <div class="form-group">
                   <div class="treeview border rounded p-3">
-                    <ul class="group-main p-0 m-0 group-flex justify-content-between">
+                    <ul class="group-main p-0 m-0 group-flex">
                       @foreach ($data as $item)
                         <li class="group-item my-1 mr-2"
                           style="min-width: 200px;">

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\AccountTurn;
 use App\Enums\OrderStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,7 +18,8 @@ class Order extends CommonModel
      * @var array
      */
     protected $casts = [
-        'status' => OrderStatus::class
+        'status' => OrderStatus::class,
+        'turn' => AccountTurn::class
     ];
 
     /**

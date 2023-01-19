@@ -32,7 +32,7 @@ class StockController extends Controller
                 $query->where('product_id', $request->product_id);
             })
             ->where('store_id', session('store')['id'])
-            ->where('quantity', '>', '0')
+            ->where('quantity', '>=', '0')
             ->select(
                 'product_id',
                 'store_id',

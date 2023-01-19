@@ -91,7 +91,7 @@
                 <span style="margin-right: 10px;">
                   <span class="dot"
                     style="background-color:#ffa500;"></span>
-                  Inadinplente
+                    Inadimplentes
                 </span>
                 <span style="margin-right: 10px;">
                   <span class="dot"

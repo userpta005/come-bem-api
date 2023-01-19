@@ -32,7 +32,7 @@
           route="/api/v1/ncms"
           prop="description"
           :value="!empty($item->ncm_id) ? [$item->ncm_id => $item->ncm->description] : []"
-          :required="true" />
+          :required="false" />
       </div>
       <div class="col-md-3">
         {!! Form::text('price', 'Preço')->required()->attrs(['class' => 'money'])->value(floatToMoney($item->price ?? 0)) !!}
@@ -52,3 +52,12 @@
       class="btn btn-success float-right mt-4">Salvar</button>
   </div>
 </div>
+
+
+@push('js')
+    <script>
+        $('input[name=price]').on('change', function () {
+            $('input[name=promotion_price]').val($(this).val())
+        })
+    </script>
+@endpush

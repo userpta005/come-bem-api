@@ -160,7 +160,7 @@ class ProductController extends Controller
             'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
             'name' => ['required', 'max:40'],
             'section_id' => ['required', Rule::exists('sections', 'id')],
-            'ncm_id' => ['required', Rule::exists('ncms', 'id')],
+            'ncm_id' => ['nullable', Rule::exists('ncms', 'id')],
             'um_id' => ['required', Rule::exists('measurement_units', 'id')],
             'nutritional_classification' => ['required', new Enum(NutritionalClassification::class)],
             'status' => ['required', new Enum(Status::class)],

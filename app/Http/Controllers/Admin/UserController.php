@@ -56,6 +56,7 @@ class UserController extends Controller
                         });
                 }
             )
+            ->orderBy('users.created_at', 'desc')
             ->paginate(10);
 
         $users = User::person()->get();

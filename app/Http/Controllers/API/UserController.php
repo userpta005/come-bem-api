@@ -41,7 +41,7 @@ class UserController extends BaseController
             $inputs = $request->all();
             $clientType =  ClientType::from($inputs['type']);
             $inputs['password'] = bcrypt($inputs['password']);
-            $inputs['status'] = Status::INACTIVE;
+            $inputs['status'] = Status::ACTIVE;
 
             $person = Person::query()
                 ->updateOrCreate(
@@ -106,7 +106,7 @@ class UserController extends BaseController
             'birthdate' => ['required', 'date'],
             'city_id' => ['required', Rule::exists('cities', 'id')],
             'type' => ['required', new Enum(ClientType::class)],
-            'store_id' => ['required', Rule::exists('stores', 'id')],
+            'store_id' => ['nullable', Rule::exists('stores', 'id')],
         ];
 
         $messages = [];

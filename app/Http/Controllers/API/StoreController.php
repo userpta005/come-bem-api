@@ -11,11 +11,15 @@ class StoreController extends BaseController
     public function index(Request $request)
     {
         $query = Store::person()
-            ->with('people.city.state', 'tenant.people.city.state')
             ->where('stores.status', StoreStatus::ENABLED)
+            ->when($request->filled('city_id'), function ($query) use ($request) {
+                $query->whereHas('people.city', fn ($query) => $query->where('id', $request->city_id));
+            })
             ->when($request->filled('search'), function ($query) use ($request) {
+                $query->where(function ($query) use ($request) {
                     $query->where('people.name', 'like', '%' . $request->search . '%')
                         ->orWhere('people.full_name', 'like', '%' . $request->search . '%');
+                });
             });
 
         $data = $request->filled('page') ? $query->paginate(10) : $query->get();

@@ -58,9 +58,9 @@ Route::prefix('v1')->group(function () {
     });
 
     Route::middleware('auth:sanctum')->group(function () {
-        Route::post('dependents/{id}/create-user', [App\Http\Controllers\API\DependentController::class, 'createUser']);
-        Route::get('dependents/{id}', [App\Http\Controllers\API\DependentController::class, 'show']);
-        Route::apiResource('clients.dependents', App\Http\Controllers\API\DependentController::class)->except(['show', 'destroy']);
+        Route::apiResource('dependents', App\Http\Controllers\API\DependentController::class)->except(['store', 'index']);
+        Route::get('clients/{client}/dependents', [App\Http\Controllers\API\DependentController::class, 'index']);
+        Route::post('clients/{client}/dependents', [App\Http\Controllers\API\DependentController::class, 'store']);
     });
 
     Route::middleware('auth:sanctum')->group(function () {
@@ -68,6 +68,7 @@ Route::prefix('v1')->group(function () {
         Route::delete('dependents/{id}', [App\Http\Controllers\API\DependentController::class, 'destroy']);
         Route::delete('accounts/{id}', [App\Http\Controllers\API\AccountController::class, 'destroy']);
         Route::delete('cards/{id}', [App\Http\Controllers\API\CardController::class, 'destroy']);
+        Route::get('order-confirm/{id}', App\Http\Controllers\API\OrderConfirmController::class)->name('orders.confirm');
     });
 
     Route::get('get-person-by-nif', App\Http\Controllers\API\GetPersonByNifController::class);
