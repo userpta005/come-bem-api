@@ -22,12 +22,10 @@
           @include('alerts.error')
 
           <div class="table-responsive-md">
-            <table id="tree-table"
-              class="table table-striped">
+            <table class="table table-striped">
               <thead class=" text-primary">
                 <th scope="col">Nome</th>
                 <th scope="col">Descrição</th>
-                <th scope="col">Tipo</th>
                 <th scope="col">Dt. Criac.</th>
                 <th scope="col">Dt. Atualiz.</th>
                 <th scope="col">Status</th>
@@ -36,13 +34,9 @@
               </thead>
               <tbody>
                 @forelse ($data as $item)
-                  <tr style="font-size: 12px;"
-                    data-id="{{ $item->id }}"
-                    data-parent="{{ $item->parent_id ?? 0 }}"
-                    data-level="{{ $item->depth }}">
-                    <td data-column="name">{{ $item->name }}</td>
+                  <tr style="font-size: 12px;">
+                    <td>{{ $item->name }}</td>
                     <td>{{ $item->description }}</td>
-                    <td>{{ $item->type->name() }}</td>
                     <td>{{ $item->created_at->format('d/m/Y') }}</td>
                     <td>{{ $item->updated_at->format('d/m/Y') }}</td>
                     <td>{{ $item->status->name() }}</td>
@@ -66,24 +60,15 @@
                               <a class="dropdown-item"
                                 href="{{ route('sections.show', $item) }}">Visualizar</a>
                             @endcan
-                            @can('sections_create')
-                              @if ($item->status->isActive() && $item->depth < 2 && $item->type->isSynthetic())
-                                <a class="dropdown-item"
-                                  href="{{ route('sections.create', ['parent_id' => $item->getKey()]) }}">Cria
-                                  descendente</a>
-                              @endif
-                            @endcan
                             @can('sections_edit')
                               <a class="dropdown-item"
                                 href="{{ route('sections.edit', $item) }}">Editar</a>
                             @endcan
                             @can('sections_delete')
-                              @if ($item->descendants_count == 0)
-                                <button type="button"
-                                  class="dropdown-item btn-delete">
-                                  Excluir
-                                </button>
-                              @endif
+                              <button type="button"
+                                class="dropdown-item btn-delete">
+                                Excluir
+                              </button>
                             @endcan
                           </form>
                         </div>
@@ -107,7 +92,3 @@
     </div>
   </div>
 @endsection
-
-@push('js')
-  <script src="{{ asset('js/tree.js') }}"></script>
-@endpush

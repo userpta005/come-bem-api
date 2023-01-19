@@ -2,14 +2,12 @@
 
 namespace App\Models;
 
-use App\Enums\SectionType;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Kalnoy\Nestedset\NodeTrait;
 
 class Section extends CommonModel
 {
-    use HasFactory, NodeTrait;
+    use HasFactory;
 
     /**
      * The attributes that aren't mass assignable.
@@ -23,9 +21,7 @@ class Section extends CommonModel
      *
      * @var array
      */
-    protected $casts = [
-        'type' => SectionType::class,
-    ];
+    protected $casts = [];
 
     /**
      * The accessors to append to the model's array form.

@@ -75,7 +75,7 @@
                                 <th scope="col">Nome Completo</th>
                                 <th scope="col">Pedido/Itens</th>
                                 <th scope="col">Série/Turma</th>
-                                <th scope="col">Data/Hora</th>
+                                <th scope="col">Data</th>
                                 <th scope="col">Turno</th>
                                 <th scope="col" class="text-right">Vl. Compra</th>
                                 <th scope="col" class="text-right">Ação</th>
@@ -151,22 +151,10 @@
                     let item = $(this).data('item')
                     $.get( `${getUrl()}/api/v1/order-confirm/${item.id}` )
                     .done(function(response) {
-                        swal(
-                        "Sucesso !",
-                        response.message,
-                        "success"
-                        ).then((isConfirm) => {
-                            if (isConfirm) {
-                                window.location.reload()
-                            }
-                        })
+                        window.location.reload()
                     })
                     .fail(function(response) {
-                        swal(
-                        "Erro !",
-                        response.responseJSON.message,
-                        "error"
-                        )
+                        $.notify(response.responseJSON.message, 'error');
                     })
                 })
 

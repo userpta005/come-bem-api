@@ -264,7 +264,7 @@
                                 <li>
                                     <a href="{{ route('reports.client-dependents') }}">
                                         <i class="fas fa-child"></i>
-                                        <p>Consumidors</p>
+                                        <p>Consumidores</p>
                                     </a>
                                 </li>
                             @endcan

@@ -22,7 +22,17 @@
                 <div class="card-body">
                   <p><strong>Imagem: </strong></p>
                   <img src="{{ asset($item->image_url ?? 'images/noimage.png') }}"
-                    style="max-width: 100%; max-height: 100%; border: 1px solid black;" />
+                    style="max-width: 200px; max-height: 200px; border: 1px solid black;" />
+                </div>
+              </div>
+            </div>
+            <div class="card-deck">
+              <div class="card m-2 shadow-sm">
+                <div class="card-body">
+                  <p><strong>Descrição: </strong></p>
+                  <p class="card-text">
+                    {{ $item->description }}
+                  </p>
                 </div>
               </div>
               <div class="card m-2 shadow-sm">
@@ -35,27 +45,9 @@
               </div>
               <div class="card m-2 shadow-sm">
                 <div class="card-body">
-                  <p><strong>Tipo: </strong></p>
-                  <p class="card-text">
-                    {{ $item->type->name() }}
-                  </p>
-                </div>
-              </div>
-              <div class="card m-2 shadow-sm">
-                <div class="card-body">
                   <p><strong>Status: </strong></p>
                   <p class="card-text">
                     {{ $item->status->name() }}
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="card-deck">
-              <div class="card m-2 shadow-sm">
-                <div class="card-body">
-                  <p><strong>Descrição: </strong></p>
-                  <p class="card-text">
-                    {{ $item->description }}
                   </p>
                 </div>
               </div>
