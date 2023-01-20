@@ -28,22 +28,13 @@ class PixPaymentAction
                 [
                     'name' =>  "Cobrança- Lanche Bem",
                     'quantity' => 1,
-                    'unit_amount' => intval(
-                        strval(floatval(
-                            preg_replace("/[^0-9.]/", "", str_replace(',', '.', $data['value']))
-                        ) * 100)
-                    )
-
+                    'unit_amount' => intval(preg_replace("/[^0-9]/", "", str_replace(',', '.', $data['value'])))
                 ]
             ],
             'qr_codes' => [
                 [
                     'amount' => [
-                        'value' => intval(
-                            strval(floatval(
-                                preg_replace("/[^0-9.]/", "", str_replace(',', '.', $data['value']))
-                            ) * 100)
-                        ),
+                        'value' => intval(preg_replace("/[^0-9]/", "", str_replace(',', '.', $data['value']))),
                     ],
                 ]
             ]
