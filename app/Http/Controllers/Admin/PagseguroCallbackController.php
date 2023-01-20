@@ -36,12 +36,9 @@ class PagseguroCallbackController extends Controller
 
         $callback = route('pagseguro.authorization');
 
-        $redirectUrl = 'https://connect.pagseguro.uol.com.br/oauth2/authorize?response_type=code&client_id=' . config('laravel-pagseguro.client_id');
-        $redirectUrl .= "&redirect_uri={$callback}&scope=payments.read+payments.create&state={$tenant->id}";
-
         $data = [
             "grant_type" => "authorization_code",
-            "redirect_uri" => $redirectUrl,
+            "redirect_uri" => $callback,
             "code" => $request->code
         ];
 
@@ -67,7 +64,7 @@ class PagseguroCallbackController extends Controller
         $pagseguro['token'] = $response['access_token'];
         $pagseguro['refresh_token'] = $response['refresh_token'];
         $pagseguro['expires_in'] = Carbon::now()->addSeconds($response['expires_in'])->format('Y-m-d');
-        $pagseguro['account_id'] = $response['ACCO_737348328392943'];
+        $pagseguro['account_id'] = $response['account_id'];
 
         $tenant->pagseguro = $pagseguro;
         $tenant->save();
