@@ -13,8 +13,7 @@ class SectionController extends BaseController
         $sections = Section::query()
             ->where('status', Status::ACTIVE)
             ->where('store_id', $request->get('store')['id'])
-            ->get()
-            ->toFlatTree();
+            ->get();
 
         return $this->sendResponse($sections);
     }
