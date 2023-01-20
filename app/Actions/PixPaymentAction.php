@@ -50,7 +50,7 @@ class PixPaymentAction
 
         $response = Http::withHeaders([
             'Content-Type' => 'application/json',
-            'Authorization' => "Bearer " . $token,
+            'Authorization' => "Bearer " . config('laravel-pagseguro.token'),
             'x-api-version' => '4.0'
         ])->post(
             "{$url}/orders",

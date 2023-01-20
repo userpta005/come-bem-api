@@ -10,6 +10,7 @@ class PaymentMethod extends CommonModel
     use HasFactory;
 
     const PIX = 'PIX';
+    const CREDIT_CARD = 'CARTAO';
 
     /**
      * The attributes that aren't mass assignable.

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Actions\PixPaymentAction;
+use App\Actions\SplitPaymentAction;
 use App\Enums\AccountEntryType;
 use App\Models\Account;
 use App\Models\AccountEntry;
@@ -32,7 +33,7 @@ class CreditPurchasesController extends BaseController
         return $this->sendResponse($account->accountEntries);
     }
 
-    public function store(Request $request, $id, PixPaymentAction $pixAction)
+    public function store(Request $request, $id, PixPaymentAction $pixAction, SplitPaymentAction $splitAction)
     {
         $validator = Validator::make(
             $request->all(),
@@ -65,7 +66,7 @@ class CreditPurchasesController extends BaseController
                 $pagseguro = $request->get('store')['tenant']['pagseguro'];
 
                 if (!isset($pagseguro)) {
-                    return $this->sendError("Pix não configurado para esse contratante.", [], 403);
+                    return $this->sendError("Pagamento não configurado para esse contratante.", [], 403);
                 }
 
                 $token = $pagseguro['token'];
@@ -76,6 +77,23 @@ class CreditPurchasesController extends BaseController
                     'store' => $storeId,
                 ];
                 $checkout = $pixAction->execute($token, $payload);
+                $inputs['checkout'] = $checkout;
+            } else if ($paymentMethod->code == PaymentMethod::CREDIT_CARD) {
+                $pagseguro = $request->get('store')['tenant']['pagseguro'];
+
+                if (!isset($pagseguro)) {
+                    return $this->sendError("Pagamento não configurado para esse contratante.", [], 403);
+                }
+
+
+                $payload = [
+                    'value' => moneyToFloat($inputs['amount']),
+                    'reference' => $inputs['uuid'],
+                    'card' => $inputs['card'],
+                    'account' => $pagseguro['account_id']
+                ];
+
+                $checkout = $splitAction->execute($payload);
                 $inputs['checkout'] = $checkout;
             }
 
@@ -91,9 +109,17 @@ class CreditPurchasesController extends BaseController
 
     private function rules(Request $request, $primaryKey = null, bool $changeMessages = false)
     {
+        $paymentMethod = PaymentMethod::findOrFail($request->payment_method_id);
+
         $rules = [
             'amount' => ['required'],
-            'payment_method_id' => ['required', Rule::exists('payment_methods', 'id')]
+            'payment_method_id' => ['required', Rule::exists('payment_methods', 'id')],
+            'card.number' => [Rule::requiredIf($paymentMethod->code == PaymentMethod::CREDIT_CARD)],
+            'card.exp_month' => [Rule::requiredIf($paymentMethod->code == PaymentMethod::CREDIT_CARD), 'min:2', 'max:2'],
+            'card.exp_year' => [Rule::requiredIf($paymentMethod->code == PaymentMethod::CREDIT_CARD), 'min:4', 'max:4'],
+            'card.security_code' => [Rule::requiredIf($paymentMethod->code == PaymentMethod::CREDIT_CARD), 'min:3', 'max:3'],
+            'card.holder' => [Rule::requiredIf($paymentMethod->code == PaymentMethod::CREDIT_CARD), 'string'],
+            'card.installments' => [Rule::requiredIf($paymentMethod->code == PaymentMethod::CREDIT_CARD), 'integer']
         ];
 
         $messages = [];
