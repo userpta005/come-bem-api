@@ -89,6 +89,7 @@ Route::prefix('v1')->group(function () {
     Route::apiResource('banners', App\Http\Controllers\API\BannerController::class)->only(['index', 'show']);
 
 
-    Route::post('stores/{id}/pagseguro/notification',  App\Http\Controllers\API\NotificationPagseguroController::class);
+    Route::post('pagseguro/notification',  App\Http\Controllers\API\NotificationPagseguroController::class);
+    Route::get('pagseguro/authorization',  App\Http\Controllers\API\PagseguroAuthorizationController::class);
 
 });

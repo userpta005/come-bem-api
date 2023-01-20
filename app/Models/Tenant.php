@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Tenant extends PersonModel
 {
     use HasFactory;
-    
+
     /**
      * The attributes that aren't mass assignable.
      *
@@ -27,7 +27,8 @@ class Tenant extends PersonModel
     protected $casts = [
         'status' => TenantStatus::class,
         'signature' => TenantSignature::class,
-        'due_day' => TenantDueDays::class
+        'due_day' => TenantDueDays::class,
+        'pagseguro' => 'array'
     ];
 
     /**

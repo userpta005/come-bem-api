@@ -59,6 +59,8 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get('pagseguro/authorization', App\Http\Controllers\Admin\PagseguroCallbackController::class)->name('pagseguro.authorization');
+
 Route::group(['middleware' => 'auth'], function () {
     Route::get('home', [HomeController::class, 'index'])->name('home');
     Route::get('profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -4,7 +4,10 @@ return [
     /* DEFINE SE SERÁ UTILIZADO O AMBIENTE DE TESTES */
     'use-sandbox' =>  env('PAGSEGURO_SANDBOX', true),
 
-
+    'token' => env('PAGSEGURO_TOKEN', null),
+    'client_id' => env('PAGSEGURO_CLIENT_ID', null),
+    'client_secret' => env('PAGSEGURO_CLIENT_SECRET', null),
+    'account_id' => env('PAGSEGURO_ACOUNT_ID', null),
 
     /*
      * Informe abaixo o nome / url das rotas de aplicação para notificações
@@ -26,9 +29,6 @@ return [
             'route-name' => 'pagseguro.notification', // Criar uma rota com este nome
         ],
     ],
-
-
-
 
 
     /*
