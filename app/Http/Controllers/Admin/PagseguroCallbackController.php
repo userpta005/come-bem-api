@@ -33,9 +33,12 @@ class PagseguroCallbackController extends Controller
             $url = config('laravel-pagseguro.host.sandbox');
         }
 
+
+        $callback = route('pagseguro.authorization');
+
         $data = [
             "grant_type" => "authorization_code",
-            "redirect_uri" => route('pagseguro.authorization'),
+            "redirect_uri" => $callback,
             "code" => $request->code
         ];
 
