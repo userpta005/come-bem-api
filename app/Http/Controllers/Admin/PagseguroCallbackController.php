@@ -36,11 +36,15 @@ class PagseguroCallbackController extends Controller
 
         $callback = route('pagseguro.authorization');
 
+        $redirectUrl = 'https://connect.pagseguro.uol.com.br/oauth2/authorize?response_type=code&client_id=' . config('laravel-pagseguro.client_id');
+        $redirectUrl .= "&redirect_uri={$callback}&scope=payments.read+payments.create&state={$tenant->id}";
+
         $data = [
             "grant_type" => "authorization_code",
-            "redirect_uri" => $callback,
+            "redirect_uri" => $redirectUrl,
             "code" => $request->code
         ];
+
 
         $response = Http::withHeaders([
             'Accept' => 'application/json',
