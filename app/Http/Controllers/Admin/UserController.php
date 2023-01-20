@@ -41,21 +41,17 @@ class UserController extends Controller
             ->when(!empty($request->date_end), function ($query) use ($request) {
                 $query->whereDate('users.created_at', '<=', $request->date_end);
             })
-            ->when(
-                session()->exists('tenant'),
-                function ($query) {
-                    $query->where('users.id', '!=', 1)
-                        ->where(function ($query) {
-                            $query->when(session()->exists('store'), function ($query) {
-                                $query->whereHas('stores', function ($query) {
-                                    $query->where('store_id', session('store')['id']);
-                                })
-                                    ->orWhereDoesntHave('stores')
-                                    ->whereDoesntHave('people.tenant');
-                            }, fn ($query) => $query->whereDoesntHave('stores'));
-                        });
-                }
-            )
+            ->when(session()->exists('store'), function ($query) {
+                $query->whereHas('stores', function ($query) {
+                    $query->where('store_id', session('store')['id']);
+                });
+            })
+            ->when(!session()->exists('store'), function ($query) {
+                $query->where(function ($query) {
+                    $query->doesnthave('stores')
+                        ->orWhereHas('people.tenant');
+                });
+            })
             ->orderBy('users.created_at', 'desc')
             ->paginate(10);
 
@@ -67,6 +63,12 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::orderBy('description')
+            ->when(session()->exists('tenant'), function ($query) {
+                $query->where('tenant_id', session('tenant')['id']);
+            })
+            ->when(!session()->exists('tenant'), function ($query) {
+                $query->whereNull('tenant_id');
+            })
             ->get();
 
         return view('users.create', compact('roles'));
@@ -116,6 +118,12 @@ class UserController extends Controller
     public function edit($id)
     {
         $roles = Role::orderBy('description')
+            ->when(session()->exists('tenant'), function ($query) {
+                $query->where('tenant_id', session('tenant')['id']);
+            })
+            ->when(!session()->exists('tenant'), function ($query) {
+                $query->whereNull('tenant_id');
+            })
             ->get();
 
         $item = User::person()->with('roles')->findOrFail($id);
@@ -154,7 +162,9 @@ class UserController extends Controller
 
         if (auth()->id() != $item->id) {
             try {
-                $item->stores()->detach(session('store')['id']);
+                if (session()->exists('store')) {
+                    $item->stores()->detach(session('store')['id']);
+                }
                 $item->delete();
                 return redirect()->route('users.index')
                     ->withStatus('Registro deletado com sucesso.');

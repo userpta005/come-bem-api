@@ -1,4 +1,4 @@
-@extends('layouts.app', ['page' => 'Lojas', 'pageSlug' => 'stores'])
+@extends('layouts.app', ['page' => 'Estabelecimentos', 'pageSlug' => 'stores'])
 
 @section('content')
   <div class="container-fluid p-0">
@@ -8,7 +8,7 @@
           <div class="card-header">
             <div class="row align-items-center">
               <div class="col-md-8">
-                <h4 class="card-title">Lojas</h4>
+                <h4 class="card-title">Estabelecimentos</h4>
               </div>
               <div class="ml-auto mr-3">
                 <a href="{{ route('stores.index') }}"

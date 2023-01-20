@@ -1,4 +1,4 @@
-@extends('layouts.app', ['page' => 'Lojas', 'pageSlug' => 'stores'])
+@extends('layouts.app', ['page' => 'Estabelecimentos', 'pageSlug' => 'stores'])
 
 @section('content')
   <div class="row">
@@ -7,7 +7,7 @@
         <div class="card-header">
           <div class="row">
             <div class="col-md-6">
-              <h4 class="card-title">Lojas</h4>
+              <h4 class="card-title">Estabelecimentos</h4>
             </div>
             <div class="col-md-6 text-right">
               @can('stores_create')

@@ -22,7 +22,21 @@ class RoleController extends Controller
 
     public function index()
     {
-        $data =  Role::orderBy('description')->paginate(10);
+        $data =  Role::query()
+            ->select(
+                'roles.*',
+                DB::raw('case when roles.tenant_id is null then roles.description else concat(people.name, " - ", roles.description) end as description')
+            )
+            ->leftJoin('tenants', 'tenants.id', '=', 'roles.tenant_id')
+            ->leftJoin('people', 'people.id', '=', 'tenants.person_id')
+            ->when(session()->has('tenant'), function ($query) {
+                $query->where('tenant_id', session('tenant')['id']);
+            })
+            ->when(!session()->has('tenant'), function ($query) {
+                $query->whereNull('tenant_id');
+            })
+            ->orderBy('description')
+            ->paginate(10);
 
         return view('roles.index', compact('data'));
     }

@@ -55,7 +55,7 @@
                                                 <li>
                                                     <a href="{{ route('stores.index') }}">
                                                         <i class="fas fa-user-tag"></i>
-                                                        <p>Lojas</p>
+                                                        <p>Estabelecimentos</p>
                                                     </a>
                                                 </li>
                                             @endcan
