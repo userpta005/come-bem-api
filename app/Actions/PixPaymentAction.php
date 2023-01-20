@@ -45,7 +45,7 @@ class PixPaymentAction
         }
 
         if (app()->environment('production')) {
-            $payload['notification_urls'] = [config('app.url') . "/api/v1/stores/{$data['store']}/pagseguro/notification"];
+            $payload['notification_urls'] = [config('app.url') . "/api/v1/pagseguro/notification"];
         }
 
         $response = Http::withHeaders([

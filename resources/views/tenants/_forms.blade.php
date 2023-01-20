@@ -53,12 +53,6 @@
         <div class="col-md-4">
           {!! Form::text('contact_phone', 'Tel. do contato')->attrs(['class' => 'phone'])->required(false) !!}
         </div>
-        <div class="col-md-8">
-          {!! Form::text('pagseguro_token', 'Token Pagseguro')->readonly() !!}
-        </div>
-        <div class="col-md-4">
-          {!! Form::text('pagseguro_email', 'Email Pagseguro') !!}
-        </div>
       </div>
     </div>
   </div>

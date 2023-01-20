@@ -98,6 +98,7 @@
                                 <th scope="col">Dt.Venc.</th>
                                 <th scope="col">Dt.Adesão</th>
                                 <th scope="col">Dt.Vigência</th>
+                                <th scope="col">Autorizado</th>
                                 <th scope="col">Ação</th>
 
                             </thead>
@@ -121,6 +122,7 @@
                                         <td>{{ $item->due_day->name() }}</td>
                                         <td>{{ $item->dt_accession->format('d/m/Y') }}</td>
                                         <td>{{ $item->due_date->format('d/m/Y') }}</td>
+                                        <td>{{ isset($item->pagseguro) ? 'Sim' : "Não" }}</td>
                                         <td class="text-right">
                                             <div class="dropdown">
                                                 <a class="btn btn-sm btn-icon-only text-light" href="#" role="button"
