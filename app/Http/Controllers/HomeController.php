@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\AccountTurn;
 use App\Enums\OrderStatus;
 use App\Models\Order;
 use Illuminate\Http\Request;
@@ -26,8 +27,10 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         $status = OrderStatus::all();
-
         $filterStatus =  $request->status ?? $status->keys()->all();
+
+        $turns = AccountTurn::all();
+        $filterTurns =  $request->turns ?? $turns->keys()->all();
 
         $date = $request->date ?? today()->format('Y-m-d');
 
@@ -40,6 +43,7 @@ class HomeController extends Controller
             ->join('dependents', 'dependents.id', 'accounts.dependent_id')
             ->join('people', 'people.id',  'dependents.person_id')
             ->whereIn('orders.status', $filterStatus)
+            ->whereIn('orders.turn', $filterTurns)
             ->when(session()->has('store'), function ($query) {
                 $query->where('accounts.store_id', session('store')['id']);
             })
@@ -55,6 +59,8 @@ class HomeController extends Controller
             'data',
             'status',
             'filterStatus',
+            'turns',
+            'filterTurns',
             'date'
         ));
     }

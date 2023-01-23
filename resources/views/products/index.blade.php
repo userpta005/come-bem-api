@@ -83,6 +83,8 @@
                             <thead class="text-primary">
                                 <th scope="col">#</th>
                                 <th scope="col">Nome do Produto</th>
+                                <th scope="col">Preço</th>
+                                <th scope="col">P.Promocional</th>
                                 <th scope="col">Seção</th>
                                 <th scope="col">Class. Nutricional</th>
                                 <th scope="col">Status</th>
@@ -103,6 +105,8 @@
                                             @endif
                                         </td>
                                         <td>{{ $item->name }}</td>
+                                        <td>{{floatToMoney($item->price) }}</td>
+                                        <td>{{ floatToMoney($item->promotion_price) }}</td>
                                         <td>{{ !empty($item->section) ? $item->section->name : 'Sem vinculo' }}</td>
                                         <td>{{ $item->nutritional_classification->name() }}</td>
                                         <td>{{ $item->status->name() }}</td>
