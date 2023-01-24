@@ -329,6 +329,14 @@
 
                     <div class="collapse" id="settings" style="">
                         <ul class="nav pl-4">
+                            @can('settings_edit')
+                                <li>
+                                    <a href="{{ route('settings.edit') }}">
+                                        <i class="fas fa-cogs"></i>
+                                        <p>Configurações</p>
+                                    </a>
+                                </li>
+                            @endcan
                             @can('parameters_view')
                                 <li>
                                     <a href="{{ route('parameters.index') }}">
@@ -353,16 +361,6 @@
                                     </a>
                                 </li>
                             @endcan
-                            @if (session()->has('store'))
-                                @can('settings_edit')
-                                    <li>
-                                        <a href="{{ route('settings.edit') }}">
-                                            <i class="fas fa-cogs"></i>
-                                            <p>Configurações</p>
-                                        </a>
-                                    </li>
-                                @endcan
-                            @endif
                         </ul>
                     </div>
                 </li>

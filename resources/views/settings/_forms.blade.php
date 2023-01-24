@@ -113,11 +113,11 @@
           <div class="col-md-6">
             {!! Form::text('instagram_url', 'Instagram (URL)')->attrs(['maxlength' => 80]) !!}
           </div>
-          <div class="col-md-3">
+          <div class="col-md-6">
             {!! Form::text('instagram_user', 'Instagram (user)')->attrs(['maxlength' => 40]) !!}
           </div>
-          <div class="col-md-3">
-            {!! Form::text('instagram_senha', 'Instagram (password)')->type('password')->attrs(['maxlength' => 15]) !!}
+          <div class="col-md-12">
+            {!! Form::text('instagram_senha', 'Instagram (Token)') !!}
           </div>
         </div>
       </div>
