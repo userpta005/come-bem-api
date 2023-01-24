@@ -77,21 +77,27 @@ class OpenCashierController extends Controller
             $this->rules($request)
         )->validate();
 
-        DB::transaction(function () use ($request) {
-            $inputs = $request->all();
+        $inputs = $request->all();
+        $inputs['store_id'] = session('store')['id'];
 
-            $inputs['store_id'] = session('store')['id'];
+        $cashier = Cashier::query()
+            ->where('store_id', session('store')['id'])
+            ->where('id', $inputs['store_id'])
+            ->first();
+
+        if ($request->operation == $cashier->status) {
+            return redirect()->route('open-cashiers.index')
+                ->withError('Caixa já possui este status.');
+        }
+
+        DB::transaction(function () use ($request, $inputs, $cashier) {
+
             $inputs['balance'] = moeda($request->balance);
             $inputs['money_change'] = moeda($request->money_change);
             $inputs['date_operation'] = now();
             $inputs['token'] = (string) Uuid::uuid4();
 
             $open_cashier = OpenCashier::create($inputs);
-
-            $cashier = Cashier::query()
-                ->where('store_id', session('store')['id'])
-                ->where('id', $inputs['store_id'])
-                ->first();
 
             if ($inputs['operation'] == 1) {
 
@@ -107,11 +113,11 @@ class OpenCashierController extends Controller
             }
 
             $cashier->save();
-
         });
 
         return redirect()->route('open-cashiers.index')
             ->withStatus('Registro adicionado com sucesso.');
+
     }
 
     public function show($id)
