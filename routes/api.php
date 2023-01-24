@@ -52,8 +52,6 @@ Route::prefix('v1')->group(function () {
 
         Route::apiResource('sections', App\Http\Controllers\API\SectionController::class)->only(['index', 'show']);
         Route::get('accounts/{id}/products', [App\Http\Controllers\API\ProductController::class, 'index']);
-
-        Route::apiResource('leads', App\Http\Controllers\API\LeadController::class)->only(['store']);
     });
 
     Route::middleware('auth:sanctum')->group(function () {
@@ -79,6 +77,7 @@ Route::prefix('v1')->group(function () {
     Route::apiResource('measurement-units', App\Http\Controllers\API\MeasurementUnitController::class)->only('store');
     Route::get('financialcategories', [App\Http\Controllers\API\FinancialCategoryController::class, 'index']);
 
+    Route::apiResource('leads', App\Http\Controllers\API\LeadController::class)->only(['store']);
     Route::apiResource('stores', App\Http\Controllers\API\StoreController::class)->only(['index', 'show']);
     Route::apiResource('payment-methods', App\Http\Controllers\API\PaymentMethodController::class)->only(['index', 'show']);
     Route::apiResource('states', App\Http\Controllers\API\StateController::class)->only(['index', 'show']);
