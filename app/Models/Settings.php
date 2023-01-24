@@ -57,14 +57,4 @@ class Settings extends CommonModel
     {
         return $this->belongsTo(City::class);
     }
-
-    /**
-     * Get the store that owns the Settings
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function store(): BelongsTo
-    {
-        return $this->belongsTo(Store::class);
-    }
 }
