@@ -209,3 +209,21 @@ function code($number)
 {
     return sprintf('%08d', $number);
 }
+
+function money($get_valor)
+{
+    if ($get_valor) {
+        $valor = number_format($get_valor, 2, ',', '.');
+    } else {
+        $valor = 0;
+    }
+    return $valor;
+}
+
+function moeda($get_valor)
+{
+    $source = array('.', ',');
+    $replace = array('', '.');
+    $valor = str_replace($source, $replace, $get_valor);
+    return $valor;
+}

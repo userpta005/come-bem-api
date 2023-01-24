@@ -23,7 +23,7 @@
                 <label class="permission-name m-0">{{$value['description']}}</label>
             @endif
         </li>
-        @if (isset($permissions[$key+1]['title']) && isset($closeDiv))
+        @if (isset($permissions[(int)$key+1]['title']) && isset($closeDiv))
             @php unset($closeDiv) @endphp
             </div>
         @endif

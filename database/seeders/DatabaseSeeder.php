@@ -20,7 +20,8 @@ class DatabaseSeeder extends Seeder
             UsersTableSeeder::class,
             ParametersTableSeeder::class,
             PaymentMethodsTableSeeder::class,
-            NcmTableSeeder::class
+            NcmTableSeeder::class,
+            MovementTypeSeeder::class
         ]);
     }
 }
