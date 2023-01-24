@@ -40,7 +40,7 @@ class LeadController extends BaseController
             $inputs['person'] = $person->id;
             Lead::query()
                 ->updateOrCreate(
-                    ['person_id' => $person->id, 'store_id' => $request->get('store')['id']],
+                    ['person_id' => $person->id, 'store_id' => $inputs['store_id'] ?? null],
                     $inputs
                 );
 
@@ -57,7 +57,7 @@ class LeadController extends BaseController
         $rules = [
             'name' => ['required', 'max:100'],
             'email' => ['required', 'max:100', Rule::unique('people')->ignore($primaryKey)],
-            'phone' => ['required', 'max:15'],
+            'store_id' => ['nullable', Rule::exists('stores', 'id')]
         ];
 
         $messages = [];
