@@ -82,7 +82,7 @@ class OpenCashierController extends Controller
 
         $cashier = Cashier::query()
             ->where('store_id', session('store')['id'])
-            ->where('id', $inputs['store_id'])
+            ->where('id', $request->cashier_id)
             ->first();
 
         if ($request->operation == $cashier->status) {
@@ -161,7 +161,7 @@ class OpenCashierController extends Controller
 
             $cashier = Cashier::query()
                 ->where('store_id', session('store')['id'])
-                ->where('id', $item->store_id)
+                ->where('id', $request->cashier_id)
                 ->first();
 
             if ($inputs['operation'] == 1) {
