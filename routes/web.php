@@ -37,7 +37,11 @@ use App\Http\Controllers\Admin\{
     StoreController,
     TenantController,
     TotenController,
-    UserController
+    UserController,
+    CashierController,
+    OpenCashierController,
+    MovementTypeController,
+    CashMovementController
 };
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -106,5 +110,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('parameters', ParameterController::class)->except(['create', 'store', 'destroy']);
     Route::resource('faqs', FaqController::class);
     Route::resource('banners', BannerController::class);
+    Route::resource('cashiers', CashierController::class);
+    Route::resource('open-cashiers', OpenCashierController::class);
+    Route::resource('movement-types', MovementTypeController::class);
+    Route::resource('cash-movements', CashMovementController::class);
+    Route::post('cash-movements.painel', [CashMovementController::class, 'painelStore'])->name('cash-movements.painel');
 });
+
 

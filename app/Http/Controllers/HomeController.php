@@ -3,8 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Enums\AccountTurn;
+use App\Enums\Common\Status;
 use App\Enums\OrderStatus;
+use App\Http\Controllers\Controller;
+use App\Models\Cashier;
+use App\Models\Client;
+use App\Models\MovementType;
 use App\Models\Order;
+use App\Models\PaymentMethod;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -26,11 +32,12 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
+
         $status = OrderStatus::all();
-        $filterStatus =  $request->status ?? $status->keys()->all();
+        $filterStatus = $request->status ?? $status->keys()->all();
 
         $turns = AccountTurn::all();
-        $filterTurns =  $request->turns ?? $turns->keys()->all();
+        $filterTurns = $request->turns ?? $turns->keys()->all();
 
         $date = $request->date ?? today()->format('Y-m-d');
 
@@ -41,7 +48,7 @@ class HomeController extends Controller
         )
             ->join('accounts', 'accounts.id', 'orders.account_id')
             ->join('dependents', 'dependents.id', 'accounts.dependent_id')
-            ->join('people', 'people.id',  'dependents.person_id')
+            ->join('people', 'people.id', 'dependents.person_id')
             ->whereIn('orders.status', $filterStatus)
             ->whereIn('orders.turn', $filterTurns)
             ->when(session()->has('store'), function ($query) {
@@ -55,13 +62,57 @@ class HomeController extends Controller
             ->orderBy('orders.id', 'desc')
             ->paginate(25);
 
-        return view('dashboard', compact(
-            'data',
-            'status',
-            'filterStatus',
-            'turns',
-            'filterTurns',
-            'date'
-        ));
+        if (session()->has('store')) {
+
+            $cashiers = Cashier::query()
+                ->where('store_id', session('store')['id'])
+                ->where('status', true)
+                ->get();
+
+            $clients = Client::query()
+                ->person()
+                ->with(['dependents.accounts' => function ($query) {
+                    $query->where('store_id', session('store')['id']);
+                }])
+                ->whereHas('dependents', function ($query) {
+                    $query->where('status', Status::ACTIVE)
+                        ->whereHas('accounts', function ($query) {
+                            $query->where('store_id', session('store')['id']);
+                        });
+                })
+                ->get();
+
+            $payment_methods = PaymentMethod::query()
+                ->where('status', Status::ACTIVE)
+                ->get();
+
+            $movement_types = MovementType::query()
+                ->orderBy('type', 'asc')
+                ->get();
+
+            return view('dashboard', compact(
+                'data',
+                'status',
+                'filterStatus',
+                'turns',
+                'filterTurns',
+                'date',
+                'cashiers',
+                'clients',
+                'payment_methods',
+                'movement_types'
+            ));
+        } else {
+
+            return view('dashboard', compact(
+                'data',
+                'status',
+                'filterStatus',
+                'turns',
+                'filterTurns',
+                'date'
+            ));
+        }
     }
+
 }

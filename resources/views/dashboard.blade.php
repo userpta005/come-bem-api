@@ -9,6 +9,14 @@
             <div class="col-8">
               <h4 class="card-title">Painel Administrativo</h4>
             </div>
+            @if (session()->has('store'))
+            <div class="col-4 text-right">
+              <button type="button" class="btn btn-sm btn-primary" data-toggle="modal"
+                    data-target="#cash-movements">
+                      Movimento do Caixa
+                </button>
+            </div>
+            @endif
           </div>
         </div>
         <div class="card-body">
@@ -160,6 +168,9 @@
       </div>
     </div>
   </div>
+@if (session()->has('store'))
+  @include('cash-movements._modal')
+@endif
 @endsection
 
 @push('js')
