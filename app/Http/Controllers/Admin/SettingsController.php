@@ -102,7 +102,7 @@ class SettingsController extends Controller
             'note' => ['nullable', 'max:200'],
             'instagram_url' => ['nullable', 'max:80'],
             'instagram_user' => ['nullable', 'max:40'],
-            'instagram_password' => ['nullable', 'max:15'],
+            'instagram_password' => ['nullable', 'max:255'],
             'facebook_url' => ['nullable', 'max:80'],
             'facebook_user' => ['nullable', 'max:40'],
             'facebook_password' => ['nullable', 'max:15'],
