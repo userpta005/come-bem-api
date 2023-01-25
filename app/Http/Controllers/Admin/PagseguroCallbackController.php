@@ -23,6 +23,8 @@ class PagseguroCallbackController extends Controller
             return view('auth.error');
         }
 
+        Log::debug("CODE: " . $request->code);
+
         $tenant = Tenant::findOrFail($request->state);
 
         $isSandbox = boolval(config('laravel-pagseguro.use-sandbox'));

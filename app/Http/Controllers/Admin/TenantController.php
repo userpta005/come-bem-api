@@ -126,8 +126,6 @@ class TenantController extends Controller
     {
         $item = Tenant::person()->findOrFail($id);
 
-        return response()->json($item);
-
         return view('tenants.show', compact('item'));
     }
 
