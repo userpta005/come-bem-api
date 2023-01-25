@@ -33,8 +33,8 @@
                         <tbody>
                             @forelse ($data as $item)
                             <tr style="font-size: 12px;">
-                                <td class="max-column">{{ $item->type }}</td>
-                                <td>{{ $item->classOption($item->class) }}</td>
+                                <td class="max-column">{{ $item->name }}</td>
+                                <td>{{ $item->class->name() }}</td>
                                 <td>{{ $item->created_at->format('d/m/Y') }}</td>
                                 <td>{{ $item->updated_at->format('d/m/Y') }}</td>
                                 <td class="text-right">

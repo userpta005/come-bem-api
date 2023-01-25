@@ -19,8 +19,17 @@ class MovementTypeSeeder extends Seeder
             ->updateOrCreate(
                 ['id' => 1],
                 [
-                    'type' => 'Crédito',
-                    'class' => 1
+                    'name' => 'Crédito',
+                    'class' => 'E',
+                ]
+            );
+
+        MovementType::query()
+            ->updateOrCreate(
+                ['id' => 2],
+                [
+                    'name' => 'Débito',
+                    'class' => 'S',
                 ]
             );
 

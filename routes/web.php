@@ -41,7 +41,8 @@ use App\Http\Controllers\Admin\{
     CashierController,
     OpenCashierController,
     MovementTypeController,
-    CashMovementController
+    CashMovementController,
+    CashSummaryReportController
 };
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -114,6 +115,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('open-cashiers', OpenCashierController::class);
     Route::resource('movement-types', MovementTypeController::class);
     Route::resource('cash-movements', CashMovementController::class);
+    Route::get('reports.cash-summary', [ReportController::class, 'cashSummary'])->name('reports.cash-summary');
+    Route::get('cash-summary-report', CashSummaryReportController::class)->name('cash.summary.report');    
     Route::post('cash-movements.painel', [CashMovementController::class, 'painelStore'])->name('cash-movements.painel');
 });
 

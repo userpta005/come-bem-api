@@ -30,6 +30,13 @@
         $('#inp-balance').mask('000.000,00', {
             reverse: !0
         });
+
+        var status = $('#inp-status');
+
+        if( status.val() != 1 ){
+            $('#inp-status option[value=1]').remove();
+        }        
+
     })
 
 </script>

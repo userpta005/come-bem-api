@@ -4,26 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Enums\MovementClass;
 
 class MovementType extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'type', 'class',
+        'name', 'class',
     ];
 
-    public static function classOption($option = null)
-    {
-        $options = [
-            1 => 'Entrada',
-            'Saída',
-        ];
-
-        if (!$option) {
-            return $options;
-        }
-
-        return $options[$option];
-    }
+    protected $casts = [
+        'class' => MovementClass::class
+    ];
 }

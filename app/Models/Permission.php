@@ -269,6 +269,12 @@ class Permission extends \Spatie\Permission\Models\Permission
                 'title' => 'Relatórios',
                 'items' => [
                     [
+                        'title' => 'Resumo do caixa',
+                        'items' => [
+                            array('name' => 'cash-summary-report_view', 'description' => 'Visualizar'),
+                        ],
+                    ],
+                    [
                         'title' => 'Consumidores',
                         'items' => [
                             array('name' => 'client-dependents-report_view', 'description' => 'Visualizar'),

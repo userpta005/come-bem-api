@@ -87,7 +87,7 @@ class HomeController extends Controller
                 ->get();
 
             $movement_types = MovementType::query()
-                ->orderBy('type', 'asc')
+                ->orderBy('name', 'asc')
                 ->get();
 
             return view('dashboard', compact(

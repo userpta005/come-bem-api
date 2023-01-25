@@ -5,9 +5,11 @@ namespace App\Models;
 use App\Models\User;
 use App\Models\Store;
 use App\Models\Cashier;
+use App\Models\CashMovement;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class OpenCashier extends Model
 {
@@ -62,5 +64,15 @@ class OpenCashier extends Model
     public function store(): BelongsTo
     {
         return $this->belongsTo(Store::class);
+    }
+
+    /**
+     * Get all of the cashMovements for the OpenCashier
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function cashMovements(): HasMany
+    {
+        return $this->hasMany(CashMovement::class, 'open_cashier_id');
     }
 }

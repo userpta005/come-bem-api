@@ -58,11 +58,11 @@ class Cashier extends Model
     }
 
     /**
-     * Get all of the cash_movement for the Cashier
+     * Get all of the cashMovement for the Cashier
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function cash_movement(): HasMany
+    public function cashMovements(): HasMany
     {
         return $this->hasMany(CashMovement::class);
     }
@@ -72,7 +72,7 @@ class Cashier extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function open_cashier(): HasMany
+    public function openCashiers(): HasMany
     {
         return $this->hasMany(OpenCashier::class);
     }

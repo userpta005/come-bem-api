@@ -21,7 +21,7 @@
                             <div class="card-body">
                                 <p><strong>Tipo: </strong></p>
                                 <p class="card-text">
-                                    {{ $item->type }}
+                                    {{ $item->name }}
                                 </p>
                             </div>
                         </div>
@@ -29,7 +29,7 @@
                             <div class="card-body">
                                 <p><strong>Classe: </strong></p>
                                 <p class="card-text">
-                                    {{ $item->classOption($item->class) }}
+                                    {{ $item->class->name() }}
                                 </p>
                             </div>
                         </div>

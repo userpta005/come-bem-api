@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\MovementClass;
 use App\Models\MovementType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Validation\Rules\Enum;
 use Illuminate\Support\Facades\Validator;
 
 class MovementTypeController extends Controller
@@ -21,7 +23,7 @@ class MovementTypeController extends Controller
     public function index(Request $request)
     {
         $data = MovementType::query()
-            ->orderBy('type', 'asc')
+            ->orderBy('name', 'asc')
             ->paginate(10);
 
         return view('movement-types.index', compact('data'));
@@ -98,8 +100,8 @@ class MovementTypeController extends Controller
     public function rules(Request $request, $primaryKey = null, bool $changeMessages = false)
     {
         $rules = [
-            'type' => ['required', 'max:30'],
-            'class' => ['required']
+            'name' => ['required', 'max:30'],
+            'class' => ['required', new Enum(MovementClass::class)]
         ];
 
         $messages = [];

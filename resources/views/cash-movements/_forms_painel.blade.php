@@ -8,7 +8,7 @@
     </div>
     <div class="col-md-6">
         {!!Form::select('movement_type_id', 'Tipo de Movimento:')
-        ->options($movement_types->prepend('Selecione...', ''), 'type')
+        ->options($movement_types->prepend('Selecione...', ''), 'name')
         ->attrs(['class' => 'select2'])
         ->required()
         !!}

@@ -29,7 +29,7 @@
                             <div class="card-body">
                                 <p><strong>Tipo de Movimento: </strong></p>
                                 <p class="card-text">
-                                    {{ $item->movement_type->type }}
+                                    {{ $item->movementType->name }}
                                 </p>
                             </div>
                         </div>
@@ -47,7 +47,7 @@
                             <div class="card-body">
                                 <p><strong>Forma de Pagamento:</strong></p>
                                 <p class="card-text">
-                                    {{ $item->payment_method->name }}
+                                    {{ $item->paymentMethod->name }}
                                 </p>
                             </div>
                         </div>

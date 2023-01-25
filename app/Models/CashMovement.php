@@ -55,7 +55,7 @@ class CashMovement extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function movement_type(): BelongsTo
+    public function movementType(): BelongsTo
     {
         return $this->belongsTo(MovementType::class, 'movement_type_id');
     }
@@ -65,7 +65,7 @@ class CashMovement extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function payment_method(): BelongsTo
+    public function paymentMethod(): BelongsTo
     {
         return $this->belongsTo(PaymentMethod::class, 'payment_method_id');
     }

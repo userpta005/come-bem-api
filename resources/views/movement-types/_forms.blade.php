@@ -1,14 +1,14 @@
 <div class="row">
     <div class="col-md-8">
-        {!! Form::text('type', 'Tipo')
+        {!! Form::text('name', 'Tipo')
         ->attrs(['class' => 'description', 'maxlength' => 30])
         ->required()
         !!}
     </div>
     <div class="col-md-4">
-        {!! Form::select('class', 'Classe:', [null => 'Selecione...'] + \App\Models\MovementType::classOption())
+        {!! Form::select('class', 'Classe', \App\Enums\MovementClass::all())
         ->attrs(['class' => 'select2'])
-        ->required()
+        ->required() 
         !!}
     </div>
 </div>

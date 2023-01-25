@@ -99,9 +99,12 @@ class OpenCashierController extends Controller
 
             $open_cashier = OpenCashier::create($inputs);
 
+            $cashier->open_cashier_id = null;
+
             if ($inputs['operation'] == 1) {
 
                 $cashier->status = 1;
+                $cashier->open_cashier_id = $open_cashier->id;
 
             } else if ($inputs['operation'] == 2) {
 
@@ -164,9 +167,12 @@ class OpenCashierController extends Controller
                 ->where('id', $request->cashier_id)
                 ->first();
 
+            $cashier->open_cashier_id = null;
+
             if ($inputs['operation'] == 1) {
 
                 $cashier->status = 1;
+                $cashier->open_cashier_id = $item->id;
 
             } else if ($inputs['operation'] == 2) {
 

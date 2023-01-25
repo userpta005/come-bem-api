@@ -79,7 +79,7 @@ class CashMovementController extends Controller
             ->get();
 
         $movement_types = MovementType::query()
-            ->orderBy('type', 'asc')
+            ->orderBy('name', 'asc')
             ->get();
 
         return view('cash-movements.create', compact(
@@ -105,14 +105,17 @@ class CashMovementController extends Controller
                 ->withError('Registro não pode ser adicionado.');
         }
 
-        DB::transaction(function () use ($request) {
+        DB::transaction(function () use ($request, $cashier) {
             $inputs = $request->all();
             $inputs['store_id'] = session('store')['id'];
             $inputs['amount'] = moeda($request->amount);
             $inputs['date_operation'] = now();
             $inputs['token'] = (string) Uuid::uuid4();
 
-            CashMovement::create($inputs);
+            $cash_movement = CashMovement::create($inputs);
+
+            $cash_movement->open_cashier_id = $cashier->open_cashier_id;
+            $cash_movement->save();
         });
 
         return redirect()->route('cash-movements.index')
@@ -161,7 +164,7 @@ class CashMovementController extends Controller
             ->get();
 
         $movement_types = MovementType::query()
-            ->orderBy('type', 'asc')
+            ->orderBy('name', 'asc')
             ->get();
 
         return view('cash-movements.edit', compact(
@@ -188,7 +191,7 @@ class CashMovementController extends Controller
                 ->withError('Registro não pode ser atualizado.');
         }
 
-        DB::transaction(function () use ($request, $id) {
+        DB::transaction(function () use ($request, $id, $cashier) {
 
             $item = CashMovement::findOrFail($id);
             $inputs = $request->all();
@@ -196,6 +199,8 @@ class CashMovementController extends Controller
             $inputs['amount'] = moeda($request->amount);
             $item->fill($inputs)->save();
 
+            $item->open_cashier_id = $cashier->open_cashier_id;
+            $item->save();
         });
 
         return redirect()->route('cash-movements.index')

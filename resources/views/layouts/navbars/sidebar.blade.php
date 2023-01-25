@@ -312,6 +312,16 @@
                 </a>
                 <div class="collapse" id="reports" style="">
                     <ul class="nav pl-4">
+                        @if (session()->has('store'))
+                        @can('cash-summary-report_view')
+                        <li>
+                            <a href="{{ route('reports.cash-summary') }}">
+                                <i class="fas fa-table"></i>
+                                <p>Resumo do caixa</p>
+                            </a>
+                        </li>
+                        @endcan
+                        @endif
                         @can('client-dependents-report_view')
                         <li>
                             <a href="{{ route('reports.client-dependents') }}">
