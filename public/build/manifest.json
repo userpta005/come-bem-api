@@ -1,11 +1,25 @@
 {
   "resources/js/clients/app.js": {
-    "file": "assets/app.637ed63c.js",
+    "file": "assets/app.997552fa.js",
     "src": "resources/js/clients/app.js",
     "isEntry": true,
+    "imports": [
+      "__plugin-vue_export-helper.b8bcb9bc.js"
+    ],
     "css": [
       "assets/app.730f1e99.css"
     ]
+  },
+  "resources/js/pdv/app.js": {
+    "file": "assets/app.49134c18.js",
+    "src": "resources/js/pdv/app.js",
+    "isEntry": true,
+    "imports": [
+      "__plugin-vue_export-helper.b8bcb9bc.js"
+    ]
+  },
+  "__plugin-vue_export-helper.b8bcb9bc.js": {
+    "file": "assets/_plugin-vue_export-helper.b8bcb9bc.js"
   },
   "resources/js/clients/app.css": {
     "file": "assets/app.730f1e99.css",

@@ -12,7 +12,8 @@ export default defineConfig({
         vue(),
         laravel({
             input: [
-                'resources/js/clients/app.js'
+                'resources/js/clients/app.js',
+                'resources/js/pdv/app.js'
             ],
             refresh: true,
         }),

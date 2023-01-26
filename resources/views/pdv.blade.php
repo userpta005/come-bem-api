@@ -57,8 +57,9 @@
         @endpush
       </div>
       <div class="card">
-        <div class="card-body">
+        <div id="app"class="card-body">
         </div>
+        @vite('resources/js/pdv/app.js')
       </div>
     </div>
   </div>
