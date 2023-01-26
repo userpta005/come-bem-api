@@ -42,18 +42,9 @@
         </ul>
         @push('js')
           <script>
-            const currentUrl = window.location.href
-            const split = currentUrl.split('/')
-            const lastPart = split[split.length - 1].replace(/\?.*/, "")
-
-            const home = document.querySelector('.home')
-            const pdv = document.querySelector('.pdv')
-
-            if (lastPart === 'home') {
-              home.classList.add('active-custom')
-            } else if (lastPart === 'pdv') {
-              pdv.classList.add('active-custom')
-            }
+            const lastPart = window.location.href.split('/').pop().split('?')[0];
+            const element = document.querySelector(`.${lastPart}`);
+            element.classList.add("active-custom");
           </script>
         @endpush
       </div>
