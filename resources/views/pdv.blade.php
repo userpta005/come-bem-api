@@ -43,7 +43,8 @@
         @push('js')
           <script>
             const currentUrl = window.location.href
-            const lastPart = currentUrl.match(/\/([^\/]+)$/)[1]
+            const split = currentUrl.split('/')
+            const lastPart = split[split.length - 1].replace(/\?.*/, "")
 
             const home = document.querySelector('.home')
             const pdv = document.querySelector('.pdv')
