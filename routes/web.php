@@ -44,6 +44,7 @@ use App\Http\Controllers\Admin\{
     CashMovementController,
     CashSummaryReportController
 };
+use App\Http\Controllers\PDVController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -68,6 +69,7 @@ Route::get('pagseguro/authorization', App\Http\Controllers\Admin\PagseguroCallba
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('home', [HomeController::class, 'index'])->name('home');
+    Route::get('pdv', [PDVController::class, 'index'])->name('pdv');
     Route::get('profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::get('change-password', [PasswordController::class, 'edit'])->name('change-password.edit');
@@ -116,7 +118,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('movement-types', MovementTypeController::class);
     Route::resource('cash-movements', CashMovementController::class);
     Route::get('reports.cash-summary', [ReportController::class, 'cashSummary'])->name('reports.cash-summary');
-    Route::get('cash-summary-report', CashSummaryReportController::class)->name('cash.summary.report');    
+    Route::get('cash-summary-report', CashSummaryReportController::class)->name('cash.summary.report');
     Route::post('cash-movements.painel', [CashMovementController::class, 'painelStore'])->name('cash-movements.painel');
 });
 
