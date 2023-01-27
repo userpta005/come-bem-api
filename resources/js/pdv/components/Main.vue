@@ -93,13 +93,14 @@ import axios from 'axios'
 import { ref, watch } from 'vue'
 import { limitString, floatToMoney } from '../../helpers'
 
+const url = getUrl()
 const sections = ref([])
 const currentSection = ref(0)
 const products = ref([])
 const filteredProducts = ref([])
 const productSearch = ref(null)
 
-function like(str, pattern) {
+const like = (str, pattern) => {
   return str.toLowerCase().includes(pattern.toLowerCase());
 }
 
@@ -122,7 +123,7 @@ const handleShowAllSections = () => {
 
 const handleGetSections = async () => {
   try {
-    const { data } = await axios.get('/api/v1/sections')
+    const { data } = await axios.get(`${url}/api/v1/sections`)
     sections.value = data.data
   } catch ({ response }) {
     ElNotification({
@@ -135,7 +136,7 @@ const handleGetSections = async () => {
 
 const handleGetProducts = async () => {
   try {
-    const { data } = await axios.get('/api/v1/products')
+    const { data } = await axios.get(`${url}/api/v1/products`)
     products.value = filteredProducts.value = data.data
   } catch ({ response }) {
     ElNotification({
