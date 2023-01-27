@@ -119,7 +119,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('cash-movements', CashMovementController::class);
     Route::get('reports.cash-summary', [ReportController::class, 'cashSummary'])->name('reports.cash-summary');
     Route::get('cash-summary-report', CashSummaryReportController::class)->name('cash.summary.report');
-    Route::post('cash-movements.painel', [CashMovementController::class, 'painelStore'])->name('cash-movements.painel');
 });
 
 

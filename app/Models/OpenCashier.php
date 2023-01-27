@@ -26,7 +26,7 @@ class OpenCashier extends Model
         $options = [
             1 => 'Abertura',
             'Fechamento',
-            'Inativa',
+            'Inativamento',
         ];
 
         if (!$option) {

@@ -67,7 +67,7 @@
                             <tr style="font-size: 12px;">
                                 <td class="max-column">{{ $item->cashier->description }}</td>
                                 <td class="max-column">{{ $item->movementType->name }}</td>
-                                <td class="max-column">{{ $item->paymentMethod->name }}</td>
+                                <td class="max-column">{{ !empty($item->paymentMethod) ? $item->paymentMethod->name : 'Não informado'  }}</td>
                                 <td class="max-column"> {{ money($item->amount) }}</td>
                                 <td class="max-column">{{ optional($item->client)->info }}</td>
                                 <td class="max-column">{{ carbon($item->date_operation)->format('d/m/Y H:i') }}</td>

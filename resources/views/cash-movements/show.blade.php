@@ -47,7 +47,7 @@
                             <div class="card-body">
                                 <p><strong>Forma de Pagamento:</strong></p>
                                 <p class="card-text">
-                                    {{ $item->paymentMethod->name }}
+                                    {{ !empty($item->paymentMethod) ? $item->paymentMethod->name : 'Não informado' }}
                                 </p>
                             </div>
                         </div>
@@ -55,7 +55,7 @@
                             <div class="card-body">
                                 <p><strong>Cliente: </strong></p>
                                 <p class="card-text">
-                                    {{ optional($item->client->people)->name }}
+                                    {{ !empty($item->client) ? optional($item->client->people)->name : 'Não informado' }}
                                 </p>
                             </div>
                         </div>

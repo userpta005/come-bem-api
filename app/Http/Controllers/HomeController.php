@@ -32,7 +32,6 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-
         $status = OrderStatus::all();
         $filterStatus = $request->status ?? $status->keys()->all();
 
@@ -62,57 +61,13 @@ class HomeController extends Controller
             ->orderBy('orders.id', 'desc')
             ->paginate(25);
 
-        if (session()->has('store')) {
-
-            $cashiers = Cashier::query()
-                ->where('store_id', session('store')['id'])
-                ->where('status', true)
-                ->get();
-
-            $clients = Client::query()
-                ->person()
-                ->with(['dependents.accounts' => function ($query) {
-                    $query->where('store_id', session('store')['id']);
-                }])
-                ->whereHas('dependents', function ($query) {
-                    $query->where('status', Status::ACTIVE)
-                        ->whereHas('accounts', function ($query) {
-                            $query->where('store_id', session('store')['id']);
-                        });
-                })
-                ->get();
-
-            $payment_methods = PaymentMethod::query()
-                ->where('status', Status::ACTIVE)
-                ->get();
-
-            $movement_types = MovementType::query()
-                ->orderBy('name', 'asc')
-                ->get();
-
-            return view('dashboard', compact(
-                'data',
-                'status',
-                'filterStatus',
-                'turns',
-                'filterTurns',
-                'date',
-                'cashiers',
-                'clients',
-                'payment_methods',
-                'movement_types'
-            ));
-        } else {
-
-            return view('dashboard', compact(
-                'data',
-                'status',
-                'filterStatus',
-                'turns',
-                'filterTurns',
-                'date'
-            ));
-        }
+        return view('dashboard', compact(
+            'data',
+            'status',
+            'filterStatus',
+            'turns',
+            'filterTurns',
+            'date'
+        ));
     }
-
 }

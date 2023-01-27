@@ -10,7 +10,7 @@
 
 @section('content')
   <div class="row">
-    <div class="col-12">
+    <div class="col-12 d-flex justify-content-between align-items-center">
       @push('css')
         <style>
           .nav-item-custom {
@@ -39,6 +39,13 @@
             href="{{ route('pdv') }}">PDV/Pedidos</a>
         </li>
       </ul>
+      <span class="openedCashier d-flex align-items-center"
+        style="font-size:medium; color: black; font-weight: 600;">
+        {{ session('openedCashier') ? session('cashier')['description'] . ' aberto' : 'Caixa fechado' }}
+        <span class="ml-2"
+          style="background-color: {{ session('openedCashier') ? '#92e18b' : '#e18b8b' }}; height: 20px; width: 20px; border-radius: 50%;">
+        </span>
+      </span>
       @push('js')
         <script>
           const lastPart = window.location.href.split('/').pop().split('?')[0];
@@ -49,20 +56,6 @@
     </div>
     <div class="col-12">
       <div class="card">
-        <div class="card-header">
-          <div class="row">
-            @if (session()->has('store'))
-              <div class="col-12 text-right">
-                <button type="button"
-                  class="btn btn-sm btn-primary"
-                  data-toggle="modal"
-                  data-target="#cash-movements">
-                  Movimento do Caixa
-                </button>
-              </div>
-            @endif
-          </div>
-        </div>
         <div class="card-body">
           @include('alerts.success')
           @include('alerts.error')
@@ -212,9 +205,6 @@
       </div>
     </div>
   </div>
-  @if (session()->has('store'))
-    @include('cash-movements._modal')
-  @endif
 @endsection
 
 @push('js')
