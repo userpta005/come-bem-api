@@ -60,13 +60,12 @@ class OpenCashierController extends BaseController
             $cashier->fill($inputs)->save();
 
             $movementType = MovementType::query()
-            ->where('name', $inputs['status'] == 1 ? 'troco' : 'sangria')
-            ->firstOrFail();
+                ->findOrFail($inputs['status'] == 1 ? 4 : 3);
 
             $inputs['movement_type_id'] = $movementType->id;
             $inputs['cashier_id'] = $cashier->id;
             $inputs['amount'] = $inputs['money_change'];
-            
+
             CashMovement::query()->create($inputs);
 
             session()->put('openedCashier', $cashier->status == 1 ? true : false);

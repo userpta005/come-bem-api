@@ -33,5 +33,22 @@ class MovementTypeSeeder extends Seeder
                 ]
             );
 
+        MovementType::query()
+            ->updateOrCreate(
+                ['id' => 3],
+                [
+                    'name' => 'Sangria',
+                    'class' => 'S',
+                ]
+            );
+
+        MovementType::query()
+            ->updateOrCreate(
+                ['id' => 4],
+                [
+                    'name' => 'Troco',
+                    'class' => 'E',
+                ]
+            );
     }
 }
