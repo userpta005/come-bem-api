@@ -1,0 +1,17 @@
+<template>
+  <el-row>
+    <el-col :md="16"
+      :xs="24">
+      <Main />
+    </el-col>
+    <el-col :md="8"
+      :xs="24">
+      <Aside />
+    </el-col>
+  </el-row>
+</template>
+
+<script setup>
+import Main from './components/Main.vue'
+import Aside from './components/Aside.vue'
+</script>

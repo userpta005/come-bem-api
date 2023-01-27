@@ -52,6 +52,7 @@ Route::prefix('v1')->group(function () {
 
         Route::apiResource('sections', App\Http\Controllers\API\SectionController::class)->only(['index', 'show']);
         Route::get('accounts/{id}/products', [App\Http\Controllers\API\ProductController::class, 'index']);
+        Route::get('products', [App\Http\Controllers\API\ProductController::class, 'index']);
     });
 
     Route::middleware('auth:sanctum')->group(function () {

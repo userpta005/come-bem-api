@@ -9,13 +9,15 @@ use Illuminate\Http\Request;
 
 class ProductController extends BaseController
 {
-    public function index(Request $request, $id)
+    public function index(Request $request, $id = null)
     {
-        $account = Account::query()->findOrFail($id);
+        $account = Account::query()->find($id);
 
         $query = Product::query()
             ->with([
-                'limitedProducts' => fn ($query) => $query->where('account_id', $account->id),
+                'limitedProducts' => function ($query) use ($account) {
+                    $query->when(!empty($account), fn ($query) => $query->where('account_id', $account->id));
+                },
                 'stock'
             ])
             ->where('status', Status::ACTIVE)

@@ -17,6 +17,11 @@ class CheckAppHeader
      */
     public function handle(Request $request, Closure $next)
     {
+        if (session()->exists('store')) {
+            $request->attributes->add(['store' => session('store')]);
+            return $next($request);
+        }
+
         if (!$request->headers->has('app')) {
             return response()->json([
                 'message' => 'App ID não informada.'
