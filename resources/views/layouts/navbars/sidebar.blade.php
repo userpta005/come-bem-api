@@ -181,7 +181,7 @@
                         @canany(['cashiers_view', 'open-cashiers_view', 'cash-movements_view'])
                         <li>
                             <a data-toggle="collapse" href="#cashier" aria-expanded="false" class="collapsed">
-                                <i class="fas fa-bars"></i>
+                                <i class="fas fa-cash-register"></i>
                                 <span class="nav-link-text">Caixa</span>
                                 <b class="caret mt-1"></b>
                             </a>
@@ -211,6 +211,31 @@
                                         </a>
                                     </li>
                                     @endcan
+                                </ul>
+                            </div>
+                        </li>
+                        @endcanany
+                    </ul>
+                    <ul class="nav pl-4">
+                        @canany(['cash-summary-report_view'])
+                        <li>
+                            <a data-toggle="collapse" href="#cashSumary" aria-expanded="false" class="collapsed">
+                                <i class="fas fa-bars"></i>
+                                <span class="nav-link-text">Relatórios</span>
+                                <b class="caret mt-1"></b>
+                            </a>
+                            <div class="collapse" id="cashSumary" style="">
+                                <ul class="nav pl-4">
+                                    @if (session()->has('store'))
+                                    @can('cash-summary-report_view')
+                                    <li>
+                                        <a href="{{ route('reports.cash-summary') }}">
+                                            <i class="fas fa-table"></i>
+                                            <p>Resumo do caixa</p>
+                                        </a>
+                                    </li>
+                                    @endcan
+                                    @endif
                                 </ul>
                             </div>
                         </li>
@@ -312,16 +337,6 @@
                 </a>
                 <div class="collapse" id="reports" style="">
                     <ul class="nav pl-4">
-                        @if (session()->has('store'))
-                        @can('cash-summary-report_view')
-                        <li>
-                            <a href="{{ route('reports.cash-summary') }}">
-                                <i class="fas fa-table"></i>
-                                <p>Resumo do caixa</p>
-                            </a>
-                        </li>
-                        @endcan
-                        @endif
                         @can('client-dependents-report_view')
                         <li>
                             <a href="{{ route('reports.client-dependents') }}">

@@ -9,11 +9,6 @@
                     <div class="col-md-8">
                         <h4 class="card-title">Abertura/Fechamento</h4>
                     </div>
-                    @can('open-cashiers_create')
-                    <div class="col-md-4 text-right">
-                        <a href="{{ route('open-cashiers.create') }}" class="btn btn-sm btn-primary">Adicionar Novo</a>
-                    </div>
-                    @endcan
                 </div>
             </div>
             <div class="card-body">
@@ -87,14 +82,6 @@
                                                 @method('delete')
                                                 @can('open-cashiers_view')
                                                 <a class="dropdown-item" href="{{ route('open-cashiers.show', $item) }}">Visualizar</a>
-                                                @endcan
-                                                @can('open-cashiers_edit')
-                                                <a class="dropdown-item" href="{{ route('open-cashiers.edit', $item) }}">Editar</a>
-                                                @endcan
-                                                @can('open-cashiers_delete')
-                                                <button type="button" class="dropdown-item btn-delete">
-                                                    Excluir
-                                                </button>
                                                 @endcan
                                             </form>
                                         </div>

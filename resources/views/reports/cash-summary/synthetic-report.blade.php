@@ -12,22 +12,18 @@
     <style>
         header {
             font-family: 'Roboto', serif;
-            border: 1px solid #dee2e6;
             text-align: center;
             font-weight: bold;
-            margin-bottom: 20px;
         }
 
         header>.title {
-            font-size: 20px;
-            border-bottom: 1px solid #dee2e6;
+            font-size: 1.875rem;
             margin: 0;
             padding: 10px;
             line-height: normal;
         }
 
         header>.local {
-            border-bottom: 1px solid #dee2e6;
             margin: 0;
             padding: 10px;
         }
@@ -53,7 +49,6 @@
         }
 
         main>.data {
-            border: 1px solid #dee2e6;
             text-align: center;
             font-weight: bold;
             font-size: 20px;
@@ -64,6 +59,12 @@
         .table td,
         .table thead th {
             vertical-align: middle;
+            border-top: none;
+            border-bottom: none;
+        }
+
+        .table td{
+            padding-top: 0;
         }
 
     </style>
@@ -74,60 +75,55 @@
     <div>
         <header> 
             <h1 class="title">
-                Resumo Sintético do Caixa
+                <b>  Resumo do Caixa </b>
             </h1>
+
             @if(!isset($data[0]))
-            <h1 class="title">
-                Dados não encontrados para esta busca.
-            </h1>
+                <h1 class="title">
+                    Dados não encontrados para esta busca.
+                </h1>
             @else
+
+            <h1 class="title" style="font-size: 1.4rem;">Sintético / Data: {{ carbon($data[0]->date_operation)->format('d/m/Y') }} </h1>
+            
             @if ($data[0]->store)
-            <div class="local">
-                <h2>
-                    {{ $data[0]->store->info }}
-                </h2>
-                <small>
-                    {{ $data[0]->store->people->address . ', ' }}
-                    N° {{ ($data[0]->store->people->number ?? 'S/N') . ', ' }}
-                    {{ !empty($data[0]->store->people->district) ? $data[0]->store->people->district . ', ' : '' }}
-                    {{ $data[0]->store->people->city->title }}
-                </small>
+            <div class="local" style="text-align: left">
+                <h1 class="title" style="font-size: 1.4rem;">
+                   Estabelecimento:  {{ $data[0]->store->info }} 
+                </h1>
             </div>
             @endif
 
-            <p class="data">Sintético / Data: {{ carbon($data[0]->date_operation)->format('d/m/Y') }}</p>
         </header>
         <main>
             @foreach ($data as $item)
-            <table class="table table-bordered table-striped table-sm">
+            <table class="table" style="font-size: 0.9rem">
                 <thead>
                     <tr>
-                        <th colspan="4" class="table-secondary">
+                        <th colspan="2">
                             Caixa: {{ $item->cashier->description }}
                         </th>
-                    </tr>
-                    <tr>
-                        <th colspan="4" class="table-secondary">
-                            Colaborador(a): {{ $item->user->people->info }}
+                        <th colspan="2">
+                            Colaborador(a): {{  $item->user->people->full_name ? $item->user->people->full_name : $item->user->people->name  }}
                         </th>
                     </tr>
                     <tr>
-                        <th class="text-center">Dt. Mov.</th>
-                        <th class="text-center">E/S</th>
-                        <th class="text-center">Tipo Mov.</th>
-                        <th class="text-center">F.Pagto</th>
-                        <th class="text-center">Entrada</th>
-                        <th class="text-center">Saída</th>
-                        <th class="text-center"></th>
+                        <th>Dt. Mov.</th>
+                        <th>E/S</th>
+                        <th>Tipo Mov.</th>
+                        <th>F.Pagto</th>
+                        <th class="text-right">Entrada</th>
+                        <th class="text-right">Saída</th>
+                        <th class="text-right"></th>
                     </tr>
                 </thead>
-                <tbody class="text-center">
+                <tbody>
                     @foreach ($item->cashMovements as $cashMovement)
                     <tr>
                         <td>
                             {{ carbon(request()->date_operation)->format('d/m/Y') }}
                         </td>
-                        <td>
+                        <td >
                             {{ $cashMovement->movementType->class->value }}
                         </td>
                         <td>
@@ -136,31 +132,27 @@
                         <td>
                             {{ $cashMovement->paymentMethod->name }}
                         </td>
-                        <td class="text-center">
+                        <td class="text-right">
                             {{ $cashMovement->movementType->class == \App\Enums\MovementClass::ENTRY ? money($cashMovement->amount)  : money(0) }}
                         </td>
-                        <td class="text-center">
+                        <td class="text-right">
                             {{ $cashMovement->movementType->class == \App\Enums\MovementClass::OUTGOING ? money($cashMovement->amount)  : money(0) }}
                         </td>
                     </tr>
                     @endforeach
 
-                    <td class="text-center">
+                    <td colspan="3">
                     </td>
-                    <td class="text-center">
-                    </td>
-                    <td class="text-center">
-                    </td>
-                    <td class="text-center">
+                    <td>
                         <b>TOTAIS:</b>
                     </td>
-                    <td class="text-center"> 
+                    <td class="text-right"> 
                         <b>{{ money($item->total_entries) }}</b>
                     </td>
-                    <td class="text-center">
+                    <td class="text-right">
                         <b>{{ money($item->total_outgoing) }}</b>
                     </td>
-                    <td class="text-center">
+                    <td class="text-right">
                         <b>{{ money($item->total_entries - $item->total_outgoing) }}</b>
                     </td>
                 </tbody>

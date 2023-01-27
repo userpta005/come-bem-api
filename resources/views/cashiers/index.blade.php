@@ -55,14 +55,6 @@
                                                 @can('cashiers_view')
                                                 <a class="dropdown-item" href="{{ route('cashiers.show', $item) }}">Visualizar</a>
                                                 @endcan
-                                                @can('cashiers_edit')
-                                                <a class="dropdown-item" href="{{ route('cashiers.edit', $item) }}">Editar</a>
-                                                @endcan
-                                                @can('cashiers_delete')
-                                                <button type="button" class="dropdown-item btn-delete">
-                                                    Excluir
-                                                </button>
-                                                @endcan
                                             </form>
                                         </div>
                                     </div>
