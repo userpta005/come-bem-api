@@ -396,7 +396,7 @@
                 </div>
             </li>
             @endcanany
-            @canany(['parameters_view', 'faqs_view', 'banners_view', 'settings_edit'])
+            @canany(['movement-types_view', 'parameters_view', 'faqs_view', 'banners_view', 'settings_edit'])
             <li>
                 <a data-toggle="collapse" href="#settings" aria-expanded="false" class="collapsed">
                     <i class="fas fa-cogs"></i>
