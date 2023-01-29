@@ -1,10 +1,9 @@
 <template>
   <el-dialog v-model="dialogVisible"
-    width="560"
+    width="580"
     :close-on-click-modal="false"
     :close-on-press-escape="false"
     :show-close="false"
-    :destroy-on-close="true"
     align-center
     @open="openedDialog">
     <template #header>
@@ -14,7 +13,7 @@
       padding: 10px 30px 0 30px;">
         <h4 style="font-weight: 600;
         margin: 0;">
-          {{ !store.openedCashier ? 'Abertura' : 'Fechamento' }}
+          {{ form.operation == 1 ? 'Abertura' : 'Fechamento' }}
           <hr style="background: #ff7e07;
           margin: 5px 0 0 0">
         </h4>
@@ -33,7 +32,7 @@
             <el-select v-model="form.cashier_id"
               size="large"
               :disabled="!!store.openedCashier"
-              @change="handleMoneyChange">
+              @change="handleCashierChange">
               <el-option v-for="item in cashiers"
                 :key="item.id"
                 :label="item.description"
@@ -63,10 +62,10 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item :label="!store.openedCashier ? 'Troco (R$)' : 'Sangria (R$)'"
+          <el-form-item :label="form.operation == 1 ? 'Troco (R$)' : 'Sangria (R$)'"
             style="margin: 0 18px 18px 0;"
             prop="money_change"
-            :rules="[{ required: true, message: !store.openedCashier ? 'Troco é obrigatório !' : 'Sangria é obrigatória !' }]">
+            :rules="[{ required: true, message: form.operation == 1 ? 'Troco é obrigatório !' : 'Sangria é obrigatória !' }]">
             <el-input v-model="form.money_change"
               size="large"
               autocomplete="off"
@@ -74,7 +73,7 @@
               data-maska="9.99#,##"
               data-maska-reversed
               data-maska-tokens="9:[0-9]:repeated"
-              @change="handleMoneyChange" />
+              @change="handleCashierChange" />
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -141,37 +140,32 @@ const form = reactive({
   balance: null
 })
 
-const openedDialog = () => {
-  if (!!store.openedCashier) {
-    form.cashier_id = store.cashier.id
-    form.balance = store.cashier.balance
-  }
-  form.user_id = store.user.id
-  form.name = store.user.name
-  form.operation = !store.openedCashier ? 1 : 2
-}
-
-const handleMoneyChange = () => {
+const handleCashierChange = () => {
   const cashier = cashiers.value.find(item => item.id === form.cashier_id)
-  const balance = moneyToFloat(cashier.balance)
   const moneyChange = moneyToFloat(form.money_change)
-  let amount = 0
-
-  if (!store.openedCashier) {
-    amount = !!form.money_change ? moneyChange + balance : balance
-  } else {
-    amount = !!form.money_change ? moneyChange - balance : balance
-  }
-
-  form.balance = floatToMoney(amount)
+  const balance = moneyToFloat(cashier.balance)
+  form.operation = cashier.status == 1 ? 2 : 1
+  form.balance = !!form.money_change ?
+    floatToMoney(cashier.status == 1 ? moneyChange - balance : moneyChange + balance) : floatToMoney(balance)
 }
 
 const handleGetCashiers = async () => {
   try {
     const { data } = await axios.get(`${url}/api/v1/cashiers`)
     cashiers.value = data.data
-    form.cashier_id = cashiers.value[0].id
-    form.balance = cashiers.value[0].balance
+    form.user_id = store.user.id
+    form.name = store.user.name
+    form.money_change = null
+    if (!!store.openedCashier) {
+      store.cashier = cashiers.value.find(item => item.id == store.cashier.id)
+      form.cashier_id = store.cashier.id
+      form.operation = store.cashier.status == 1 ? 2 : 1
+      form.balance = store.cashier.balance
+    } else {
+      form.cashier_id = cashiers.value[0].id
+      form.operation = cashiers.value[0].status == 1 ? 2 : 1
+      form.balance = cashiers.value[0].balance
+    }
   } catch ({ response }) {
     ElNotification({
       title: 'Erro !',
@@ -181,7 +175,9 @@ const handleGetCashiers = async () => {
   }
 }
 
-handleGetCashiers()
+const openedDialog = () => {
+  handleGetCashiers()
+}
 
 const handleSubmit = (formEl) => {
   if (!formEl) return
