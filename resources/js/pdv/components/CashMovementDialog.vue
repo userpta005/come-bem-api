@@ -68,7 +68,8 @@
               <el-form-item label="Valor da recarga (R$)"
                 style="margin: 0 18px 18px 0;"
                 prop="amount"
-                :rules="[{ required: true, message: 'Valor da recarga é obrigatória !' }]">
+                :rules="[
+                  { required: true, message: 'Valor da recarga é obrigatória !' }]">
                 <el-input v-model="recargaForm.amount"
                   size="large"
                   autocomplete="off"
@@ -366,7 +367,14 @@ const handleRecargaSubmit = (formEl) => {
   formEl.validate(async (valid) => {
     if (valid) {
       try {
-        if (moneyToFloat(recargaForm.amount_entry) < moneyToFloat(recargaForm.amount)) {
+        if (moneyToFloat(recargaForm.amount) < 1) {
+          ElNotification({
+            title: 'Erro !',
+            message: 'Valor da recarga não pode ser menor que 1 !',
+            type: 'error',
+          })
+          return
+        } else if (moneyToFloat(recargaForm.amount_entry) < moneyToFloat(recargaForm.amount)) {
           ElNotification({
             title: 'Erro !',
             message: 'Valor não pode ser menor que valor da recarga !',
