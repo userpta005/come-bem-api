@@ -376,7 +376,7 @@ const handleRecargaSubmit = (formEl) => {
             type: 'error',
           })
           return
-        } else if (moneyToFloat(recargaForm.amount_entry) < moneyToFloat(recargaForm.amount)) {
+        } else if (recargaForm.payment_method_id == 1 && moneyToFloat(recargaForm.amount_entry) < moneyToFloat(recargaForm.amount)) {
           ElNotification({
             title: 'Erro !',
             message: 'Valor não pode ser menor que valor da recarga !',
