@@ -30,7 +30,141 @@
     class="cash-movement-dialog"
     destroy-on-close>
 
-    <el-tabs type="border-card"
+    <div v-show="cardCreditShow"
+      style="height: 491px; display:flex; flex-direction:column; justify-content:space-between">
+      <div>
+        <div style="display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px 30px 0 30px; margin-bottom: 30px;">
+          <h4 style="font-weight: 600;
+          margin: 0;">
+            Dados do cartão
+            <hr style="background: #ff7e07;
+            margin: 5px 0 0 0">
+          </h4>
+        </div>
+        <el-form label-position="top"
+          style="padding: 0 30px;"
+          require-asterisk-position="right"
+          ref="recargaFormRef"
+          :model="recargaForm.card">
+          <el-row>
+            <el-col :span="24">
+              <el-form-item label="Titular"
+                style="margin: 0 18px 18px 0;"
+                prop="holder"
+                :rules="[{ required: true, message: 'Titular é obrigatório !' }]">
+                <el-input size="large"
+                  v-model="recargaForm.card.holder" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="24">
+              <el-form-item label="Número do cartão"
+                style="margin: 0 18px 18px 0;"
+                prop="number"
+                :rules="[{ required: true, message: 'Número do cartão é obrigatório !' }]">
+                <el-input size="large"
+                  v-maska
+                  data-maska="#### #### #### ####"
+                  v-model="recargaForm.card.number" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="CVV"
+                style="margin: 0 18px 18px 0;"
+                prop="security_code"
+                :rules="[{ required: true, message: 'CVV é obrigatório !' }]">
+                <el-input size="large"
+                  v-maska
+                  data-maska="###"
+                  v-model="recargaForm.card.security_code" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="Mês"
+                style="margin: 0 18px 18px 0;"
+                prop="exp_month"
+                :rules="[{ required: true, message: 'Mês é obrigatório !' }]">
+                <el-input size="large"
+                  v-maska
+                  data-maska="##"
+                  v-model="recargaForm.card.exp_month" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="Ano"
+                style="margin: 0 18px 18px 0;"
+                prop="exp_year"
+                :rules="[{ required: true, message: 'Ano é obrigatório !' }]">
+                <el-input size="large"
+                  v-maska
+                  data-maska="####"
+                  v-model="recargaForm.card.exp_year" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </el-form>
+      </div>
+      <div style="text-align: center;">
+        <el-button @click="handleCreditCardShow">
+          Cancelar
+        </el-button>
+        <el-button color="#ff7e07"
+          style="color: white;"
+          @click="handleCreditCardSubmit(recargaFormRef)">
+          Confirmar
+        </el-button>
+      </div>
+    </div>
+
+    <div v-show="pixShow"
+      style="height: 491px; display:flex; flex-direction:column; justify-content:space-between">
+      <div>
+        <div style="display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px 30px 0 30px; margin-bottom: 30px;">
+          <h4 style="font-weight: 600;
+          margin: 0;">
+            Pix
+            <hr style="background: #ff7e07;
+            margin: 5px 0 0 0">
+          </h4>
+        </div>
+        <p class="">
+          Abra o aplicativo que você tenha o PIX habilitado e utilize o QR Code abaixo para realizar o
+          pagamento.
+        </p>
+
+        <img :src="checkout.payment_response[0].links[0].href"
+          height="200px"
+          width="200px"
+          class="" />
+
+        <p class="">
+          Se preferir, copie o código abaixo e utilize o PIX Copia e cola no seu aplicativo.
+        </p>
+        <el-button color="primary"
+          link
+          @click="copyCode">
+          Confirmar
+        </el-button>
+      </div>
+      <div style="text-align: center;">
+        <el-button @click="handlePixShow">
+          Cancelar
+        </el-button>
+        <el-button color="#ff7e07"
+          style="color: white;"
+          @click="handlePixConfirm">
+          Confirmar
+        </el-button>
+      </div>
+    </div>
+
+    <el-tabs v-show="!cardCreditShow && !pixShow"
+      type="border-card"
       class="cash-movement-tabs">
 
       <el-tab-pane>
@@ -69,7 +203,7 @@
                 style="margin: 0 18px 18px 0;"
                 prop="amount"
                 :rules="[
-                  { required: true, message: 'Valor da recarga é obrigatória !' }]">
+                { required: true, message: 'Valor da recarga é obrigatória !' }]">
                 <el-input v-model="recargaForm.amount"
                   size="large"
                   autocomplete="off"
@@ -80,7 +214,7 @@
                   @change="handleChangeRadio" />
               </el-form-item>
             </el-col>
-            <el-col :span="12">
+            <el-col :span="14">
               <el-form-item label="Forma de pagamento"
                 style="margin: 0 18px 18px 0;"
                 prop="payment_method_id"
@@ -97,7 +231,7 @@
                 </el-radio-group>
               </el-form-item>
             </el-col>
-            <el-col :span="12"
+            <el-col :span="10"
               v-if="moneyChangeShow">
               <el-form-item label="Valor (R$)"
                 style="margin: 0 18px 18px 0;"
@@ -248,7 +382,7 @@
 
 <script setup>
 import axios from 'axios'
-import { ref, reactive, watch } from 'vue'
+import { ref, reactive } from 'vue'
 import useStorageStore from '../stores/storage'
 import { vMaska } from 'maska'
 import { moneyToFloat, floatToMoney } from '../../helpers'
@@ -277,7 +411,15 @@ const recargaForm = reactive({
   amount: null,
   payment_method_id: null,
   amount_entry: null,
-  money_change: '0,00'
+  money_change: '0,00',
+  card: {
+    number: null,
+    exp_month: null,
+    exp_year: null,
+    security_code: null,
+    holder: null,
+    installments: 1
+  }
 })
 const moneyChangeShow = ref(false)
 const sangriaFormRef = ref(null)
@@ -294,6 +436,36 @@ const trocoForm = reactive({
   amount: null,
   balance: null
 })
+const cardCreditShow = ref(false)
+const pixShow = ref(false)
+const checkout = ref(null)
+
+const handleCreditCardShow = () => {
+  recargaForm.payment_method_id = null
+  cardCreditShow.value = false
+}
+
+const handlePixShow = () => {
+  recargaForm.payment_method_id = null
+  pixShow.value = false
+}
+
+const copyCode = async () => {
+  try {
+    await navigator.clipboard.writeText(checkout.value.payment_response[0].text)
+    ElNotification({
+      title: 'Sucesso !',
+      message: 'Código copiado com sucesso !',
+      type: 'success',
+    })
+  } catch (error) {
+    ElNotification({
+      title: 'Erro !',
+      message: 'Ocorreu algum erro ao copiar o código !',
+      type: 'error',
+    })
+  }
+}
 
 const handleGetCashier = async () => {
   try {
@@ -342,12 +514,63 @@ const remoteMethod = async (query) => {
   }
 }
 
-const handleChangeRadio = () => {
+const handleChangeRadio = async () => {
   if (recargaForm.payment_method_id == 1) {
     recargaForm.amount_entry = recargaForm.amount
     recargaForm.money_change = '0,00'
     moneyChangeShow.value = true
-  } else {
+  } else if (recargaForm.payment_method_id == 3) {
+    if (!recargaForm.account_id || !recargaForm.amount) {
+      ElNotification({
+        title: 'Erro !',
+        message: 'Preencha todos os campos obrigatórios !',
+        type: 'error',
+      })
+      recargaForm.payment_method_id = null
+      return
+    }
+    cardCreditShow.value = true
+  } else if (recargaForm.payment_method_id == 4) {
+    if (!recargaForm.account_id || !recargaForm.amount) {
+      ElNotification({
+        title: 'Erro !',
+        message: 'Preencha todos os campos obrigatórios !',
+        type: 'error',
+      })
+      recargaForm.payment_method_id = null
+      return
+    }
+    try {
+      const form = {
+        cashier_id: store.cashier.id,
+        amount: recargaForm.amount,
+        payment_method_id: recargaForm.payment_method_id
+      }
+      const { data } = await axios.post(`${url}/api/v1/accounts/${recargaForm.account_id}/credit-purchases`, form)
+      checkout.value = data.data
+      pixShow.value = true
+    } catch (error) {
+      let msg = null
+      if (error.response) {
+        const response = error.response
+        if (response.status === 422) {
+          const data = response.data.data
+          const property = Object.keys(data)[0]
+          msg = data[property][0]
+        } else {
+          msg = response.data.message
+        }
+      } else {
+        msg = error.message
+      }
+      ElNotification({
+        title: 'Erro !',
+        message: msg,
+        type: 'error',
+      })
+    }
+  }
+  else {
     recargaForm.amount_entry = null
     recargaForm.money_change = '0,00'
     moneyChangeShow.value = false
@@ -388,6 +611,50 @@ const handleRecargaSubmit = (formEl) => {
           cashier_id: store.cashier.id,
           amount: recargaForm.amount,
           payment_method_id: recargaForm.payment_method_id
+        }
+        const { data } = await axios.post(`${url}/api/v1/accounts/${recargaForm.account_id}/credit-purchases`, form)
+        emit('closeCashMovementDialog')
+        ElNotification({
+          title: 'Sucesso !',
+          message: data.message,
+          type: 'success',
+        })
+      } catch (error) {
+        let msg = null
+        if (error.response) {
+          const response = error.response
+          if (response.status === 422) {
+            const data = response.data.data
+            const property = Object.keys(data)[0]
+            msg = data[property][0]
+          } else {
+            msg = response.data.message
+          }
+        } else {
+          msg = error.message
+        }
+        ElNotification({
+          title: 'Erro !',
+          message: msg,
+          type: 'error',
+        })
+      }
+    } else {
+      return false
+    }
+  })
+}
+
+const handleCreditCardSubmit = (formEl) => {
+  if (!formEl) return
+  formEl.validate(async (valid) => {
+    if (valid) {
+      try {
+        const form = {
+          cashier_id: store.cashier.id,
+          amount: recargaForm.amount,
+          payment_method_id: recargaForm.payment_method_id,
+          card: recargaForm.card
         }
         const { data } = await axios.post(`${url}/api/v1/accounts/${recargaForm.account_id}/credit-purchases`, form)
         emit('closeCashMovementDialog')
@@ -509,6 +776,15 @@ const handleTrocoSubmit = (formEl) => {
     } else {
       return false
     }
+  })
+}
+
+const handlePixConfirm = () => {
+  emit('closeCashMovementDialog')
+  ElNotification({
+    title: 'Sucesso !',
+    message: 'Recarga realizada com sucesso !',
+    type: 'success',
   })
 }
 

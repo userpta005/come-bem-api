@@ -18,7 +18,10 @@ class CheckAppHeader
     public function handle(Request $request, Closure $next)
     {
         if (session()->exists('store')) {
-            $request->attributes->add(['store' => session('store')]);
+            $store = Store::person()
+            ->with('tenant')
+            ->findOrFail(session('store')['id']);
+            $request->attributes->add(['store' => $store->toArray()]);
             return $next($request);
         }
 
