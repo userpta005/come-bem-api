@@ -122,14 +122,6 @@ class CashMovementController extends Controller
             ->withStatus('Registro adicionado com sucesso.');
     }
 
-    public function painelStore(Request $request)
-    {
-        $this->store($request);
-
-        return redirect()->route('home')
-            ->withStatus('Movimento de caixa adicionado com sucesso.');
-    }
-
     public function show($id)
     {
         $item = CashMovement::query()->findOrFail($id);

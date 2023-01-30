@@ -27,4 +27,14 @@ class CashierController extends BaseController
 
         return $this->sendResponse($data);
     }
+
+    public function show(Request $request, $id)
+    {
+        $item = Cashier::query()
+            ->where('status', '!=', 3)
+            ->where('store_id', $request->get('store')['id'])
+            ->findOrFail($id);
+
+        return $this->sendResponse($item);
+    }
 }

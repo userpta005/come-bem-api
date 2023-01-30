@@ -42,6 +42,9 @@
 
     <CashierDialog :dialogVisible="cashierDialogVisible"
       @close-cashier-dialog="cashierDialogVisible = false" />
+
+    <CashMovementDialog :dialogVisible="cashMovementDialogVisible"
+      @close-cash-movement-dialog="cashMovementDialogVisible = false" />
   </div>
 </template>
 
@@ -50,15 +53,17 @@
 import { ref } from 'vue'
 import useStorageStore from '../stores/storage'
 import CashierDialog from './CashierDialog.vue'
+import CashMovementDialog from './CashMovementDialog.vue'
 
 const store = useStorageStore()
-
 const cashierDialogVisible = ref(false)
 const cashMovementDialogVisible = ref(false)
 
 const handleCashMovement = () => {
   if (!store.openedCashier) {
     cashierDialogVisible.value = true
+  } else {
+    cashMovementDialogVisible.value = true
   }
 }
 

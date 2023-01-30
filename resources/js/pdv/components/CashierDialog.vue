@@ -24,7 +24,8 @@
       style="padding: 0 30px;"
       :inline="true"
       ref="formRef"
-      :model="form">
+      :model="form"
+      require-asterisk-position="right">
       <el-row>
         <el-col :span="8">
           <el-form-item label="Caixa"
@@ -146,7 +147,7 @@ const handleCashierChange = () => {
   const balance = moneyToFloat(cashier.balance)
   form.operation = cashier.status == 1 ? 2 : 1
   form.balance = !!form.money_change ?
-    floatToMoney(cashier.status == 1 ? moneyChange - balance : moneyChange + balance) : floatToMoney(balance)
+    floatToMoney(cashier.status == 1 ? balance - moneyChange : balance + moneyChange) : floatToMoney(balance)
 }
 
 const handleGetCashiers = async () => {

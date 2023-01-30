@@ -53,8 +53,9 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('sections', App\Http\Controllers\API\SectionController::class)->only(['index', 'show']);
         Route::get('accounts/{id}/products', [App\Http\Controllers\API\ProductController::class, 'index']);
         Route::get('products', [App\Http\Controllers\API\ProductController::class, 'index']);
-        Route::get('cashiers', [App\Http\Controllers\API\CashierController::class, 'index']);
+        Route::apiResource('cashiers', App\Http\Controllers\API\CashierController::class)->only(['index', 'show']);
         Route::post('open-cashiers', [App\Http\Controllers\API\OpenCashierController::class, 'store']);
+        Route::post('cash-movements', [App\Http\Controllers\API\CashMovementController::class, 'store']);
     });
 
     Route::middleware('auth:sanctum')->group(function () {
