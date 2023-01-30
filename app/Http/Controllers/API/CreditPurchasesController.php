@@ -7,6 +7,8 @@ use App\Actions\SplitPaymentAction;
 use App\Enums\AccountEntryType;
 use App\Models\Account;
 use App\Models\AccountEntry;
+use App\Models\Cashier;
+use App\Models\CashMovement;
 use App\Models\CreditPurchase;
 use App\Models\PaymentMethod;
 use App\Models\User;
@@ -49,15 +51,16 @@ class CreditPurchasesController extends BaseController
 
             $account = Account::query()->findOrFail($id);
 
-            $storeId = $request->get('store')['id'];
+            $inputs = $request->all();
 
-            if ($account->store->id != $storeId) {
+            $inputs['store_id'] = $request->get('store')['id'];
+
+            if ($account->store->id != $inputs['store_id']) {
                 return $this->sendError('Conta não cadastrada nessa loja.', [], 403);
             }
 
             $paymentMethod = PaymentMethod::find($request->payment_method_id);
 
-            $inputs = $request->all();
             $inputs['account_id'] = $account->id;
             $inputs['uuid'] = (string) Uuid::uuid4();
             $inputs['amount'] = moneyToFloat($inputs['amount']);
@@ -74,7 +77,7 @@ class CreditPurchasesController extends BaseController
                 $payload = [
                     'value' => moneyToFloat($inputs['amount']),
                     'reference' => $inputs['uuid'],
-                    'store' => $storeId,
+                    'store' => $inputs['store_id'],
                 ];
                 $checkout = $pixAction->execute($token, $payload);
                 $inputs['checkout'] = $checkout;
@@ -99,6 +102,33 @@ class CreditPurchasesController extends BaseController
 
             $creditPurchase = CreditPurchase::query()->create($inputs);
 
+            if (!empty($inputs['cashier_id'])) {
+                if ($paymentMethod->code == PaymentMethod::MONEY) {
+                    $inputs['description'] = AccountEntryType::CREDIT->name();
+                    $inputs['credit_purchase_id'] = $creditPurchase->id;
+                    $inputs['type'] = AccountEntryType::CREDIT;
+
+                    AccountEntry::query()->create($inputs);
+                    $account->increment('balance', $inputs['amount']);
+                    $account->save();
+                }
+
+                $cashier = Cashier::query()
+                    ->where('store_id', $inputs['store_id'])
+                    ->where('status', 1)
+                    ->findOrFail($inputs['cashier_id']);
+
+                $inputs['date_operation'] = now();
+                $inputs['token'] = $inputs['uuid'];
+                $inputs['movement_type_id'] = 1;
+                $inputs['client_id'] = $account->dependent_id;
+
+                CashMovement::create($inputs);
+
+                $cashier->increment('balance', $inputs['amount']);
+                $cashier->save();
+            }
+
             DB::commit();
             return $this->sendResponse($creditPurchase, 'Recarga realizada com sucesso!', 201);
         } catch (\Throwable $th) {
@@ -112,6 +142,7 @@ class CreditPurchasesController extends BaseController
         $paymentMethod = PaymentMethod::findOrFail($request->payment_method_id);
 
         $rules = [
+            'cashier_id' => ['nullable', Rule::exists('cashiers', 'id')],
             'amount' => ['required'],
             'payment_method_id' => ['required', Rule::exists('payment_methods', 'id')],
             'card.number' => [Rule::requiredIf($paymentMethod->code == PaymentMethod::CREDIT_CARD)],

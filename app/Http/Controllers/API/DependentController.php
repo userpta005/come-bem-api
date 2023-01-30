@@ -18,11 +18,27 @@ use Throwable;
 
 class DependentController extends BaseController
 {
-    public function index(Request $request, $client)
+    public function index(Request $request, $client = null)
     {
         $query = Dependent::query()
-            ->with('people.city', 'accounts.store.people', 'accounts.orders')
-            ->where('client_id', $client);
+            ->with([
+                'people.city',
+                'accounts' => function ($query) use ($request) {
+                    $query->with('store.people', 'orders')
+                        ->when(!empty($request->store_id), fn ($query) => $query->where('store_id', $request->store_id));
+                }
+            ])
+            ->when(!empty($client), fn ($query) => $query->where('client_id', $client))
+            ->when(!empty($request->store_id), function ($query) use ($request) {
+                $query->whereHas('accounts', fn ($query) => $query->where('store_id', $request->store_id));
+            })
+            ->when(!empty($request->search), function ($query) use ($request) {
+                $query->whereHas('people', function ($query) use ($request) {
+                    $query->where('name', 'like', '%' . $request->search . '%')
+                        ->orWhere('full_name', 'like', '%' . $request->search . '%')
+                        ->orWhereRaw('(replace(replace(replace(nif, ".", ""), "/", ""), "-", "") like "%' . removeMask($request->search) . '%")');
+                });
+            });
 
         $data = $request->filled('page') ? $query->paginate(10) : $query->get();
 

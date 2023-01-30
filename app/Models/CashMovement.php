@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Models\Store;
-use App\Models\Client;
 use App\Models\Cashier;
 use App\Models\MovementType;
 use Illuminate\Database\Eloquent\Model;
@@ -37,7 +36,7 @@ class CashMovement extends Model
      */
     public function client(): BelongsTo
     {
-        return $this->belongsTo(Client::class, 'client_id');
+        return $this->belongsTo(Dependent::class, 'client_id');
     }
 
     /**

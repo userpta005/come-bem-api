@@ -11,6 +11,8 @@ class PaymentMethod extends CommonModel
 
     const PIX = 'PIX';
     const CREDIT_CARD = 'CARTAO';
+    const MONEY = 'DINHEIRO';
+    const CREDIT_DEBIT = 'DINHEIRO';
 
     /**
      * The attributes that aren't mass assignable.

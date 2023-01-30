@@ -5,7 +5,8 @@
     :close-on-press-escape="false"
     :show-close="false"
     align-center
-    @open="openedDialog">
+    @open="openedDialog"
+    destroy-on-close>
     <template #header>
       <div style="display: flex;
       flex-direction: column;
