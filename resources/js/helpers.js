@@ -3,7 +3,20 @@ const floatToMoney = (float) => {
 }
 
 function moneyToFloat(str) {
-  return parseFloat(!!str ? str.replace('.', '').replace(',', '.') : 0);
+  if (isMoney(str)) {
+    return parseFloat(str.replace('.', '').replace(',', '.'))
+  }
+  return isNumber(str) ? parseFloat(str) : 0
+}
+
+function isMoney(value) {
+  const pattern = /^[R\$]?[ ]?\d{1,3}(\.\d{3})*,[0-9]{2}$/
+  return pattern.test(value)
+}
+
+function isNumber(value) {
+  if(value === null) return false
+  return !isNaN(Number(value))
 }
 
 function limitString(str, num) {

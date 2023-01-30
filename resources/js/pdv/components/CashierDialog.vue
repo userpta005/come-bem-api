@@ -147,8 +147,7 @@ const handleCashierChange = () => {
   const moneyChange = moneyToFloat(form.money_change)
   const balance = moneyToFloat(cashier.balance)
   form.operation = cashier.status == 1 ? 2 : 1
-  form.balance = !!form.money_change ?
-    floatToMoney(cashier.status == 1 ? balance - moneyChange : balance + moneyChange) : floatToMoney(balance)
+  form.balance = floatToMoney(cashier.status == 1 ? balance - moneyChange : balance + moneyChange)
 }
 
 const handleGetCashiers = async () => {
@@ -162,11 +161,11 @@ const handleGetCashiers = async () => {
       store.cashier = cashiers.value.find(item => item.id == store.cashier.id)
       form.cashier_id = store.cashier.id
       form.operation = store.cashier.status == 1 ? 2 : 1
-      form.balance = store.cashier.balance
+      form.balance = floatToMoney(store.cashier.balance)
     } else {
       form.cashier_id = cashiers.value[0].id
       form.operation = cashiers.value[0].status == 1 ? 2 : 1
-      form.balance = cashiers.value[0].balance
+      form.balance = floatToMoney(cashiers.value[0].balance)
     }
   } catch ({ response }) {
     ElNotification({

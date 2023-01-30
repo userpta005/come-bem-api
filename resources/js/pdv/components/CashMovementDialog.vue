@@ -282,14 +282,14 @@ const recargaForm = reactive({
 const moneyChangeShow = ref(false)
 const sangriaFormRef = ref(null)
 const sangriaForm = reactive({
-  cashier_id: store.cashier.id,
+  cashier_id: null,
   movement_type_id: 3,
   amount: null,
   balance: null
 })
 const trocoFormRef = ref(null)
 const trocoForm = reactive({
-  cashier_id: store.cashier.id,
+  cashier_id: null,
   movement_type_id: 4,
   amount: null,
   balance: null
@@ -299,8 +299,10 @@ const handleGetCashier = async () => {
   try {
     const { data } = await axios.get(`${url}/api/v1/cashiers/${store.cashier.id}`)
     store.cashier = data.data
+    sangriaForm.cashier_id = store.cashier.id
     sangriaForm.balance = floatToMoney(store.cashier.balance)
     sangriaForm.amount = null
+    trocoForm.cashier_id = store.cashier.id
     trocoForm.balance = floatToMoney(store.cashier.balance)
     trocoForm.amount = null
   } catch ({ response }) {
