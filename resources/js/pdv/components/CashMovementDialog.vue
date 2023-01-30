@@ -75,7 +75,8 @@
                   v-maska
                   data-maska="9.99#,##"
                   data-maska-reversed
-                  data-maska-tokens="9:[0-9]:repeated" />
+                  data-maska-tokens="9:[0-9]:repeated"
+                  @change="handleChangeRadio" />
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -84,7 +85,8 @@
                 prop="payment_method_id"
                 :rules="[{ required: true, message: 'Forma de pagamento é obrigatória !' }]">
                 <el-radio-group v-model="recargaForm.payment_method_id"
-                  style="display: flex; flex-direction: column; align-items: start;">
+                  style="display: flex; flex-direction: column; align-items: start;"
+                  @change="handleChangeRadio">
                   <el-radio :label="item.id"
                     size="large"
                     v-for="item in paymentMethods"
@@ -337,8 +339,8 @@ const remoteMethod = async (query) => {
   }
 }
 
-watch(recargaForm, (newValue) => {
-  if (newValue.payment_method_id == 1) {
+const handleChangeRadio = () => {
+  if (recargaForm.payment_method_id == 1) {
     recargaForm.amount_entry = recargaForm.amount
     recargaForm.money_change = '0,00'
     moneyChangeShow.value = true
@@ -347,7 +349,7 @@ watch(recargaForm, (newValue) => {
     recargaForm.money_change = '0,00'
     moneyChangeShow.value = false
   }
-})
+}
 
 const moneyChangeEvent = () => {
   const amount_entry = moneyToFloat(recargaForm.amount_entry)
@@ -364,6 +366,14 @@ const handleRecargaSubmit = (formEl) => {
   formEl.validate(async (valid) => {
     if (valid) {
       try {
+        if (moneyToFloat(recargaForm.amount_entry) < moneyToFloat(recargaForm.amount)) {
+          ElNotification({
+            title: 'Erro !',
+            message: 'Valor não pode ser menor que valor da recarga !',
+            type: 'error',
+          })
+          return
+        }
         const form = {
           cashier_id: store.cashier.id,
           amount: recargaForm.amount,

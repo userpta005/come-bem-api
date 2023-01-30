@@ -3,7 +3,7 @@ const floatToMoney = (float) => {
 }
 
 function moneyToFloat(str) {
-  return parseFloat(!!str ? str.replace(',', '.') : 0);
+  return parseFloat(!!str ? str.replace('.', '').replace(',', '.') : 0);
 }
 
 function limitString(str, num) {
