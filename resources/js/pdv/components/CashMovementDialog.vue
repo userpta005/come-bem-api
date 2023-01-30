@@ -30,7 +30,7 @@
     class="cash-movement-dialog"
     destroy-on-close>
 
-    <div v-show="cardCreditShow"
+    <div v-if="cardCreditShow"
       style="height: 491px; display:flex; flex-direction:column; justify-content:space-between">
       <div>
         <div style="display: flex;
@@ -118,7 +118,7 @@
       </div>
     </div>
 
-    <div v-show="pixShow"
+    <div v-if="pixShow"
       style="height: 491px; display:flex; flex-direction:column; justify-content:space-between">
       <div>
         <div style="display: flex;
@@ -163,7 +163,7 @@
       </div>
     </div>
 
-    <el-tabs v-show="!cardCreditShow && !pixShow"
+    <el-tabs v-if="!cardCreditShow && !pixShow"
       type="border-card"
       class="cash-movement-tabs">
 
