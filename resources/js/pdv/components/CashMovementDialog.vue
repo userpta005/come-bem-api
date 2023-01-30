@@ -322,7 +322,7 @@ const remoteMethod = async (query) => {
   try {
     if (query) {
       loading.value = true
-      const { data } = await axios.get(`/api/v1/dependents`, { params: { store_id: store.store.id, search: query } })
+      const { data } = await axios.get(`${url}/api/v1/dependents`, { params: { store_id: store.store.id, search: query } })
       dependents.value = data.data
       loading.value = false
     } else {
@@ -369,7 +369,7 @@ const handleRecargaSubmit = (formEl) => {
           amount: recargaForm.amount,
           payment_method_id: recargaForm.payment_method_id
         }
-        const { data } = await axios.post(`/api/v1/accounts/${recargaForm.account_id}/credit-purchases`, form)
+        const { data } = await axios.post(`${url}/api/v1/accounts/${recargaForm.account_id}/credit-purchases`, form)
         emit('closeCashMovementDialog')
         ElNotification({
           title: 'Sucesso !',
