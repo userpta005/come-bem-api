@@ -60,10 +60,11 @@ class LoginController extends Controller
             return redirect()->route('login')
                 ->withError('Acesso com Restrição. Entre contato com o atendimento para normalizar o acesso.');
         }
-        
+
         if ($user->stores()->exists()) {
             $user->load(['stores' => function ($query) {
-                $query->person();
+                $query->person()
+                    ->with('tenant');
             }]);
 
             $store = $user->stores->first();
