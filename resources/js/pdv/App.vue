@@ -21,5 +21,7 @@ const store = useStorageStore()
 store.tenant = window.tenant
 store.store = window.store
 store.user = window.currentUser
+store.openedCashier = window.openedCashier
+store.cashier = window.cashier
 
 </script>

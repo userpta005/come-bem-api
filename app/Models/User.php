@@ -9,6 +9,7 @@ use App\Traits\ScopePerson;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
@@ -69,6 +70,16 @@ class User extends Authenticatable
     public function stores(): BelongsToMany
     {
         return $this->belongsToMany(Store::class);
+    }
+
+    /**
+     * Get the cashier associated with the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function cashier(): HasOne
+    {
+        return $this->hasOne(Cashier::class);
     }
 
     /**

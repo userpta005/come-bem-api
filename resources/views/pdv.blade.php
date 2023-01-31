@@ -51,8 +51,8 @@
     @push('js')
     <script>
       const lastPart = window.location.href.split('/').pop().split('?')[0];
-          const element = document.querySelector(`.${lastPart}`);
-          element.classList.add("active-custom");
+      const element = document.querySelector(`.${lastPart}`);
+      element.classList.add("active-custom");
     </script>
     @endpush
   </div>
@@ -63,6 +63,8 @@
         window.tenant = {{ Illuminate\Support\Js::from(session('tenant')) }}
         window.store = {{ Illuminate\Support\Js::from(session('store')) }}
         window.currentUser = {{ Illuminate\Support\Js::from(auth()->user()) }}
+        window.openedCashier = {{ Illuminate\Support\Js::from(session()->exists('openedCashier') ? true : false) }}
+        window.cashier = {{ Illuminate\Support\Js::from(session()->exists('cashier') ? session('cashier') : null) }}
       </script>
       @endpush
       <div id="app"

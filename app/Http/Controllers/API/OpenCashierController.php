@@ -49,6 +49,10 @@ class OpenCashierController extends BaseController
                 throw new Exception('Caixa já possui este status !');
             }
 
+            if ($inputs['operation'] == 2 && $cashier->status == 1 && $cashier->user_id != auth()->id()) {
+                throw new Exception('Esse caixa está em uso por outra pessoa !');
+            }
+
             $inputs['balance'] = moneyToFloat($request->balance);
             $inputs['money_change'] = moneyToFloat($request->money_change);
             $inputs['date_operation'] = now();
@@ -57,10 +61,9 @@ class OpenCashierController extends BaseController
             OpenCashier::query()->create($inputs);
 
             $inputs['status'] = $inputs['operation'];
-            $cashier->fill($inputs)->save();
 
             $movementType = MovementType::query()
-                ->findOrFail($inputs['status'] == 1 ? 4 : 3);
+                ->findOrFail($inputs['operation'] == 1 ? 4 : 3);
 
             $inputs['movement_type_id'] = $movementType->id;
             $inputs['cashier_id'] = $cashier->id;
@@ -68,10 +71,21 @@ class OpenCashierController extends BaseController
 
             CashMovement::query()->create($inputs);
 
-            session()->put('openedCashier', $cashier->status == 1 ? true : false);
-            session()->put('cashier', $cashier);
+            if ($inputs['operation'] != 1) {
+                $inputs['user_id'] =  null;
+            }
 
-            $msg = $cashier->status == 1 ? 'Abertura de caixa realizada com sucesso !' : 'Fechamento de caixa realizado com sucesso !';
+            $cashier->fill($inputs)->save();
+
+            if ($inputs['operation'] == 1) {
+                session()->put('openedCashier', true);
+                session()->put('cashier', $cashier);
+            } else {
+                session()->forget('openedCashier');
+                session()->forget('cashier');
+            }
+
+            $msg = $inputs['operation'] == 1 ? 'Abertura de caixa realizada com sucesso !' : 'Fechamento de caixa realizado com sucesso !';
 
             DB::commit();
 

@@ -15,7 +15,7 @@ class Cashier extends Model
 
     protected $fillable = [
         'store_id', 'code',
-        'description', 'status', 'balance',
+        'description', 'status', 'balance', 'open_cashier_id', 'user_id'
     ];
 
     public static function allStatus($option = null)
@@ -75,6 +75,26 @@ class Cashier extends Model
     public function openCashiers(): HasMany
     {
         return $this->hasMany(OpenCashier::class);
+    }
+
+    /**
+     * Get the openCashier that owns the Cashier
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function openCashier(): BelongsTo
+    {
+        return $this->belongsTo(OpenCashier::class);
+    }
+
+    /**
+     * Get the user that owns the Cashier
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
 }

@@ -83,6 +83,14 @@ class LoginController extends Controller
             }
         }
 
+        if ($user->cashier()->exists()) {
+            session()->put('openedCashier', true);
+            session()->put('cashier', $user->cashier);
+        } else {
+            session()->forget('openedCashier');
+            session()->forget('cashier');
+        }
+
         return redirect()->intended($this->redirectPath());
     }
 }
