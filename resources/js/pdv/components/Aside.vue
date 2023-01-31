@@ -12,7 +12,7 @@
       size="large">
       <el-button color="#2474fd"
         size="large"
-        style="width: 260px;
+        style="width: 300px;
         height: 50px;
         margin: 0;
         font-size: large;
@@ -26,7 +26,7 @@
       </el-button>
       <el-button color="#2474fd"
         size="large"
-        style="width: 260px;
+        style="width: 300px;
         height: 50px;
         margin: 0;
         font-size: large;
@@ -38,6 +38,7 @@
         </el-icon>
         Movimento do Caixa
       </el-button>
+      <PurchaseOrder/>
     </el-space>
 
     <CashierDialog :dialogVisible="cashierDialogVisible"
@@ -54,6 +55,7 @@ import { ref } from 'vue'
 import useStorageStore from '../stores/storage'
 import CashierDialog from './CashierDialog.vue'
 import CashMovementDialog from './CashMovementDialog.vue'
+import PurchaseOrder from './PurchaseOrder.vue'
 
 const store = useStorageStore()
 const cashierDialogVisible = ref(false)

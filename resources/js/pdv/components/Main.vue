@@ -70,7 +70,8 @@
 
         <el-card :body-style="{ padding: '10px' }"
           v-for="(product, index) in filteredProducts"
-          :key="index">
+          :key="index"
+          @click="handleAddProduct(product)">
           <div class="el-card-body"
             style="width: 120px; height: 125px;">
             <img :src="product.image_url"
@@ -92,7 +93,9 @@ import Divider from './Divider.vue'
 import axios from 'axios'
 import { ref, watch } from 'vue'
 import { limitString, floatToMoney } from '../../helpers'
+import useStorageStore from '../stores/storage';
 
+const store = useStorageStore()
 const url = getUrl()
 const sections = ref([])
 const currentSection = ref(0)
@@ -149,5 +152,19 @@ const handleGetProducts = async () => {
 
 handleGetSections()
 handleGetProducts()
+
+const handleAddProduct = (product) => {
+  const exists = store.purchaseOrder.cart.find(item => item.id == product.id)
+  if (!!exists) {
+    ElNotification({
+      title: 'Aviso !',
+      message: 'Produto já adicionado ao carrinho !',
+      type: 'warning',
+    })
+  } else {
+    product.quantity = 1
+    store.purchaseOrder.cart.push(product)
+  }
+}
 
 </script>
