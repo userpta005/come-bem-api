@@ -48,9 +48,9 @@
       </span>
       @push('js')
         <script>
-          const lastPart = window.location.href.split('/').pop().split('?')[0];
-          const element = document.querySelector(`.${lastPart}`);
-          element.classList.add("active-custom");
+          const lastPart = window.location.href.split('/').pop().split('?')[0]
+          const element = document.querySelector(`.${lastPart}`)
+          element.classList.add("active-custom")
         </script>
       @endpush
     </div>
@@ -219,7 +219,7 @@
             window.location.reload()
           })
           .fail(function(response) {
-            $.notify(response.responseJSON.message, 'error');
+            $.notify(response.responseJSON.message, 'error')
           })
       })
 

@@ -13,6 +13,7 @@ class AccountController extends BaseController
     public function show(Request $request, $id)
     {
         $item = Account::query()
+            ->with('dependent.people')
             ->findOrFail($id);
 
         $storeId = $request->get('store')['id'];

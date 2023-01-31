@@ -87,16 +87,21 @@
         <span>Total(R$):</span>
         <span>{{ floatToMoney(total) }}</span>
       </div>
-      <el-button size="large" style="float: left;">
+      <el-button size="large"
+        style="float: left;">
         Cancelar
       </el-button>
       <el-button color="#2474fd"
         style="color: white; float: right;"
-        size="large">
+        size="large"
+        @click="purchaseOrderFinish">
         Confirmar
       </el-button>
     </div>
   </div>
+
+  <purchaseOrderFinishDialog :dialogVisible="purchaseOrderFinishDialogVisible"
+    @close-dialog="purchaseOrderFinishDialogVisible = false" />
 </template>
 
 <script setup>
@@ -104,10 +109,14 @@ import { ref, computed } from 'vue'
 import useStorageStore from '../stores/storage'
 import api from '../../api'
 import { floatToMoney } from '../../helpers'
+import purchaseOrderFinishDialog from './purchaseOrderFinishDialog.vue'
+
+const emit = defineEmits(['cashierDialogOpen'])
 
 const store = useStorageStore()
 const loading = ref(false)
 const dependents = ref([])
+const purchaseOrderFinishDialogVisible = ref(false)
 
 const total = computed(() => {
   let vlTotal = 0
@@ -141,6 +150,21 @@ const remoteMethod = async (query) => {
 
 const deleteProduct = (product) => {
   store.purchaseOrder.cart = store.purchaseOrder.cart.filter(item => item.id != product.id)
+}
+
+const purchaseOrderFinish = () => {
+  if (!store.purchaseOrder.cart.length) {
+    ElNotification({
+      title: 'Aviso !',
+      message: 'Carrinho vazio !',
+      type: 'warning',
+    })
+    return
+  } else if (!store.openedCashier) {
+    emit('cashierDialogOpen')
+    return
+  }
+  purchaseOrderFinishDialogVisible.value = true
 }
 
 </script>

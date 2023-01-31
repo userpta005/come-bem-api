@@ -38,7 +38,7 @@
         </el-icon>
         Movimento do Caixa
       </el-button>
-      <PurchaseOrder/>
+      <PurchaseOrder @cashier-dialog-open="cashierDialogVisible = true" />
     </el-space>
 
     <CashierDialog :dialogVisible="cashierDialogVisible"
