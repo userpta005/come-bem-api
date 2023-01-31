@@ -144,8 +144,15 @@ const form = reactive({
 
 const handleCashierChange = () => {
   const cashier = cashiers.value.find(item => item.id === form.cashier_id)
-  const moneyChange = moneyToFloat(form.money_change)
+  let moneyChange = moneyToFloat(form.money_change)
   const balance = moneyToFloat(cashier.balance)
+
+  if (cashier.status == 1 && moneyChange > balance) {
+    form.money_change = floatToMoney(balance)
+    form.balance = 0
+    return
+  }
+
   form.operation = cashier.status == 1 ? 2 : 1
   form.balance = floatToMoney(cashier.status == 1 ? balance - moneyChange : balance + moneyChange)
 }

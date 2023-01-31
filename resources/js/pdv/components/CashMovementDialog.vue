@@ -697,8 +697,15 @@ const handleCreditCardSubmit = (formEl) => {
 }
 
 const handleSangriaAmountChange = () => {
-  const amount = moneyToFloat(sangriaForm.amount)
+  let amount = moneyToFloat(sangriaForm.amount)
   const balance = moneyToFloat(store.cashier.balance)
+
+  if (amount > balance) {
+    sangriaForm.amount = floatToMoney(balance)
+    sangriaForm.balance = 0
+    return
+  }
+
   sangriaForm.balance = !!amount ? floatToMoney(balance - amount) : floatToMoney(balance)
 }
 

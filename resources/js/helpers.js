@@ -15,7 +15,7 @@ function isMoney(value) {
 }
 
 function isNumber(value) {
-  if(value === null) return false
+  if(!value) return false
   return !isNaN(Number(value))
 }
 
