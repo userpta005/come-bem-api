@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\PaymentMethod;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class PaymentMethodsTableSeeder extends Seeder
@@ -19,7 +18,7 @@ class PaymentMethodsTableSeeder extends Seeder
             ->updateOrCreate(
                 ['id' => 1],
                 [
-                    'code' => '0001',
+                    'code' => 'DINHEIRO',
                     'name' => 'Dinheiro',
                     'status' => \App\Enums\Common\Status::ACTIVE
                 ]
@@ -29,7 +28,7 @@ class PaymentMethodsTableSeeder extends Seeder
             ->updateOrCreate(
                 ['id' => 2],
                 [
-                    'code' => '0002',
+                    'code' => 'DINHEIRO',
                     'name' => 'Cartão de Débito',
                     'status' => \App\Enums\Common\Status::ACTIVE
                 ]
@@ -39,7 +38,7 @@ class PaymentMethodsTableSeeder extends Seeder
             ->updateOrCreate(
                 ['id' => 3],
                 [
-                    'code' => '0003',
+                    'code' => 'CARTAO',
                     'name' => 'Cartão de Crédito',
                     'status' => \App\Enums\Common\Status::ACTIVE
                 ]
@@ -49,7 +48,7 @@ class PaymentMethodsTableSeeder extends Seeder
             ->updateOrCreate(
                 ['id' => 4],
                 [
-                    'code' => '0004',
+                    'code' => 'PIX',
                     'name' => 'Pix',
                     'status' => \App\Enums\Common\Status::ACTIVE
                 ]
