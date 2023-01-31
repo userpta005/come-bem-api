@@ -119,37 +119,42 @@
     </div>
 
     <div v-if="pixShow"
-      style="height: 491px; display:flex; flex-direction:column; justify-content:space-between">
+      style="min-height: 491px; display:flex; flex-direction:column; justify-content:space-between">
       <div>
         <div style="display: flex;
         flex-direction: column;
         align-items: flex-start;
         padding: 10px 30px 0 30px; margin-bottom: 30px;">
-          <h4 style="font-weight: 600;
+          <h3 style="font-weight: 600;
           margin: 0;">
             Pix
             <hr style="background: #ff7e07;
             margin: 5px 0 0 0">
-          </h4>
+          </h3>
         </div>
-        <p class="">
-          Abra o aplicativo que você tenha o PIX habilitado e utilize o QR Code abaixo para realizar o
-          pagamento.
-        </p>
+        <div style="padding: 0 30px;">
+          <p style="font-weight: 500;">
+            Abra o aplicativo que você tenha o PIX habilitado e utilize o QR Code abaixo para realizar o
+            pagamento.
+          </p>
 
-        <img :src="checkout.payment_response[0].links[0].href"
-          height="200px"
-          width="200px"
-          class="" />
+          <div style="text-align: center; margin: 25px 0;">
+            <img :href="checkout.payment_response[0].links[0].href"
+              style="height: 200px; width: 200px;" />
+          </div>
 
-        <p class="">
-          Se preferir, copie o código abaixo e utilize o PIX Copia e cola no seu aplicativo.
-        </p>
-        <el-button color="primary"
-          link
-          @click="copyCode">
-          Confirmar
-        </el-button>
+          <p style="font-weight: 500;">
+            {{ checkout.value.payment_response[0].text }}
+          </p>
+          <div style="text-align: center; margin: 15px 0 25px 0;">
+            <el-button type="primary"
+              style="text-decoration:underline;"
+              link
+              @click="copyCode">
+              Copiar código
+            </el-button>
+          </div>
+        </div>
       </div>
       <div style="text-align: center;">
         <el-button @click="handlePixShow">
@@ -492,6 +497,8 @@ const openedDialog = () => {
   recargaForm.payment_method_id = null
   recargaForm.amount_entry = null
   recargaForm.money_change = '0,00'
+  cardCreditShow.value = false
+  pixShow.value = false
   handleGetCashier()
 }
 
