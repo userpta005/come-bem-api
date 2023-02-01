@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Enums\ClientType;
 use App\Http\Controllers\Controller;
+use App\Models\Account;
 use Illuminate\Http\Request;
 use App\Models\Person;
 use App\Models\Client;
+use App\Models\Dependent;
 use App\Models\Role;
 use App\Models\User;
 use App\Rules\CpfCnpj;
@@ -86,7 +88,7 @@ class ClientController extends Controller
 
             $inputs['person_id'] = $person->id;
 
-            Client::updateOrCreate(
+            $client = Client::updateOrCreate(
                 ['person_id' => $person->id],
                 $inputs
             );
@@ -109,6 +111,14 @@ class ClientController extends Controller
             );
 
             $user->assignRole('client');
+
+            if ($inputs['type'] == 3) {
+                $inputs['client_id'] = $client->id;
+                $dependent = Dependent::query()->create($inputs);
+                $inputs['store_id'] = session('store')['id'];
+                $inputs['dependent_id'] = $dependent->id;
+                Account::query()->create($inputs);
+            }
         });
 
         return redirect()->route('clients.index')

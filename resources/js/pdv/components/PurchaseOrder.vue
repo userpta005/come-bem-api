@@ -30,9 +30,10 @@
           <template #label>
             <span style="color: black; font-size: 16px">Consumidor</span>
           </template>
-          <el-select v-model="store.purchaseOrder.account_id"
+          <el-select v-model="accountId"
             size="large"
             filterable
+            clearable
             remote
             placeholder="Digite o nome ou cpf"
             :remote-method="remoteMethod"
@@ -49,7 +50,7 @@
         <hr style="margin: 5px 0 10px 0;">
       </div>
       <div style="color: black; font-size: 14px;">
-        <div v-for="product in store.purchaseOrder.cart">
+        <div v-for="product in store.cart">
           <div>{{ product.name }}</div>
           <div style="display: flex; justify-content: space-between; align-items: center;">
             <div style="display: flex; align-items: center;">
@@ -100,7 +101,8 @@
     </div>
   </div>
 
-  <purchaseOrderFinishDialog :dialogVisible="purchaseOrderFinishDialogVisible"
+  <purchaseOrderFinishDialog :account-id="accountId"
+    :dialog-visible="purchaseOrderFinishDialogVisible"
     @close-dialog="purchaseOrderFinishDialogVisible = false" />
 </template>
 
@@ -116,11 +118,12 @@ const emit = defineEmits(['cashierDialogOpen'])
 const store = useStorageStore()
 const loading = ref(false)
 const dependents = ref([])
+const accountId = ref(null)
 const purchaseOrderFinishDialogVisible = ref(false)
 
 const total = computed(() => {
   let vlTotal = 0
-  store.purchaseOrder.cart.forEach(item => {
+  store.cart.forEach(item => {
     vlTotal += (item.price * item.quantity)
   })
   return vlTotal
@@ -149,11 +152,11 @@ const remoteMethod = async (query) => {
 }
 
 const deleteProduct = (product) => {
-  store.purchaseOrder.cart = store.purchaseOrder.cart.filter(item => item.id != product.id)
+  store.cart = store.cart.filter(item => item.id != product.id)
 }
 
 const purchaseOrderFinish = () => {
-  if (!store.purchaseOrder.cart.length) {
+  if (!store.cart.length) {
     ElNotification({
       title: 'Aviso !',
       message: 'Carrinho vazio !',

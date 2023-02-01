@@ -53,5 +53,15 @@ class PaymentMethodsTableSeeder extends Seeder
                     'status' => \App\Enums\Common\Status::ACTIVE
                 ]
             );
+
+        PaymentMethod::query()
+            ->updateOrCreate(
+                ['id' => 5],
+                [
+                    'code' => 'CREDIT',
+                    'name' => 'Crédito',
+                    'status' => \App\Enums\Common\Status::ACTIVE
+                ]
+            );
     }
 }

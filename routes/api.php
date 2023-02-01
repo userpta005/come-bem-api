@@ -48,6 +48,7 @@ Route::prefix('v1')->group(function () {
             Route::get('accounts/{id}/orders', [App\Http\Controllers\API\OrderController::class, 'index']);
             Route::put('orders/{id}', [App\Http\Controllers\API\OrderController::class, 'update']);
             Route::delete('orders/{id}', [App\Http\Controllers\API\OrderController::class, 'destroy']);
+            Route::post('accounts/{id}/pdv-orders', [App\Http\Controllers\API\PDVOrderController::class, 'store']);
         });
 
         Route::apiResource('sections', App\Http\Controllers\API\SectionController::class)->only(['index', 'show']);

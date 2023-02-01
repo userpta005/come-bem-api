@@ -154,7 +154,7 @@ handleGetSections()
 handleGetProducts()
 
 const handleAddProduct = (product) => {
-  const exists = store.purchaseOrder.cart.find(item => item.id == product.id)
+  const exists = store.cart.find(item => item.id == product.id)
   if (!!exists) {
     ElNotification({
       title: 'Aviso !',
@@ -163,7 +163,7 @@ const handleAddProduct = (product) => {
     })
   } else {
     product.quantity = 1
-    store.purchaseOrder.cart.push(product)
+    store.cart.push(product)
   }
 }
 

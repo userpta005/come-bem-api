@@ -9,10 +9,7 @@ const useStorageStore = defineStore(
     const user = ref(null)
     const cashier = ref(null)
     const openedCashier = ref(false)
-    const purchaseOrder = ref({
-      account_id: null,
-      cart: []
-    })
+    const cart = ref([])
 
     return {
       tenant,
@@ -20,7 +17,7 @@ const useStorageStore = defineStore(
       user,
       cashier,
       openedCashier,
-      purchaseOrder
+      cart
     }
   },
   {
