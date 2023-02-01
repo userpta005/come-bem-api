@@ -45,9 +45,9 @@ class PDVOrderController extends BaseController
             $now = now();
             $inputs['date'] = $now->format('Y-m-d H:m:s');
 
-            if ($now->greaterThanOrEqualTo('07:00:00') && $now->lessThanOrEqualTo('12:59:99')) {
+            if ($now->greaterThanOrEqualTo('07:00:00') && $now->lessThanOrEqualTo('12:59:59')) {
                 $inputs['turn'] = AccountTurn::MORNING;
-            } else if ($now->greaterThanOrEqualTo('13:00:00') && $now->lessThanOrEqualTo('17:59:99')) {
+            } else if ($now->greaterThanOrEqualTo('13:00:00') && $now->lessThanOrEqualTo('17:59:59')) {
                 $inputs['turn'] = AccountTurn::AFTERNOON;
             } else {
                 $inputs['turn'] = AccountTurn::NOCTURNAL;
