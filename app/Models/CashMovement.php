@@ -16,7 +16,8 @@ class CashMovement extends Model
     protected $fillable = [
         'cashier_id', 'client_id',
         'store_id', 'token', 'movement_type_id',
-        'payment_method_id', 'amount', 'date_operation', 'open_cashier_id'
+        'payment_method_id', 'amount', 'date_operation', 
+        'open_cashier_id', 'description'
     ];
 
     /**
