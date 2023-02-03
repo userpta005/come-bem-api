@@ -11,7 +11,6 @@
 
     <style>
         header {
-            font-family: 'Roboto', serif;
             text-align: center;
             font-weight: bold;
         }
@@ -67,6 +66,11 @@
             padding-top: 0;
         }
 
+        .withline{
+            border-bottom: 1px solid #DEE2E6;
+            border-top: 1px solid #DEE2E6;
+        }
+
     </style>
 </head>
 
@@ -99,7 +103,7 @@
             @foreach ($data as $item)
             <table class="table" style="font-size: 0.9rem">
                 <thead>
-                    <tr>
+                    <tr style="font-size: 1rem;" class="withline">
                         <th colspan="2">
                             Caixa: {{ $item->cashier->description }}
                         </th>
@@ -130,7 +134,7 @@
                             {{ $cashMovement->movementType->name }}
                         </td>
                         <td>
-                            {{ $cashMovement->paymentMethod->name }}
+                            {{ optional($item->paymentMethod)->name ? $item->paymentMethod->name : 'Não informado'  }}
                         </td>
                         <td class="text-right">
                             {{ $cashMovement->movementType->class == \App\Enums\MovementClass::ENTRY ? money($cashMovement->amount)  : money(0) }}
@@ -140,7 +144,7 @@
                         </td>
                     </tr>
                     @endforeach
-
+                    <tr style="border-top: 1px solid #DEE2E6;">
                     <td colspan="3">
                     </td>
                     <td>
@@ -155,6 +159,7 @@
                     <td class="text-right">
                         <b>{{ money($item->total_entries - $item->total_outgoing) }}</b>
                     </td>
+                    </tr>
                 </tbody>
             </table>
             @endforeach

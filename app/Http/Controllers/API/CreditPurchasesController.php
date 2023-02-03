@@ -122,6 +122,7 @@ class CreditPurchasesController extends BaseController
                 $inputs['token'] = $inputs['uuid'];
                 $inputs['movement_type_id'] = 1;
                 $inputs['client_id'] = $account->dependent_id;
+                $inputs['open_cashier_id'] = $cashier->open_cashier_id;
 
                 CashMovement::create($inputs);
 

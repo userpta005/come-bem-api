@@ -58,7 +58,7 @@ class OpenCashierController extends BaseController
             $inputs['date_operation'] = now();
             $inputs['token'] = (string) Uuid::uuid4();
 
-            OpenCashier::query()->create($inputs);
+            $open_cashier = OpenCashier::query()->create($inputs);
 
             $inputs['status'] = $inputs['operation'];
 
@@ -73,6 +73,9 @@ class OpenCashierController extends BaseController
 
             if ($inputs['operation'] != 1) {
                 $inputs['user_id'] =  null;
+                $inputs['open_cashier_id'] = null;
+            }else{
+                $inputs['open_cashier_id'] = $open_cashier->id;
             }
 
             $cashier->fill($inputs)->save();

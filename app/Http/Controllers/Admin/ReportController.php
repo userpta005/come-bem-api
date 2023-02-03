@@ -16,6 +16,7 @@ class ReportController extends Controller
         $this->middleware('permission:client-dependents-report_view', ['only' => ['clientDependents']]);
         $this->middleware('permission:stocks-report_view', ['only' => ['stocks']]);
         $this->middleware('permission:cash-summary-report_view', ['only' => ['cashSummary']]);
+        $this->middleware('permission:order-summary-report_view', ['only' => ['orderSummary']]);
     }
 
     public function clientDependents(Request $request)
@@ -48,5 +49,10 @@ class ReportController extends Controller
             ->get();
 
         return view('reports.cash-summary.index', compact('cashiers', 'users'));
+    }
+
+    public function orderSummary(Request $request)
+    {
+        return view('reports.order-summary.index');
     }
 }

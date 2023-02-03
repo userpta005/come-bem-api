@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Enums\AccountTurn;
+use App\Models\Order;
+use Ramsey\Uuid\Uuid;
 use App\Models\Account;
 use App\Models\Cashier;
-use App\Models\CashMovement;
-use App\Models\Order;
 use App\Models\Product;
+use App\Enums\AccountTurn;
+use App\Models\CashMovement;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
-use Ramsey\Uuid\Uuid;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class PDVOrderController extends BaseController
 {
@@ -97,6 +98,7 @@ class PDVOrderController extends BaseController
             $inputs['token'] = (string) Uuid::uuid4();
             $inputs['client_id'] = $account->dependent->id;
             $inputs['movement_type_id'] = 1;
+            $inputs['open_cashier_id'] = $cashier->open_cashier_id;
 
             CashMovement::create($inputs);
 

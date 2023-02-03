@@ -217,7 +217,7 @@
                         @endcanany
                     </ul>
                     <ul class="nav pl-4">
-                        @canany(['cash-summary-report_view'])
+                        @canany(['cash-summary-report_view', 'order-summary-report_view'])
                         <li>
                             <a data-toggle="collapse" href="#cashSumary" aria-expanded="false" class="collapsed">
                                 <i class="fas fa-bars"></i>
@@ -232,6 +232,14 @@
                                         <a href="{{ route('reports.cash-summary') }}">
                                             <i class="fas fa-table"></i>
                                             <p>Resumo do caixa</p>
+                                        </a>
+                                    </li>
+                                    @endcan
+                                    @can('order-summary-report_view')
+                                    <li>
+                                        <a href="{{ route('reports.order-summary') }}">
+                                            <i class="fas fa-file-invoice-dollar"></i>
+                                            <p>Extrato de Vendas</p>
                                         </a>
                                     </li>
                                     @endcan

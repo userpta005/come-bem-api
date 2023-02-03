@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Resumo Analitico do Caixa</title>
+    <title>Extrato de Vendas</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
 
     <style>
@@ -62,15 +62,14 @@
             border-bottom: none;
         }
 
-        .table td{
+        .table td {
             padding-top: 0;
         }
 
-        .withline{
+        .withline {
             border-bottom: 1px solid #DEE2E6;
             border-top: 1px solid #DEE2E6;
         }
-
 
     </style>
 </head>
@@ -80,90 +79,76 @@
     <div>
         <header>
             <h1 class="title">
-                <b>  Resumo do Caixa </b>
+                <b>Extrato de Vendas</b>
             </h1>
 
             @if(!isset($data[0]))
-                <h1 class="title">
-                    Dados não encontrados para esta busca.
-                </h1>
+            <h1 class="title">
+                Dados não encontrados para esta busca.
+            </h1>
             @else
 
-            <h1 class="title" style="font-size: 1.4rem;">Analítico / Data: {{ carbon($data[0]->date_operation)->format('d/m/Y') }} </h1>
-            
-            @if ($data[0]->store)
-            <div class="local " style="text-align: left">
-                <h1 class="title" style="font-size: 1.4rem;">
-                   Estabelecimento:  {{ $data[0]->store->info }} 
-                </h1>
-            </div>
-            @endif
+            <h1 class="title" style="font-size: 1.4rem;">Data: {{ carbon($data[0]->date_operation)->format('d/m/Y') }} </h1>
 
         </header>
         <main>
-            @foreach ($data as $item)
             <table class="table" style="font-size: 0.9rem">
-                <thead >
-                    <tr style="font-size: 1rem" class="withline">
+                <thead>
+                    <tr style="font-size: 1rem;" class="withline">
                         <th colspan="2">
-                            Caixa: {{ $item->cashier->description }}
+                            Contratante: {{ optional($data[0]->account->store->tenant->people)->name }}
                         </th>
                         <th colspan="2">
-                            Colaborador(a): {{  $item->user->people->full_name ? $item->user->people->full_name : $item->user->people->name  }}
+                            Estabelecimento: {{ optional($data[0]->account->store->people)->name }}
                         </th>
                     </tr>
                     <tr>
-                        <th>Dt. Mov.</th>
-                        <th>E/S</th>
-                        <th>Tipo Mov.</th>
-                        <th>F.Pagto</th>
-                        <th class="text-right">Entrada</th>
-                        <th class="text-right">Saída</th>
-                        <th class="text-right"></th>
+                        <th>Dt. Venda.</th>
+                        <th>Pedido</th>
+                        <th>Consumidor</th>
+                        <th class="text-right">Qtde.</th>
+                        <th class="text-right">Vl Venda</th>
+                        <th class="text-right">F.Pagto</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($item->cashMovements as $cashMovement)
+                    @foreach ($data as $item)
                     <tr>
                         <td>
-                            {{ carbon($cashMovement->date_operation)->format('d/m/Y H:i') }}
+                            {{ carbon($item->date)->format('d/m/Y') }}
                         </td>
                         <td>
-                            {{ $cashMovement->movementType->class->value }}
+                            {{ $item->id }}
                         </td>
                         <td>
-                            {{ $cashMovement->movementType->name }}
+                            {{ $item->dependent}}
                         </td>
-                        <td>
+                        <td class="text-right">
+                             {{ floatToMoney( $item->total_quantity ) }}
+                        </td>
+                        <td class="text-right">
+                            {{ floatToMoney($item->amount) }}
+                        </td>
+                        <td class="text-right">
                             {{ optional($item->paymentMethod)->name ? $item->paymentMethod->name : 'Não informado'  }}
-                        </td>
-                        <td class="text-right">
-                            {{ $cashMovement->movementType->class == \App\Enums\MovementClass::ENTRY ? money($cashMovement->amount)  : money(0) }}
-                        </td>
-                        <td class="text-right">
-                            {{ $cashMovement->movementType->class == \App\Enums\MovementClass::OUTGOING ? money($cashMovement->amount)  : money(0) }}
                         </td>
                     </tr>
                     @endforeach
                     <tr style="border-top: 1px solid #DEE2E6;">
-                    <td colspan="3">
-                    </td>
-                    <td>
-                        <b>TOTAIS:</b>
-                    </td>
-                    <td class="text-right"> 
-                        <b>{{ money($item->total_entries) }}</b>
-                    </td>
-                    <td class="text-right">
-                        <b>{{ money($item->total_outgoing) }}</b>
-                    </td>
-                    <td class="text-right">
-                        <b>{{ money($item->total_entries - $item->total_outgoing) }}</b>
-                    </td>
-                </tr>
+                        <td colspan="2">
+                        </td>
+                        <td class="text-right">
+                            <b>Totais:</b>
+                        </td>
+                        <td class="text-right">
+                            <b> {{ floatToMoney( $data->sum('total_quantity') ) }}</b>
+                        </td>
+                        <td class="text-right">
+                            <b> {{ floatToMoney( $data->sum('amount') ) }} </b>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
-            @endforeach
             @endif
         </main>
     </div>

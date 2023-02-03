@@ -9,11 +9,6 @@
                     <div class="col-md-8">
                         <h4 class="card-title">Movimento do Caixa</h4>
                     </div>
-                    @can('cash-movements_create')
-                    <div class="col-md-4 text-right">
-                        <a href="{{ route('cash-movements.create') }}" class="btn btn-sm btn-primary">Adicionar Novo</a>
-                    </div>
-                    @endcan
                 </div>
             </div>
             <div class="card-body">

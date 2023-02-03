@@ -41,4 +41,14 @@ class Order extends CommonModel
     {
         return $this->hasMany(OrderItem::class);
     }
+
+    /**
+     * Get the payment_method that owns the CashMovement
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function paymentMethod(): BelongsTo
+    {
+        return $this->belongsTo(PaymentMethod::class, 'payment_method_id');
+    }
 }

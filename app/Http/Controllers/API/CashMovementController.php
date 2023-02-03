@@ -52,6 +52,7 @@ class CashMovementController extends BaseController
             $inputs['amount'] = moneyToFloat($inputs['amount']);
             $inputs['date_operation'] = now();
             $inputs['token'] = (string) Uuid::uuid4();
+            $inputs['open_cashier_id'] = $cashier->open_cashier_id;
 
             CashMovement::create($inputs);
 
