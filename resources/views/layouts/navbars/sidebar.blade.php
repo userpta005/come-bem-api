@@ -309,21 +309,19 @@
                     <b class="caret mt-1"></b>
                 </a>
                 <div class="collapse" id="collapseFiance" style="">
+                        <ul class="nav pl-4">
+                            @can('financial-movements_view')
+                                <li>
+                                    <a href="{{ route('financial-movements.index') }}">
+                                        <i class="fas fa-receipt"></i>
+                                        <p>Movimento<br> Financeiro</p>
+                                    </a>
+                                </li>
+                            @endcan
+                        </ul>
                     <ul class="nav pl-4">
-                        @canany(['financialcategories_view', 'financial-movements_view'])
+                        @canany(['financialcategories_view'])
                         <li>
-                            <div class="collapse" id="collapseFiance" style="">
-                                <ul class="nav pl-4">
-                                    @can('financial-movements_view')
-                                    <li>
-                                        <a href="{{ route('financial-movements.index') }}">
-                                            <i class="fas fa-exchange-alt"></i>
-                                            <p>Movimento <br/>financeiro</p>
-                                        </a>
-                                    </li>
-                                @endcan
-                                </ul>
-                            </div>
                             <a data-toggle="collapse" href="#general1" aria-expanded="false" class="collapsed">
                                 <i class="fas fa-bars"></i>
                                 <span class="nav-link-text">Gerais</span>
