@@ -43,7 +43,8 @@ use App\Http\Controllers\Admin\{
     MovementTypeController,
     CashMovementController,
     CashSummaryReportController,
-    OrderReportController
+    OrderReportController,
+    FinancialMovementController
 };
 use App\Http\Controllers\PDVController;
 use Illuminate\Support\Facades\Auth;
@@ -120,9 +121,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('cash-movements', CashMovementController::class);
     Route::get('reports.cash-summary', [ReportController::class, 'cashSummary'])->name('reports.cash-summary');
     Route::get('cash-summary-report', CashSummaryReportController::class)->name('cash.summary.report');
-    
     Route::get('reports.order-summary', [ReportController::class, 'orderSummary'])->name('reports.order-summary');
     Route::get('order-summary-report', OrderReportController::class)->name('order.summary.report');
+    Route::resource('financial-movements', FinancialMovementController::class);
 });
 
 

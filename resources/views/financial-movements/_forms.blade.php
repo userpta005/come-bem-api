@@ -1,12 +1,12 @@
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-4">
         {!! Form::select('cashier_id', 'Caixa:')
         ->options($cashiers->prepend('Selecione...', ''), 'description')
         ->attrs(['class' => 'select2'])
-        ->required()
+        ->required(false)
         !!}
     </div>
-    <div class="col-md-6">
+    <div class="col-md-4">
         {!!Form::select('movement_type_id', 'Tipo de Movimento:')
         ->options($movement_types->prepend('Selecione...', ''), 'name')
         ->attrs(['class' => 'select2'])
@@ -20,14 +20,14 @@
         ->required()
         !!}
     </div>
-    <div class="col-md-5">
+    <div class="col-md-8">
         {!!Form::select('client_id', 'Cliente:')
         ->options($clients->prepend('Selecione...', ''), 'info')
         ->attrs(['class' => 'select2'])
         ->required(false)
         !!}
     </div>
-    <div class="col-md-3">
+    <div class="col-md-4">
         {!! Form::text('amount', 'Valor:')
         ->attrs(['maxlength' => 8])
         ->required()

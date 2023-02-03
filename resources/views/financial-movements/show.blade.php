@@ -1,4 +1,4 @@
-@extends('layouts.app', ['page' => 'Movimento do Caixa', 'pageSlug' => 'cash-movements'])
+@extends('layouts.app', ['page' => 'Movimento Financeiro', 'pageSlug' => 'financial-movements'])
 
 @section('content')
 <div class="container-fluid p-0">
@@ -8,10 +8,10 @@
                 <div class="card-header">
                     <div class="row align-items-center">
                         <div class="col-md-8">
-                            <h4 class="card-title">Movimento do Caixa</h4>
+                            <h4 class="card-title">Movimento Financeiro</h4>
                         </div>
                         <div class="ml-auto mr-3">
-                            <a href="{{ route('cash-movements.index') }}" class="btn btn-sm btn-primary">Voltar</a>
+                            <a href="{{ route('financial-movements.index') }}" class="btn btn-sm btn-primary">Voltar</a>
                         </div>
                     </div>
                 </div>
@@ -21,7 +21,7 @@
                             <div class="card-body">
                                 <p><strong>Caixa: </strong></p>
                                 <p class="card-text">
-                                    {{ $item->cashier->description }}
+                                    {{ optional($item->cashier)->description ? $item->cashier->description : 'Não informado' }}
                                 </p>
                             </div>
                         </div>
@@ -41,8 +41,6 @@
                                 </p>
                             </div>
                         </div>
-                    </div>
-                    <div class="card-deck">
                         <div class="card m-2 shadow-sm">
                             <div class="card-body">
                                 <p><strong>Forma de Pagamento:</strong></p>
@@ -51,6 +49,9 @@
                                 </p>
                             </div>
                         </div>
+                    </div>
+                    <div class="card-deck">
+                        
                         <div class="card m-2 shadow-sm">
                             <div class="card-body">
                                 <p><strong>Cliente: </strong></p>

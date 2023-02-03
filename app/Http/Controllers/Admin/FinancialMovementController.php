@@ -16,25 +16,21 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Ramsey\Uuid\Uuid;
 
-class CashMovementController extends Controller
+class FinancialMovementController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('permission:cash-movements_create', ['only' => ['create', 'store', 'painelStore']]);
-        $this->middleware('permission:cash-movements_edit', ['only' => ['edit', 'update']]);
-        $this->middleware('permission:cash-movements_view', ['only' => ['show', 'index']]);
-        $this->middleware('permission:cash-movements_delete', ['only' => ['destroy']]);
+        $this->middleware('permission:financial-movements_create', ['only' => ['create', 'store', 'painelStore']]);
+        $this->middleware('permission:financial-movements_edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:financial-movements_view', ['only' => ['show', 'index']]);
+        $this->middleware('permission:financial-movements_delete', ['only' => ['destroy']]);
         $this->middleware('store');
     }
 
     public function index(Request $request)
     {
         $data = CashMovement::query()
-            ->whereNotNull('cashier_id')
             ->where('store_id', session('store')['id'])
-            ->when(!empty($request->cashier_id), function ($query) use ($request) {
-                $query->where('cashier_id', $request->cashier_id);
-            })
             ->when(!empty($request->start_date), function ($query) use ($request) {
                 $query->whereDate('date_operation', '>=', $request->start_date);
             })
@@ -48,7 +44,7 @@ class CashMovementController extends Controller
             ->where('store_id', session('store')['id'])
             ->get();
 
-        return view('cash-movements.index', compact('data', 'cashiers'));
+        return view('financial-movements.index', compact('data', 'cashiers'));
     }
 
     public function create()
@@ -83,7 +79,7 @@ class CashMovementController extends Controller
             ->orderBy('name', 'asc')
             ->get();
 
-        return view('cash-movements.create', compact(
+        return view('financial-movements.create', compact(
             'data', 'cashiers', 'movement_types',
             'clients', 'payment_methods'));
     }
@@ -102,7 +98,7 @@ class CashMovementController extends Controller
             ->first();
 
         if (!isset($cashier)) {
-            return redirect()->route('cash-movements.index')
+            return redirect()->route('financial-movements.index')
                 ->withError('Registro não pode ser adicionado.');
         }
 
@@ -119,7 +115,7 @@ class CashMovementController extends Controller
             $cash_movement->save();
         });
 
-        return redirect()->route('cash-movements.index')
+        return redirect()->route('financial-movements.index')
             ->withStatus('Registro adicionado com sucesso.');
     }
 
@@ -127,7 +123,7 @@ class CashMovementController extends Controller
     {
         $item = CashMovement::query()->findOrFail($id);
 
-        return view('cash-movements.show', compact('item'));
+        return view('financial-movements.show', compact('item'));
     }
 
     public function edit($id)
@@ -160,7 +156,7 @@ class CashMovementController extends Controller
             ->orderBy('name', 'asc')
             ->get();
 
-        return view('cash-movements.edit', compact(
+        return view('financial-movements.edit', compact(
             'item', 'cashiers', 'clients',
             'payment_methods', 'movement_types'));
     }
@@ -179,11 +175,6 @@ class CashMovementController extends Controller
             ->where('id', $request->cashier_id)
             ->first();
 
-        if (!isset($cashier)) {
-            return redirect()->route('cash-movements.index')
-                ->withError('Registro não pode ser atualizado.');
-        }
-
         DB::transaction(function () use ($request, $id, $cashier) {
 
             $item = CashMovement::findOrFail($id);
@@ -192,11 +183,10 @@ class CashMovementController extends Controller
             $inputs['amount'] = moeda($request->amount);
             $item->fill($inputs)->save();
 
-            $item->open_cashier_id = $cashier->open_cashier_id;
             $item->save();
         });
 
-        return redirect()->route('cash-movements.index')
+        return redirect()->route('financial-movements.index')
             ->withStatus('Registro atualizado com sucesso.');
     }
 
@@ -206,10 +196,10 @@ class CashMovementController extends Controller
 
         try {
             $item->delete();
-            return redirect()->route('cash-movements.index')
+            return redirect()->route('financial-movements.index')
                 ->withStatus('Registro deletado com sucesso.');
         } catch (\Exception$e) {
-            return redirect()->route('cash-movements.index')
+            return redirect()->route('financial-movements.index')
                 ->withError('Registro não foi deletado.');
         }
     }

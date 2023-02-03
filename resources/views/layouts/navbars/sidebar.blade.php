@@ -301,7 +301,7 @@
             </li>
             @endcanany
             @endif
-            @canany(['financialcategories_view'])
+            @canany(['financialcategories_view', 'financial-movements_view'])
             <li>
                 <a data-toggle="collapse" href="#collapseFiance" aria-expanded="false" class="collapsed">
                     <i class="fas fa-money-bill"></i>
@@ -310,8 +310,20 @@
                 </a>
                 <div class="collapse" id="collapseFiance" style="">
                     <ul class="nav pl-4">
-                        @canany(['financialcategories_view'])
+                        @canany(['financialcategories_view', 'financial-movements_view'])
                         <li>
+                            <div class="collapse" id="collapseFiance" style="">
+                                <ul class="nav pl-4">
+                                    @can('financial-movements_view')
+                                    <li>
+                                        <a href="{{ route('financial-movements.index') }}">
+                                            <i class="fas fa-exchange-alt"></i>
+                                            <p>Movimento <br/>financeiro</p>
+                                        </a>
+                                    </li>
+                                @endcan
+                                </ul>
+                            </div>
                             <a data-toggle="collapse" href="#general1" aria-expanded="false" class="collapsed">
                                 <i class="fas fa-bars"></i>
                                 <span class="nav-link-text">Gerais</span>

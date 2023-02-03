@@ -25,12 +25,6 @@
         ->required()
         !!}
     </div>
-    <div class="col-md-4">
-        {!! Form::text('money_change', 'Troco:')
-        ->attrs(['maxlength' => 8])
-        ->required()
-        !!}
-    </div>
 
 </div>
 

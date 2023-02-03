@@ -18,7 +18,7 @@ class OpenCashier extends Model
     protected $fillable = [
         'cashier_id', 'user_id',
         'operation', 'token', 'balance',
-        'money_change', 'date_operation', 'store_id'
+        'date_operation', 'store_id'
     ];
 
     public static function operations($option = null)

@@ -41,21 +41,11 @@
                                 </p>
                             </div>
                         </div>
-                    </div>
-                    <div class="card-deck">
                         <div class="card m-2 shadow-sm">
                             <div class="card-body">
                                 <p><strong>Saldo: </strong></p>
                                 <p class="card-text">
                                     {{ money($item->balance) }}
-                                </p>
-                            </div>
-                        </div>
-                        <div class="card m-2 shadow-sm">
-                            <div class="card-body">
-                                <p><strong>Troco</strong></p>
-                                <p class="card-text">
-                                    {{ money($item->money_change) }}
                                 </p>
                             </div>
                         </div>

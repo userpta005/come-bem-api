@@ -250,6 +250,15 @@ class Permission extends \Spatie\Permission\Models\Permission
                 'title' => 'Financeiro',
                 'items' => [
                     [
+                        'title' => 'Movimento Financeiro',
+                        'items' => [
+                            array('name' => 'financial-movements_view', 'description' => 'Visualizar'),
+                            array('name' => 'financial-movements_create', 'description' => 'Criar'),
+                            array('name' => 'financial-movements_edit', 'description' => 'Editar'),
+                            array('name' => 'financial-movements_delete', 'description' => 'Deletar'),
+                        ],
+                    ],
+                    [
                         'title' => 'Gerais',
                         'items' => [
                             [

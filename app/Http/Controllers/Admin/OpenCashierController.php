@@ -93,7 +93,6 @@ class OpenCashierController extends Controller
         DB::transaction(function () use ($request, $inputs, $cashier) {
 
             $inputs['balance'] = moeda($request->balance);
-            $inputs['money_change'] = moeda($request->money_change);
             $inputs['date_operation'] = now();
             $inputs['token'] = (string) Uuid::uuid4();
 
@@ -158,7 +157,6 @@ class OpenCashierController extends Controller
 
             $inputs = $request->all();
             $inputs['balance'] = moeda($request->balance);
-            $inputs['money_change'] = moeda($request->money_change);
 
             $item->fill($inputs)->save();
 
@@ -212,7 +210,6 @@ class OpenCashierController extends Controller
             'user_id' => ['required', Rule::exists('users', 'id')],
             'operation' => ['required'],
             'balance' => ['required', 'max:10'],
-            'money_change' => ['required', 'max:10'],
         ];
 
         $messages = [];

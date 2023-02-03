@@ -23,7 +23,8 @@ class CashSummaryReportController extends Controller
                 ->whereDate('date_operation', $request->date_operation)
                 ->where('store_id', session('store')['id'])
                 ->with(['cashMovements' => function ($query) use ($request) {
-                    $query->select(
+                    $query->whereNotNull('cashier_id')
+                    ->select(
                         'cash_movements.open_cashier_id',
                         'cash_movements.movement_type_id',
                         'cash_movements.payment_method_id',
@@ -60,7 +61,8 @@ class CashSummaryReportController extends Controller
                 ->whereDate('date_operation', $request->date_operation)
                 ->where('store_id', session('store')['id'])
                 ->with(['cashMovements' => function ($query) use ($request) {
-                    $query->whereDate('date_operation', $request->date_operation)
+                    $query->whereNotNull('cashier_id')
+                        ->whereDate('date_operation', $request->date_operation)
                         ->with('movementType', 'paymentMethod');
                 }, 'store', 'cashier', 'user.people'])
                 ->whereHas('cashier', function ($query) use ($request) {

@@ -33,6 +33,9 @@
         ->required()
         !!}
     </div>
+    <div class="col-md-12">
+        {!! Form::textarea('description', 'Descrição')->required(false)->attrs(['maxlength' => 190]) !!}
+    </div>
 
 </div>
 
