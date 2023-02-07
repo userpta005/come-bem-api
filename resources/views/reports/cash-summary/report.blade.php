@@ -135,7 +135,7 @@
                             {{ $cashMovement->movementType->name }}
                         </td>
                         <td>
-                            {{ optional($item->paymentMethod)->name ? $item->paymentMethod->name : 'Não informado'  }}
+                            {{ optional($cashMovement->paymentMethod)->name ? $cashMovement->paymentMethod->name : 'Não informado'  }}
                         </td>
                         <td class="text-right">
                             {{ $cashMovement->movementType->class == \App\Enums\MovementClass::ENTRY ? money($cashMovement->amount)  : money(0) }}
