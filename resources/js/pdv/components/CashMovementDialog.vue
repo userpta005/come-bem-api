@@ -30,94 +30,6 @@
     class="cash-movement-dialog"
     destroy-on-close>
 
-    <div v-if="cardCreditShow"
-      style="height: 491px; display:flex; flex-direction:column; justify-content:space-between">
-      <div>
-        <div style="display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 10px 30px 0 30px; margin-bottom: 30px;">
-          <h4 style="font-weight: 600;
-          margin: 0;">
-            Dados do cartão
-            <hr style="background: #ff7e07;
-            margin: 5px 0 0 0">
-          </h4>
-        </div>
-        <el-form label-position="top"
-          style="padding: 0 30px;"
-          require-asterisk-position="right"
-          ref="recargaFormRef"
-          :model="recargaForm.card">
-          <el-row>
-            <el-col :span="24">
-              <el-form-item label="Titular"
-                style="margin: 0 18px 18px 0;"
-                prop="holder"
-                :rules="[{ required: true, message: 'Titular é obrigatório !' }]">
-                <el-input size="large"
-                  v-model="recargaForm.card.holder" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="24">
-              <el-form-item label="Número do cartão"
-                style="margin: 0 18px 18px 0;"
-                prop="number"
-                :rules="[{ required: true, message: 'Número do cartão é obrigatório !' }]">
-                <el-input size="large"
-                  v-maska
-                  data-maska="#### #### #### ####"
-                  v-model="recargaForm.card.number" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="CVV"
-                style="margin: 0 18px 18px 0;"
-                prop="security_code"
-                :rules="[{ required: true, message: 'CVV é obrigatório !' }]">
-                <el-input size="large"
-                  v-maska
-                  data-maska="###"
-                  v-model="recargaForm.card.security_code" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="Mês"
-                style="margin: 0 18px 18px 0;"
-                prop="exp_month"
-                :rules="[{ required: true, message: 'Mês é obrigatório !' }]">
-                <el-input size="large"
-                  v-maska
-                  data-maska="##"
-                  v-model="recargaForm.card.exp_month" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="Ano"
-                style="margin: 0 18px 18px 0;"
-                prop="exp_year"
-                :rules="[{ required: true, message: 'Ano é obrigatório !' }]">
-                <el-input size="large"
-                  v-maska
-                  data-maska="####"
-                  v-model="recargaForm.card.exp_year" />
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </el-form>
-      </div>
-      <div style="text-align: center;">
-        <el-button @click="handleCreditCardShow">
-          Cancelar
-        </el-button>
-        <el-button color="#ff7e07"
-          style="color: white;"
-          @click="handleCreditCardSubmit(recargaFormRef)">
-          Confirmar
-        </el-button>
-      </div>
-    </div>
-
     <div v-if="pixShow"
       style="min-height: 491px; display:flex; flex-direction:column; justify-content:space-between">
       <div>
@@ -168,7 +80,7 @@
       </div>
     </div>
 
-    <el-tabs v-if="!cardCreditShow && !pixShow"
+    <el-tabs v-if="!pixShow"
       type="border-card"
       class="cash-movement-tabs">
 
@@ -289,6 +201,16 @@
           ref="sangriaFormRef"
           :model="sangriaForm">
           <el-row>
+            <el-col :span="24">
+              <el-form-item label="Descrição"
+                style="margin: 0 18px 18px 0;"
+                prop="description"
+                :rules="[{ required: true, message: 'Descrição é obrigatória !' }]">
+                <el-input v-model="sangriaForm.description"
+                  size="large"
+                  autocomplete="off" />
+              </el-form-item>
+            </el-col>
             <el-col :span="24">
               <el-form-item label="Valor (R$)"
                 style="margin: 0 18px 18px 0;"
@@ -416,21 +338,14 @@ const recargaForm = reactive({
   amount: null,
   payment_method_id: null,
   amount_entry: null,
-  money_change: '0,00',
-  card: {
-    number: null,
-    exp_month: null,
-    exp_year: null,
-    security_code: null,
-    holder: null,
-    installments: 1
-  }
+  money_change: '0,00'
 })
 const moneyChangeShow = ref(false)
 const sangriaFormRef = ref(null)
 const sangriaForm = reactive({
   cashier_id: null,
   movement_type_id: 3,
+  description: null,
   amount: null,
   balance: null
 })
@@ -441,14 +356,8 @@ const trocoForm = reactive({
   amount: null,
   balance: null
 })
-const cardCreditShow = ref(false)
 const pixShow = ref(false)
 const checkout = ref(null)
-
-const handleCreditCardShow = () => {
-  recargaForm.payment_method_id = null
-  cardCreditShow.value = false
-}
 
 const handlePixShow = () => {
   recargaForm.payment_method_id = null
@@ -497,7 +406,6 @@ const openedDialog = () => {
   recargaForm.payment_method_id = null
   recargaForm.amount_entry = null
   recargaForm.money_change = '0,00'
-  cardCreditShow.value = false
   pixShow.value = false
   handleGetCashier()
 }
@@ -509,8 +417,6 @@ const remoteMethod = async (query) => {
       const { data } = await axios.get(`${url}/api/v1/dependents`, { params: { store_id: store.store.id, search: query } })
       dependents.value = data.data
       loading.value = false
-    } else {
-      dependents.value = []
     }
   } catch ({ message }) {
     ElNotification({
@@ -526,17 +432,6 @@ const handleChangeRadio = async () => {
     recargaForm.amount_entry = recargaForm.amount
     recargaForm.money_change = '0,00'
     moneyChangeShow.value = true
-  } else if (recargaForm.payment_method_id == 3) {
-    if (!recargaForm.account_id || !recargaForm.amount) {
-      ElNotification({
-        title: 'Erro !',
-        message: 'Preencha todos os campos obrigatórios !',
-        type: 'error',
-      })
-      recargaForm.payment_method_id = null
-      return
-    }
-    cardCreditShow.value = true
   } else if (recargaForm.payment_method_id == 4) {
     if (!recargaForm.account_id || !recargaForm.amount) {
       ElNotification({
@@ -652,50 +547,6 @@ const handleRecargaSubmit = (formEl) => {
   })
 }
 
-const handleCreditCardSubmit = (formEl) => {
-  if (!formEl) return
-  formEl.validate(async (valid) => {
-    if (valid) {
-      try {
-        const form = {
-          cashier_id: store.cashier.id,
-          amount: recargaForm.amount,
-          payment_method_id: recargaForm.payment_method_id,
-          card: recargaForm.card
-        }
-        const { data } = await axios.post(`${url}/api/v1/accounts/${recargaForm.account_id}/credit-purchases`, form)
-        emit('closeCashMovementDialog')
-        ElNotification({
-          title: 'Sucesso !',
-          message: data.message,
-          type: 'success',
-        })
-      } catch (error) {
-        let msg = null
-        if (error.response) {
-          const response = error.response
-          if (response.status === 422) {
-            const data = response.data.data
-            const property = Object.keys(data)[0]
-            msg = data[property][0]
-          } else {
-            msg = response.data.message
-          }
-        } else {
-          msg = error.message
-        }
-        ElNotification({
-          title: 'Erro !',
-          message: msg,
-          type: 'error',
-        })
-      }
-    } else {
-      return false
-    }
-  })
-}
-
 const handleSangriaAmountChange = () => {
   let amount = moneyToFloat(sangriaForm.amount)
   const balance = moneyToFloat(store.cashier.balance)
@@ -712,6 +563,14 @@ const handleSangriaAmountChange = () => {
 const handleSangriaSubmit = (formEl) => {
   if (!formEl) return
   formEl.validate(async (valid) => {
+    if (moneyToFloat(sangriaForm.amount) < 1) {
+      ElNotification({
+        title: 'Aviso !',
+        message: 'Valor de sangria minímo é R$ 1 !',
+        type: 'warning',
+      })
+      return
+    }
     if (valid) {
       try {
         const { data } = await axios.post(`${url}/api/v1/cash-movements`, sangriaForm)
@@ -757,6 +616,14 @@ const handleTrocoAmountChange = () => {
 const handleTrocoSubmit = (formEl) => {
   if (!formEl) return
   formEl.validate(async (valid) => {
+    if (moneyToFloat(trocoForm.amount) < 1) {
+      ElNotification({
+        title: 'Aviso !',
+        message: 'Valor de troco minímo é R$ 1 !',
+        type: 'warning',
+      })
+      return
+    }
     if (valid) {
       try {
         const { data } = await axios.post(`${url}/api/v1/cash-movements`, trocoForm)

@@ -49,7 +49,11 @@ class CreditPurchasesController extends BaseController
         try {
             DB::beginTransaction();
 
-            $account = Account::query()->findOrFail($id);
+            $account = Account::query()->with('dependent.client')->findOrFail($id);
+
+            if ($account->dependent->client->type->isGeneric_Consumer()) {
+                return $this->sendError("Não é possível realizar recarga para consumidor genérico !", [], 403);
+            }
 
             $inputs = $request->all();
 
@@ -81,7 +85,7 @@ class CreditPurchasesController extends BaseController
                 ];
                 $checkout = $pixAction->execute($token, $payload);
                 $inputs['checkout'] = $checkout;
-            } else if ($paymentMethod->code == PaymentMethod::CREDIT_CARD) {
+            } else if ($paymentMethod->code == PaymentMethod::CREDIT_CARD && empty($request->cashier_id)) {
                 $pagseguro = $request->get('store')['tenant']['pagseguro'];
 
                 if (!isset($pagseguro)) {
@@ -126,8 +130,10 @@ class CreditPurchasesController extends BaseController
 
                 CashMovement::create($inputs);
 
-                $cashier->increment('balance', $inputs['amount']);
-                $cashier->save();
+                if ($inputs['payment_method_id'] == 1) {
+                    $cashier->increment('balance', $inputs['amount']);
+                    $cashier->save();
+                }
             }
 
             DB::commit();
@@ -146,12 +152,24 @@ class CreditPurchasesController extends BaseController
             'cashier_id' => ['nullable', Rule::exists('cashiers', 'id')],
             'amount' => ['required'],
             'payment_method_id' => ['required', Rule::exists('payment_methods', 'id')],
-            'card.number' => [Rule::requiredIf($paymentMethod->code == PaymentMethod::CREDIT_CARD)],
-            'card.exp_month' => [Rule::requiredIf($paymentMethod->code == PaymentMethod::CREDIT_CARD), 'min:2', 'max:2'],
-            'card.exp_year' => [Rule::requiredIf($paymentMethod->code == PaymentMethod::CREDIT_CARD), 'min:4', 'max:4'],
-            'card.security_code' => [Rule::requiredIf($paymentMethod->code == PaymentMethod::CREDIT_CARD), 'min:3', 'max:3'],
-            'card.holder' => [Rule::requiredIf($paymentMethod->code == PaymentMethod::CREDIT_CARD), 'string'],
-            'card.installments' => [Rule::requiredIf($paymentMethod->code == PaymentMethod::CREDIT_CARD), 'integer']
+            'card.number' => [
+                Rule::requiredIf($paymentMethod->code == PaymentMethod::CREDIT_CARD && empty($request->cashier_id))
+            ],
+            'card.exp_month' => [
+                Rule::requiredIf($paymentMethod->code == PaymentMethod::CREDIT_CARD && empty($request->cashier_id)), 'min:2', 'max:2'
+            ],
+            'card.exp_year' => [
+                Rule::requiredIf($paymentMethod->code == PaymentMethod::CREDIT_CARD && empty($request->cashier_id)), 'min:4', 'max:4'
+            ],
+            'card.security_code' => [
+                Rule::requiredIf($paymentMethod->code == PaymentMethod::CREDIT_CARD && empty($request->cashier_id)), 'min:3', 'max:3'
+            ],
+            'card.holder' => [
+                Rule::requiredIf($paymentMethod->code == PaymentMethod::CREDIT_CARD && empty($request->cashier_id)), 'string'
+            ],
+            'card.installments' => [
+                Rule::requiredIf($paymentMethod->code == PaymentMethod::CREDIT_CARD && empty($request->cashier_id)), 'integer'
+            ]
         ];
 
         $messages = [];

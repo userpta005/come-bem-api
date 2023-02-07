@@ -43,6 +43,14 @@ class PDVOrderController extends BaseController
                 return $this->sendError('Conta não cadastrada nessa loja.', [], 403);
             }
 
+            if (empty($inputs['cashier_id']) && $account->dependent->client->type->isGENERIC_CONSUMER()) {
+                return $this->sendError('Não é possível realizar uma compra para um consumidor genérico com o caixa fechado !', [], 403);
+            }
+
+            if (empty($inputs['cashier_id']) && !$account->dependent->client->type->isGENERIC_CONSUMER() && $inputs['payment_method_id'] != 5) {
+                return $this->sendError('Para uma operação diferente de crédito, abra o caixa !', [], 403);
+            }
+
             $now = now();
             $inputs['date'] = $now->format('Y-m-d H:m:s');
 
@@ -91,19 +99,21 @@ class PDVOrderController extends BaseController
             $cashier = Cashier::query()
                 ->where('store_id', $inputs['store_id'])
                 ->where('status', 1)
-                ->findOrFail($inputs['cashier_id']);
+                ->find($inputs['cashier_id']);
 
             $inputs['amount'] = $inputs['amount'];
             $inputs['date_operation'] = $now;
             $inputs['token'] = (string) Uuid::uuid4();
             $inputs['client_id'] = $account->dependent->id;
             $inputs['movement_type_id'] = 1;
-            $inputs['open_cashier_id'] = $cashier->open_cashier_id;
+            $inputs['open_cashier_id'] = !empty($cashier) ? $cashier->open_cashier_id : null;
 
             CashMovement::create($inputs);
 
-            $cashier->increment('balance', $inputs['amount']);
-            $cashier->save();
+            if ($inputs['payment_method_id'] == 1) {
+                $cashier->increment('balance', $inputs['amount']);
+                $cashier->save();
+            }
 
             DB::commit();
             return $this->sendResponse([], 'Pedido realizado com sucesso!', 201);
@@ -116,7 +126,7 @@ class PDVOrderController extends BaseController
     private function rules(Request $request, $primaryKey = null, bool $changeMessages = false)
     {
         $rules = [
-            'cashier_id' => ['required', Rule::exists('cashiers', 'id')],
+            'cashier_id' => ['nullable', Rule::exists('cashiers', 'id')],
             'payment_method_id' => ['required', Rule::exists('payment_methods', 'id')],
             'products' => ['required', 'array'],
             'products.*.id' => ['required', Rule::exists('products', 'id')],

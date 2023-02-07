@@ -69,12 +69,14 @@ class OpenCashierController extends BaseController
             $inputs['cashier_id'] = $cashier->id;
             $inputs['amount'] = $inputs['money_change'];
 
-            CashMovement::query()->create($inputs);
+            if (!empty($inputs['amount'])) {
+                CashMovement::query()->create($inputs);
+            }
 
             if ($inputs['operation'] != 1) {
                 $inputs['user_id'] =  null;
                 $inputs['open_cashier_id'] = null;
-            }else{
+            } else {
                 $inputs['open_cashier_id'] = $open_cashier->id;
             }
 

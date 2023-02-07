@@ -1,6 +1,6 @@
 <style>
 .purchase-order {
-  width: 300px;
+  width: 400px;
   min-height: 500px;
   border: 1px solid orange;
   border-radius: 10px;
@@ -89,7 +89,8 @@
         <span>{{ floatToMoney(total) }}</span>
       </div>
       <el-button size="large"
-        style="float: left;">
+        style="float: left;"
+        @click="purchaseOrderCancel">
         Cancelar
       </el-button>
       <el-button color="#2474fd"
@@ -103,7 +104,7 @@
 
   <purchaseOrderFinishDialog :account-id="accountId"
     :dialog-visible="purchaseOrderFinishDialogVisible"
-    @close-dialog="purchaseOrderFinishDialogVisible = false" />
+    @close-dialog="purchaseOrderFinishDialogClose" />
 </template>
 
 <script setup>
@@ -163,11 +164,19 @@ const purchaseOrderFinish = () => {
       type: 'warning',
     })
     return
-  } else if (!store.openedCashier) {
-    emit('cashierDialogOpen')
-    return
   }
   purchaseOrderFinishDialogVisible.value = true
+}
+
+const purchaseOrderCancel = () => {
+  store.cart = []
+  accountId.value = null
+}
+
+const purchaseOrderFinishDialogClose = () => {
+  purchaseOrderFinishDialogVisible.value = false
+  accountId.value = null
+  store.cart = []
 }
 
 </script>

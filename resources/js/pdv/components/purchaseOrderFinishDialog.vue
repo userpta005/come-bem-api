@@ -25,12 +25,19 @@
     <template #default>
       <div style="display: flex; justify-content: space-between; align-items: center;">
         <el-form label-position="top"
-          style="width: 60%;">
+          style="width: 100%;">
           <el-form-item>
             <template #label>
-              <span style="color: black; font-size: 16px">Consumidor<span style="color: red;">*</span></span>
+              <div style="display:flex; justify-content:space-between;">
+                <span style="color: black; font-size: 16px">Consumidor<span style="color: red;">*</span></span>
+                <span v-if="!!dependent"
+                  style="color: black; font-size: 14px;">
+                  Crédito (R$): {{ floatToMoney(!!dependent? dependent.accounts[0].balance : 0) }}
+                </span>
+              </div>
             </template>
             <el-select v-model="form.account_id"
+              style="width: 100%;"
               size="large"
               clearable
               filterable
@@ -46,10 +53,6 @@
             </el-select>
           </el-form-item>
         </el-form>
-        <span v-if="!!dependent"
-          style="color: black; margin-top: 13px">
-          Crédito (R$): {{ floatToMoney(!!dependent? dependent.accounts[0].balance : 0) }}
-        </span>
       </div>
       <hr style="margin: 0 0 20px 0;" />
       <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 10px 25px;">
@@ -180,7 +183,7 @@ const moneyChange = computed(() => {
 })
 
 const balance = computed(() => {
-  return dependent.value.accounts[0].balance - total.value
+  return !!dependent.value ? dependent.value.accounts[0].balance - total.value : 0
 })
 
 const paymentMethodChange = (paymentMethod) => {
@@ -240,9 +243,7 @@ const openedDialog = () => {
 
 const handleSubmit = async () => {
   try {
-    if ([3, 4].includes(form.value.payment_method_id)) {
-      return
-    } else if (!form.value.account_id) {
+    if (!form.value.account_id) {
       ElNotification({
         title: 'Aviso !',
         message: 'Consumidor é obrigatório !',
@@ -256,13 +257,20 @@ const handleSubmit = async () => {
         type: 'warning',
       })
       return
+    } else if (form.value.payment_method_id == 1 && moneyToFloat(form.value.amount_entry) < total.value) {
+      ElNotification({
+        title: 'Aviso !',
+        message: 'Valor (R$) não pode ser menor que Total do pedido (R$) !',
+        type: 'warning',
+      })
+      return
     }
 
     const data = await api({
       method: 'post',
       url: `/api/v1/accounts/${form.value.account_id}/pdv-orders`,
       data: {
-        cashier_id: store.cashier.id,
+        cashier_id: !!store.openedCashier ? store.cashier.id : null,
         payment_method_id: form.value.payment_method_id,
         products: form.value.cart
       }

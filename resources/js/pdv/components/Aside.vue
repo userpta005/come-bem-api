@@ -3,20 +3,21 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 20px;
 }
 </style>
 
 <template>
   <div class="aside-container">
-    <el-space direction="vertical"
-      size="large">
+    <div style="display: flex; flex-direction:column; gap: 10px;">
       <el-button color="#2474fd"
         size="large"
         style="width: 300px;
         height: 50px;
         margin: 0;
         font-size: large;
-        font-weight: 600;"
+        font-weight: 600;
+        align-self: end;"
         @click="cashierDialogVisible = true">
         <el-icon size="25"
           style="margin-right: 10px;">
@@ -30,7 +31,8 @@
         height: 50px;
         margin: 0;
         font-size: large;
-        font-weight: 600;"
+        font-weight: 600;
+        align-self: end;"
         @click="handleCashMovement">
         <el-icon size="25"
           style="margin-right: 10px;">
@@ -39,7 +41,7 @@
         Movimento do Caixa
       </el-button>
       <PurchaseOrder @cashier-dialog-open="cashierDialogVisible = true" />
-    </el-space>
+    </div>
 
     <CashierDialog :dialogVisible="cashierDialogVisible"
       @close-cashier-dialog="cashierDialogVisible = false" />

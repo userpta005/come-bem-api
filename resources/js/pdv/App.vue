@@ -1,10 +1,10 @@
 <template>
   <el-row>
-    <el-col :md="18"
+    <el-col :md="16"
       :xs="24">
       <Main />
     </el-col>
-    <el-col :md="6"
+    <el-col :md="8"
       :xs="24">
       <Aside />
     </el-col>
