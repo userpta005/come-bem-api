@@ -119,10 +119,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('open-cashiers', OpenCashierController::class);
     Route::resource('movement-types', MovementTypeController::class);
     Route::resource('cash-movements', CashMovementController::class);
-    Route::get('reports.cash-summary', [ReportController::class, 'cashSummary'])->name('reports.cash-summary');
-    Route::get('cash-summary-report', CashSummaryReportController::class)->name('cash.summary.report');
-    Route::get('reports.order-summary', [ReportController::class, 'orderSummary'])->name('reports.order-summary');
-    Route::get('order-summary-report', OrderReportController::class)->name('order.summary.report');
+    Route::resource('cash-summary', CashSummaryReportController::class);
+    Route::resource('order-summary', OrderReportController::class);
     Route::resource('financial-movements', FinancialMovementController::class);
 });
 

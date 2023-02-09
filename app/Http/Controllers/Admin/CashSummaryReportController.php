@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\User;
 use App\Models\Cashier;
 use App\Models\OpenCashier;
 use Illuminate\Http\Request;
@@ -12,12 +13,18 @@ class CashSummaryReportController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('permission:cash-summary-report_view', ['only' => ['cashSummary']]);
+        $this->middleware('permission:cash-summary-report_view', ['only' => ['index']]);
     }
 
-    
-    public function __invoke(Request $request)
+    public function index(Request $request)
     {
+        $cashiers = Cashier::query()
+            ->where('store_id', session('store')['id'])
+            ->get();
+
+        $users = User::query() 
+            ->get();
+
         if ($request->type == 1) {
             $data = OpenCashier::query()
                 ->whereDate('date_operation', $request->date_operation)
@@ -53,7 +60,6 @@ class CashSummaryReportController extends Controller
                     return $item;
                 });
 
-            return view('reports.cash-summary.synthetic-report', compact('data'));
         } else {
 
             $data = OpenCashier::query()
@@ -79,9 +85,8 @@ class CashSummaryReportController extends Controller
                     $item->total_outgoing = $item->cashMovements->filter(fn($cashMovements) => $cashMovements->movementType->class == \App\Enums\MovementClass::OUTGOING)->sum('amount');
                     return $item;
                 });
-
-            return view('reports.cash-summary.report', compact('data'));
         }
 
+        return view('reports.cash-summary.index', compact('data', 'cashiers', 'users'));
     }
 }
