@@ -31,6 +31,7 @@
             <span style="color: black; font-size: 16px">Consumidor</span>
           </template>
           <el-select v-model="accountId"
+            style="width: 100%;"
             size="large"
             filterable
             clearable
@@ -46,7 +47,7 @@
         </el-form-item>
       </el-form>
       <div>
-        <span style="color: black; font-size: 16px;">itens do pedido</span>
+        <span style="color: black; font-size: 16px;">Itens do pedido</span>
         <hr style="margin: 5px 0 10px 0;">
       </div>
       <div style="color: black; font-size: 14px;">

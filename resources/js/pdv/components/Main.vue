@@ -16,7 +16,7 @@
   <el-row>
 
     <Divider />
-    <div style="font-size: 18px; color: black; font-weight: lighter; margin-bottom: 15px;">Seções</div>
+    <div style="color: black; font-weight: 300; margin-bottom:5px;">Seções</div>
     <el-col :span="24">
       <el-space wrap>
 

@@ -516,11 +516,9 @@ const handleRecargaSubmit = (formEl) => {
         }
         const { data } = await axios.post(`${url}/api/v1/accounts/${recargaForm.account_id}/credit-purchases`, form)
         emit('closeCashMovementDialog')
-        ElNotification({
-          title: 'Sucesso !',
-          message: data.message,
-          type: 'success',
-        })
+
+        store.customDialogVisible = true
+        store.customDialogMessage = `Recarga de <b>R$ ${floatToMoney(recargaForm.amount)}</b> inserido com sucesso.`
       } catch (error) {
         let msg = null
         if (error.response) {
@@ -576,11 +574,8 @@ const handleSangriaSubmit = (formEl) => {
         const { data } = await axios.post(`${url}/api/v1/cash-movements`, sangriaForm)
         store.cashier = data.data
         emit('closeCashMovementDialog')
-        ElNotification({
-          title: 'Sucesso !',
-          message: data.message,
-          type: 'success',
-        })
+        store.customDialogVisible = true
+        store.customDialogMessage = `Sangria de <b>R$ ${floatToMoney(sangriaForm.amount)}</b> inserido com sucesso.`
       } catch (error) {
         let msg = null
         if (error.response) {
@@ -629,11 +624,8 @@ const handleTrocoSubmit = (formEl) => {
         const { data } = await axios.post(`${url}/api/v1/cash-movements`, trocoForm)
         store.cashier = data.data
         emit('closeCashMovementDialog')
-        ElNotification({
-          title: 'Sucesso !',
-          message: data.message,
-          type: 'success',
-        })
+        store.customDialogVisible = true
+        store.customDialogMessage = `Troco de <b>R$ ${floatToMoney(trocoForm.amount)}</b> inserido com sucesso.`
       } catch (error) {
         let msg = null
         if (error.response) {

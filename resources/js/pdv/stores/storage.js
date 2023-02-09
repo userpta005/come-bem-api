@@ -10,6 +10,8 @@ const useStorageStore = defineStore(
     const cashier = ref(null)
     const openedCashier = ref(false)
     const cart = ref([])
+    const customDialogVisible = ref(false)
+    const customDialogMessage = ref(null)
 
     return {
       tenant,
@@ -17,7 +19,9 @@ const useStorageStore = defineStore(
       user,
       cashier,
       openedCashier,
-      cart
+      cart,
+      customDialogVisible,
+      customDialogMessage
     }
   },
   {

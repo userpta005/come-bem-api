@@ -30,7 +30,7 @@
             <template #label>
               <div style="display:flex; justify-content:space-between;">
                 <span style="color: black; font-size: 16px">Consumidor<span style="color: red;">*</span></span>
-                <span v-if="!!dependent"
+                <span v-if="!!form.account_id && !!dependent && dependent.client.type != 3"
                   style="color: black; font-size: 14px;">
                   Crédito (R$): {{ floatToMoney(!!dependent? dependent.accounts[0].balance : 0) }}
                 </span>
@@ -157,7 +157,7 @@ const dependents = ref([])
 const dependent = ref(null)
 const form = ref({
   account_id: null,
-  payment_method_id: 1,
+  payment_method_id: null,
   amount_entry: null,
   cart: []
 })
@@ -236,6 +236,8 @@ const getDependent = async () => {
 const openedDialog = () => {
   form.value.account_id = props.accountId
   form.value.cart = store.cart
+  form.value.amount_entry = null
+  form.value.payment_method_id = null
   if (!!form.value.account_id) {
     getDependent()
   }
@@ -264,6 +266,13 @@ const handleSubmit = async () => {
         type: 'warning',
       })
       return
+    } else if (!form.value.payment_method_id) {
+      ElNotification({
+        title: 'Aviso !',
+        message: 'Forma de pagamento não selecionada !',
+        type: 'warning',
+      })
+      return
     }
 
     const data = await api({
@@ -277,11 +286,11 @@ const handleSubmit = async () => {
     })
 
     emit('closeDialog')
-    ElNotification({
-      title: 'Sucesso !',
-      message: data.message,
-      type: 'success',
-    })
+    store.customDialogVisible = true
+    store.customDialogMessage = `
+    <div style='font-size: 28px; font-weight: 600; margin-bottom: 20px;'>Compra autorizada !</div>
+    <div style='margin-bottom: 20px;'>Consumidor <b>${dependent.value.people.name}.</b></div>
+    <div>Valor da compra: <b>R$ ${floatToMoney(total.value)}</b></div>`
 
   } catch (error) {
     ElNotification({

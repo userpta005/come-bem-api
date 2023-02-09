@@ -17,7 +17,7 @@
         margin: 0;
         font-size: large;
         font-weight: 600;
-        align-self: end;"
+        align-self: center;"
         @click="cashierDialogVisible = true">
         <el-icon size="25"
           style="margin-right: 10px;">
@@ -32,7 +32,7 @@
         margin: 0;
         font-size: large;
         font-weight: 600;
-        align-self: end;"
+        align-self: center;"
         @click="handleCashMovement">
         <el-icon size="25"
           style="margin-right: 10px;">
@@ -48,6 +48,8 @@
 
     <CashMovementDialog :dialogVisible="cashMovementDialogVisible"
       @close-cash-movement-dialog="cashMovementDialogVisible = false" />
+
+    <CustomDialog />
   </div>
 </template>
 
@@ -58,6 +60,7 @@ import useStorageStore from '../stores/storage'
 import CashierDialog from './CashierDialog.vue'
 import CashMovementDialog from './CashMovementDialog.vue'
 import PurchaseOrder from './PurchaseOrder.vue'
+import CustomDialog from './CustomDialog.vue'
 
 const store = useStorageStore()
 const cashierDialogVisible = ref(false)
