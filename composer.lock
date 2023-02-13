@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7b282972e7b14e78e0afca2562f2989d",
+    "content-hash": "ec96f08b416398b98bc89c3c3d182910",
     "packages": [
         {
             "name": "brick/math",
@@ -6805,16 +6805,16 @@
         },
         {
             "name": "laradumps/laradumps",
-            "version": "v1.6.0",
+            "version": "v1.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laradumps/laradumps.git",
-                "reference": "fcf500cd2a2c8d4a729e4c146d439af6dc739e85"
+                "reference": "cbf0b0b8c9bd19acaed93742b2fe5e17754ebcc2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laradumps/laradumps/zipball/fcf500cd2a2c8d4a729e4c146d439af6dc739e85",
-                "reference": "fcf500cd2a2c8d4a729e4c146d439af6dc739e85",
+                "url": "https://api.github.com/repos/laradumps/laradumps/zipball/cbf0b0b8c9bd19acaed93742b2fe5e17754ebcc2",
+                "reference": "cbf0b0b8c9bd19acaed93742b2fe5e17754ebcc2",
                 "shasum": ""
             },
             "require": {
@@ -6823,6 +6823,7 @@
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^3.8",
+                "illuminate/console": "^8.18 | ^9.0",
                 "illuminate/mail": "^8.18 | ^9.0",
                 "illuminate/support": "^8.18 | ^9.0",
                 "nunomaduro/larastan": "^1.0 | ^2.1",
@@ -6861,7 +6862,7 @@
             "homepage": "https://github.com/laradumps/laradumps",
             "support": {
                 "issues": "https://github.com/laradumps/laradumps/issues",
-                "source": "https://github.com/laradumps/laradumps/tree/v1.6.0"
+                "source": "https://github.com/laradumps/laradumps/tree/v1.9.1"
             },
             "funding": [
                 {
@@ -6869,7 +6870,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-01-05T20:15:09+00:00"
+            "time": "2023-02-13T11:25:09+00:00"
         },
         {
             "name": "laravel/sail",

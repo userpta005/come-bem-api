@@ -49,7 +49,11 @@ class OpenCashierController extends BaseController
                 throw new Exception('Caixa já possui este status !');
             }
 
-            if ($inputs['operation'] == 2 && $cashier->status == 1 && $cashier->user_id != auth()->id()) {
+            if (
+                $inputs['operation'] == 2
+                && $cashier->status == 1
+                && $cashier->user_id != auth()->id()
+            ) {
                 throw new Exception('Esse caixa está em uso por outra pessoa !');
             }
 
@@ -69,14 +73,16 @@ class OpenCashierController extends BaseController
             $inputs['cashier_id'] = $cashier->id;
             $inputs['amount'] = $inputs['money_change'];
 
-            if (!empty($inputs['amount'])) {
+            if ($inputs['amount'] > 0) {
                 CashMovement::query()->create($inputs);
             }
 
             if ($inputs['operation'] != 1) {
-                $inputs['user_id'] =  null;
+                $inputs['user_id'] = null;
+                $inputs['store_open_cashier'] =  null;
                 $inputs['open_cashier_id'] = null;
             } else {
+                $inputs['store_open_cashier'] =  session('store')['id'];
                 $inputs['open_cashier_id'] = $open_cashier->id;
             }
 

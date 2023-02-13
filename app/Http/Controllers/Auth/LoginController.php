@@ -83,7 +83,11 @@ class LoginController extends Controller
             }
         }
 
-        if ($user->cashier()->exists()) {
+        if (
+            session()->exists('store')
+            && $user->cashier()->exists()
+            && $user->cashier->store_open_cashier == session('store')['id']
+        ) {
             session()->put('openedCashier', true);
             session()->put('cashier', $user->cashier);
         } else {

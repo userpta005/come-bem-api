@@ -34,7 +34,7 @@ class CashierClose extends Command
         foreach (Cashier::query()->lazy() as $cashier) {
             $cashier->status = 2;
             $cashier->open_cashier_id = null;
-            $cashier->user = null;
+            $cashier->store_open_cashier = null;
             $cashier->save();
         }
 
