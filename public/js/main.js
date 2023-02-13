@@ -404,11 +404,20 @@ function printPage() {
 
     var myWindow = window.open("", "PRINT", "height=800,width=1200");
 
+    var titlePrint = document.querySelector("#title-print").value;
+
+    if(titlePrint){
+        myWindow.document.write(
+            "<html><head><title>" + titlePrint + "</title>"
+        );
+    }else{
+        myWindow.document.write(
+            "<html><head><title>" + document.title + "</title>"
+        );
+    }
+    
     myWindow.document.write(
-        "<html><head><title>" + document.title + "</title>"
-    );
-    myWindow.document.write(
-        "<style>@media print{.print{background-color:#fff;height:100%;width:100%;position:fixed;top:0;left:0;margin:0;padding:15px;font-size:14px;line-height:18px}.no-print{visibility:hidden;height:0}}@page{size:25cm 35.7cm;margin:5mm 8mm 5mm 8mm}footer{position:fixed;bottom:0;left:0;right:0}footer img{max-width:3.5rem}table{border-collapse:collapse}.table{width:100%;margin-bottom:1rem;color:#212529}.table td,.table th{padding:.75rem;vertical-align:top;border-top:1px solid #dee2e6}.table thead th{vertical-align:bottom;border-bottom:2px solid #dee2e6}.table tbody+tbody{border-top:2px solid #dee2e6}.table-sm td,.table-sm th{padding:.3rem}.table-borderless tbody+tbody,.table-borderless td,.table-borderless th,.table-borderless thead th{border:0}.text-right{text-align:right!important}.img-fluid{max-width:100%;height:auto}.h1,.h2,.h3,.h4,.h5,.h6,h1,h2,h3,h4,h5,h6{margin-bottom:.5rem;font-weight:500;line-height:1.2}h1,h2,h3,h4,h5,h6{margin-top:0;margin-bottom:.5rem}small{font-size:80%}.float-right{float:right!important}.border-bottom{border-bottom:1px solid #dee2e6!important}.border-top{border-top:1px solid #dee2e6!important}.text-left{text-align:left!important}.table-active,.table-active>td,.table-active>th{background-color:rgba(0,0,0,.075)}.table-active, .table-active > th, .table-active > td {   background-color: rgba(0, 0, 0, 0.075); } th { text-align: left;}.form-control {   display: block;   width: 100%;   height: calc(1.5em + 0.75rem + 2px);   padding: 0.375rem 0.75rem;   font-size: 1rem;   font-weight: 400;   line-height: 1.5;   color: #495057;   background-color: #fff;   background-clip: padding-box;   border: 1px solid #ced4da;   border-radius: 0.25rem;   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; }   </style>"
+        "<style>@media print{.print{background-color:#fff;height:100%;width:100%;position:fixed;top:0;left:0;margin:0;padding:15px;font-size:14px;line-height:18px}.no-print{visibility:hidden;height:0}}@page{size:25cm 35.7cm;margin:5mm 8mm 5mm 8mm}footer{position:fixed;bottom:0;left:0;right:0}footer img{max-width:3.5rem}table{border-collapse:collapse}.table{width:100%;margin-bottom:1rem;color:#212529}.table td,.table th{padding:.75rem;vertical-align:top;}.table thead th{vertical-align:bottom;border-bottom:2px solid #dee2e6}.table tbody+tbody{border-top:2px solid #dee2e6}.table-sm td,.table-sm th{padding:.3rem}.table-borderless tbody+tbody,.table-borderless td,.table-borderless th,.table-borderless thead th{border:0}.text-right{text-align:right!important}.img-fluid{max-width:100%;height:auto}.h1,.h2,.h3,.h4,.h5,.h6,h1,h2,h3,h4,h5,h6{margin-bottom:.5rem;font-weight:500;line-height:1.2}h1,h2,h3,h4,h5,h6{margin-top:0;margin-bottom:.5rem}small{font-size:80%}.float-right{float:right!important}.border-bottom{border-bottom:1px solid #dee2e6!important}.border-top{border-top:1px solid #dee2e6!important}.text-left{text-align:left!important}.table-active,.table-active>td,.table-active>th{background-color:rgba(0,0,0,.075)}.table-active, .table-active > th, .table-active > td {   background-color: rgba(0, 0, 0, 0.075); } th { text-align: left;}.form-control {   display: block;   width: 100%;   height: calc(1.5em + 0.75rem + 2px);   padding: 0.375rem 0.75rem;   font-size: 1rem;   font-weight: 400;   line-height: 1.5;   color: #495057;   background-color: #fff;   background-clip: padding-box;   border: 1px solid #ced4da;   border-radius: 0.25rem;   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; }   </style>"
     );
     myWindow.document.write("</head><body >");
     myWindow.document.write(divPrint.innerHTML);

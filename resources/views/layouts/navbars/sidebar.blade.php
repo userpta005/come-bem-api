@@ -229,7 +229,7 @@
                                     @if (session()->has('store'))
                                     @can('cash-summary-report_view')
                                     <li>
-                                        <a href="{{ route('reports.cash-summary') }}">
+                                        <a href="{{ route('cash-summary.index') }}">
                                             <i class="fas fa-table"></i>
                                             <p>Resumo do caixa</p>
                                         </a>
@@ -237,7 +237,7 @@
                                     @endcan
                                     @can('order-summary-report_view')
                                     <li>
-                                        <a href="{{ route('reports.order-summary') }}">
+                                        <a href="{{ route('order-summary.index') }}">
                                             <i class="fas fa-file-invoice-dollar"></i>
                                             <p>Extrato de Vendas</p>
                                         </a>
