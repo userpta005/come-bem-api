@@ -32,7 +32,7 @@
                 <span style="color: black; font-size: 16px">Consumidor<span style="color: red;">*</span></span>
                 <span v-if="!!form.account_id && !!dependent && dependent.client.type != 3"
                   style="color: black; font-size: 14px;">
-                  Crédito (R$): {{ floatToMoney(!!dependent? dependent.accounts[0].balance : 0) }}
+                  Saldo (R$): {{ floatToMoney(!!dependent? dependent.accounts[0].balance : 0) }}
                 </span>
               </div>
             </template>
@@ -166,7 +166,7 @@ const paymentMethods = ref([
   { id: 4, name: 'Pix' },
   { id: 3, name: 'Cartão de Crédito' },
   { id: 2, name: 'Cartão de Débito' },
-  { id: 5, name: 'Crédito' }
+  { id: 5, name: 'Saldo' }
 ])
 
 const total = computed(() => {
