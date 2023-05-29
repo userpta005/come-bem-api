@@ -20,13 +20,13 @@ class PixPaymentAction
         $payload =  [
             'reference_id' => $data['reference'],
             'customer' => [
-                'name' => "Lanche Bem",
-                'email' => 'lanchebemsempre@gmail.com',
+                'name' => "Come Bem",
+                'email' => 'comebemsempre@gmail.com',
                 'tax_id' => "37282409000158",
             ],
             'items' => [
                 [
-                    'name' =>  "Cobrança- Lanche Bem",
+                    'name' =>  "Cobrança- Come Bem",
                     'quantity' => 1,
                     'unit_amount' => intval(preg_replace("/[^0-9]/", "", str_replace(',', '.', $data['value'])))
                 ]

@@ -21,7 +21,7 @@ class SplitPaymentAction
 
         $payload =  [
             'reference_id' => $data['reference'],
-            'description' => 'Recarga de crédito - Lanche Bem',
+            'description' => 'Recarga de crédito - Come Bem',
             'amount' => [
                 [
                     'value' => $value,
@@ -32,7 +32,7 @@ class SplitPaymentAction
                 'type' => 'CREDIT_CARD',
                 'installments' => $data['card']['installments'],
                 'capture' => false,
-                'soft_descriptor' => 'Lanche Bem',
+                'soft_descriptor' => 'Come Bem',
                 'card' => [
                     'number' => $data['card']['number'],
                     'exp_month' => $data['card']['exp_month'],

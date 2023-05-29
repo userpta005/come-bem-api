@@ -1,7 +1,7 @@
 version: '3'
 services:
     web:
-        container_name: "lanchebem-web"
+        container_name: "come-bem"
         image: ambientum/php:8.1-nginx
         ports:
             - '8080:8080'
@@ -12,7 +12,7 @@ services:
         links:
             - 'database'
     database:
-        container_name: 'lanchebem-database'
+        container_name: 'comebem-database'
         platform: linux/x86_64
         image: mysql:8
         command: --default-authentication-plugin=mysql_native_password
@@ -20,4 +20,4 @@ services:
             - '3306:3306'
         environment:
             MYSQL_ROOT_PASSWORD: 'secret'
-            MYSQL_DATABASE: 'lanchebem'
+            MYSQL_DATABASE: 'comebem'
